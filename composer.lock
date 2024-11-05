@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de820743dd761fe81e6b8981466163a4",
+    "content-hash": "f22c338d6ff19441cfb4666c919677a5",
     "packages": [
         {
             "name": "composer/semver",
@@ -7869,6 +7869,64 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
+            "name": "phpstan/phpstan",
+            "version": "1.12.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "dc2b9976bd8b0f84ec9b0e50cc35378551de7af0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dc2b9976bd8b0f84ec9b0e50cc35378551de7af0",
+                "reference": "dc2b9976bd8b0f84ec9b0e50cc35378551de7af0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-18T11:12:07+00:00"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "9.2.32",
             "source": {
@@ -8289,6 +8347,65 @@
                 }
             ],
             "time": "2024-09-19T10:50:18+00:00"
+        },
+        {
+            "name": "rector/rector",
+            "version": "1.2.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "7923bd5e48f8c26a922df91f7174f5bca2b3671d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/7923bd5e48f8c26a922df91f7174f5bca2b3671d",
+                "reference": "7923bd5e48f8c26a922df91f7174f5bca2b3671d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0",
+                "phpstan/phpstan": "^1.12.5"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "suggest": {
+                "ext-dom": "To manipulate phpunit.xml via the custom-rule command"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/1.2.9"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-04T18:26:57+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -9781,6 +9898,67 @@
                 }
             ],
             "time": "2024-10-01T08:54:22+00:00"
+        },
+        {
+            "name": "symplify/easy-coding-standard",
+            "version": "12.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
+                "reference": "c0f378782d06dfd21c66c3024e9d28f4e737645e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/c0f378782d06dfd21c66c3024e9d28f4e737645e",
+                "reference": "c0f378782d06dfd21c66c3024e9d28f4e737645e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "conflict": {
+                "friendsofphp/php-cs-fixer": "<3.46",
+                "phpcsstandards/php_codesniffer": "<3.8",
+                "symplify/coding-standard": "<12.1"
+            },
+            "suggest": {
+                "ext-dom": "Needed to support checkstyle output format in class CheckstyleOutputFormatter"
+            },
+            "bin": [
+                "bin/ecs"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Use Coding Standard with 0-knowledge of PHP-CS-Fixer and PHP_CodeSniffer",
+            "keywords": [
+                "Code style",
+                "automation",
+                "fixer",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/12.3.6"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/rectorphp",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-06T08:27:28+00:00"
         },
         {
             "name": "theseer/tokenizer",
