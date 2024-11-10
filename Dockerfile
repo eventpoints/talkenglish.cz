@@ -21,14 +21,8 @@ WORKDIR /build
 # We need /vendor here
 COPY --from=composer /app .
 
-# Install npm packages
-COPY package.json yarn.lock webpack.config.js ./
-RUN yarn install
-
 # Production yarn build
 COPY ./assets ./assets
-
-RUN yarn run build
 
 FROM composer as php
 
