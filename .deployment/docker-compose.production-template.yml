@@ -1,0 +1,90 @@
+services:
+  php:
+    image: ghcr.io/eventpoints/talkenglish.cz-php:main
+    volumes:
+      - php_socket:/var/run/php
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+    healthcheck:
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+      test: 50s
+    restart: unless-stopped
+    environment:
+      APP_ENV: "prod"
+      MERCURE_PUBLIC_URL: "https://talkenglish.cz/.well-known/mercure"
+      DATABASE_URL: "postgresql://__TALKENGLISH_POSTGRES_USER__:__TALKENGLISH_POSTGRES_PASSWORD__@database:5432/__TALKENGLISH_POSTGRES_DBNAME__?serverVersion=17&charset=utf8"
+      MERCURE_JWT_SECRET: "__TALKENGLISH_MERCURE_JWT_SECRET__"
+      APP_SECRET: "__TALKENGLISH_APP_SECRET__"
+      MAILER_DSN: "__TALKENGLISH_MAILER_DSN__"
+      MESSENGER_TRANSPORT_DSN: "__TALKENGLISH_MESSENGER_TRANSPORT_DSN__"
+      APP_TIMEZONE: "__TALKENGLISH_APP_TIMEZONE__"
+      SQUAREUP_ID: "__TALKENGLISH_SQUAREUP_ID__"
+      SQUAREUP_PRIVATE_KEY: "__TALKENGLISH_SQUAREUP_ID__"
+    networks:
+      - internal
+
+  caddy:
+    image: ghcr.io/eventpoints/talkenglish.cz-caddy:main
+    depends_on:
+      - php
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ":80"
+      MERCURE_PUBLISHER_JWT_KEY: "__TALKENGLISH_MERCURE_JWT_SECRET__"
+      MERCURE_SUBSCRIBER_JWT_KEY: "__TALKENGLISH_MERCURE_JWT_SECRET__"
+    volumes:
+      - php_socket:/var/run/php
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    expose:
+      - "80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.talkenglish.rule=Host(`talkenglish.cz`, `www.talkenglish.cz`)"
+      - "traefik.http.routers.talkenglish.tls=true"
+      - "traefik.http.routers.talkenglish.tls.certresolver=le"
+    networks:
+      - traefik
+      - internal
+
+  database:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "__TALKENGLISH_POSTGRES_DBNAME__"
+      POSTGRES_PASSWORD: "__TALKENGLISH_POSTGRES_PASSWORD__"
+      POSTGRES_USER: "__TALKENGLISH_POSTGRES_USER__"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data:rw
+    networks:
+      - internal
+
+  adminer:
+    image: adminer:4.8.0
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: database
+    expose:
+      - "8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.talkenglish-adminer..rule=Host(`adminer.talkenglish.io`)"
+      - "traefik.http.routers.talkenglish-adminer..tls=true"
+      - "traefik.http.routers.talkenglish-adminer..tls.certresolver=le"
+    networks:
+      - internal
+      - traefik
+
+networks:
+  traefik:
+    external: true
+  internal:
+    external: false
+
+volumes:
+  php_socket:
+  caddy_data:
+  caddy_config:

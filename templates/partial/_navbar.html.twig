@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg bg-info">
+    <div class="container">
+        <a class="navbar-brand" href="{{ app.user ? path('user_dashboard') }}">
+            <span class="fw-bolder text-uppercase">Talk</span>
+            <span class="fw-light text-uppercase">English</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {{ app.user.firstName }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ path('user_dashboard') }}">{{ 'dashboard'|trans }}</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger"
+                                   href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' }}" aria-current="page"
+                           href="{{ path('app_login') }}">{{ 'login'|trans|title }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' }}" href="{{ path('app_register') }}">{{ 'register'|trans|title }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -25,4 +25,29 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'bootstrap' => [
+        'version' => '5.3.3',
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+    ],
+    'bootstrap/dist/css/bootstrap.min.css' => [
+        'version' => '5.3.3',
+        'type' => 'css',
+    ],
+    'stimulus-character-counter' => [
+        'version' => '4.2.0',
+    ],
+    'stimulus-password-visibility' => [
+        'version' => '2.1.1',
+    ],
+    'stimulus-textarea-autogrow' => [
+        'version' => '4.1.0',
+    ],
+    '@stimulus-components/read-more' => [
+        'version' => '5.0.0',
+    ],
+    '@stimulus-components/clipboard' => [
+        'version' => '5.0.0',
+    ],
 ];
