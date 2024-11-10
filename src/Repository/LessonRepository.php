@@ -3,12 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Lesson;
-use App\Entity\User;
 use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Order;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Lesson>
@@ -42,7 +40,11 @@ class LessonRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAvailableLessons(User $user): array
+
+    /**
+     * @return array<int, Lesson>
+     */
+    public function findAvailableLessons(): array
     {
         $qb = $this->createQueryBuilder('lesson');
 

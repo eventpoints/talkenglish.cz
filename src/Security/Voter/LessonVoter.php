@@ -8,6 +8,9 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * @extends Voter<string, Lesson>
+ */
 final class LessonVoter extends Voter
 {
     public const VIEW = 'VIEW_LESSON';
@@ -42,7 +45,7 @@ final class LessonVoter extends Voter
     private function canUserJoinLesson(User $user, Lesson $lesson): bool
     {
         return $lesson->getLessonParticipants()->exists(
-            fn(int $key, LessonParticipant $lessonParticipant) => $lessonParticipant->getOwner() === $user
+            fn(int $key, LessonParticipant $lessonParticipant): bool => $lessonParticipant->getOwner() === $user
         );
     }
 }

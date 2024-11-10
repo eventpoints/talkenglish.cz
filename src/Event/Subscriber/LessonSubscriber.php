@@ -4,10 +4,8 @@ namespace App\Event\Subscriber;
 
 use App\Entity\Lesson;
 use App\Repository\LessonRepository;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use Exception;
-use Psr\Log\LoggerInterface;
 use Square\Models\AcceptedPaymentMethods;
 use Square\Models\CheckoutOptions;
 use Square\Models\CreatePaymentLinkRequest;
@@ -15,7 +13,6 @@ use Square\Models\CreatePaymentLinkResponse;
 use Square\Models\Money;
 use Square\Models\QuickPay;
 use Square\SquareClient;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -29,6 +26,9 @@ readonly class LessonSubscriber
     {
     }
 
+    /**
+     * @return array<string, array<string>>
+     */
     public static function getSubscribedEvents(): array
     {
         return [

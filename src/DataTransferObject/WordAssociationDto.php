@@ -4,17 +4,12 @@ namespace App\DataTransferObject;
 
 final class WordAssociationDto
 {
-    private null|string $potentiallyRelatedWord;
-    private string $currentWord;
-
     /**
      * @param string|null $potentiallyRelatedWord
      * @param string $currentWord
      */
-    public function __construct(string $currentWord, string $potentiallyRelatedWord = null)
+    public function __construct(private string $currentWord, private null|string $potentiallyRelatedWord = null)
     {
-        $this->potentiallyRelatedWord = $potentiallyRelatedWord;
-        $this->currentWord = $currentWord;
     }
 
     public function getPotentiallyRelatedWord(): ?string

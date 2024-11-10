@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use Nette\Utils\Arrays;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -40,7 +39,7 @@ final readonly class WordAssociationService
         $relatedWords = $response->toArray();
 
         foreach ($relatedWords as $relatedWord) {
-            if (strtolower($relatedWord['word']) === strtolower($potentiallyRelatedWord)) {
+            if (strtolower((string) $relatedWord['word']) === strtolower($potentiallyRelatedWord)) {
                 return true;
             }
         }

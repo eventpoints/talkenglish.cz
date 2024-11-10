@@ -60,15 +60,14 @@ class LessonParticipant {
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): CarbonImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(CarbonImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
+
 }

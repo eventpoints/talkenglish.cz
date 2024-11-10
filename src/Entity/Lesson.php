@@ -45,7 +45,7 @@ class Lesson
     private ?string $onlineUrl = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private CarbonImmutable|DateTimeImmutable $createdAt;
+    private CarbonImmutable $createdAt;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $paymentLink = null;
@@ -220,8 +220,6 @@ class Lesson
 
     public function getIsParticipant(User $user): bool
     {
-        return $this->getLessonParticipants()->exists(function (int $key, LessonParticipant $lessonParticipant) use ($user) {
-            return $lessonParticipant->getOwner() === $user;
-        });
+        return $this->getLessonParticipants()->exists(fn(int $key, LessonParticipant $lessonParticipant): bool => $lessonParticipant->getOwner() === $user);
     }
 }

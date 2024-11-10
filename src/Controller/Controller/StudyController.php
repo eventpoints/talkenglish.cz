@@ -3,13 +3,11 @@
 namespace App\Controller\Controller;
 
 use App\DataTransferObject\WordAssociationDto;
-use App\Entity\Lesson;
 use App\Form\Form\WordAssociationFormType;
 use App\Service\WordAssociationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
