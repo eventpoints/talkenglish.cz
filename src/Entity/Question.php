@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\Quiz\QuestionTypeEnum;
-use App\Enum\Quiz\QuizTypeEnum;
 use App\Repository\QuestionRepository;
 use Carbon\CarbonImmutable;
 use Doctrine\DBAL\Types\Types;

@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Lesson;
-use App\Entity\Quiz;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;

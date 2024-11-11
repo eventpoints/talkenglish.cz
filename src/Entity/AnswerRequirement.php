@@ -53,16 +53,14 @@ class AnswerRequirement
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?QuestionTypeEnum
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(?QuestionTypeEnum $type): void
     {
         $this->type = $type;
-
-        return $this;
     }
 
     /**
