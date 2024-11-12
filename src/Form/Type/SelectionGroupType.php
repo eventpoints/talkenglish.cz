@@ -18,7 +18,7 @@ class SelectionGroupType extends AbstractType
         $resolver->setDefaults([
             'multiple' => true,
             'expanded' => true,
-            'choice_attr' => fn ($choice, $key, $value) => [
+            'choice_attr' => fn ($choice, $key, $value): array => [
                 'class' => 'custom-checkbox',
             ],
         ]);

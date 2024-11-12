@@ -8,7 +8,6 @@ use App\Enum\Quiz\CategoryEnum;
 use App\Enum\Quiz\LevelEnum;
 use App\Enum\Quiz\QuestionTypeEnum;
 use App\Repository\QuestionRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenAI;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

@@ -2,11 +2,8 @@
 
 namespace App\Entity;
 
-use App\Enum\Quiz\CategoryEnum;
-use App\Enum\Quiz\LevelEnum;
 use App\Repository\QuizParticipationRepository;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -113,48 +110,6 @@ class QuizParticipation
         $this->createdAt = $createdAt;
     }
 
-    public function isTimed(): ?bool
-    {
-        return $this->isTimed;
-    }
-
-    public function setTimed(bool $isTimed): static
-    {
-        $this->isTimed = $isTimed;
-
-        return $this;
-    }
-
-    public function getCategoryEnum(): ?CategoryEnum
-    {
-        return $this->categoryEnum;
-    }
-
-    public function setCategoryEnum(?CategoryEnum $categoryEnum): void
-    {
-        $this->categoryEnum = $categoryEnum;
-    }
-
-    public function getLevelEnum(): ?LevelEnum
-    {
-        return $this->levelEnum;
-    }
-
-    public function setLevelEnum(?LevelEnum $levelEnum): void
-    {
-        $this->levelEnum = $levelEnum;
-    }
-
-    public function getIsTimed(): ?bool
-    {
-        return $this->isTimed;
-    }
-
-    public function setIsTimed(?bool $isTimed): void
-    {
-        $this->isTimed = $isTimed;
-    }
-
     /**
      * @return Collection<int, Question>
      */
@@ -222,7 +177,6 @@ class QuizParticipation
     }
 
 
-
     public function getQuizDurationInSeconds(): int
     {
         $endAt = $this->startAt->addMinutes($this->quiz->getTimeLimitInMinutes());
@@ -243,8 +197,8 @@ class QuizParticipation
     }
 
 
-    public function getCompletionTimeInMintues() : int
+    public function getCompletionTimeInMintues(): float
     {
-        return $this->getStartAt()->diffInMinutes($this->getCompletedAt());
+        return round($this->getStartAt()->diffInMinutes($this->getCompletedAt()), 2);
     }
 }

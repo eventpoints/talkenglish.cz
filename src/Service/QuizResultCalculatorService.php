@@ -2,8 +2,7 @@
 
 namespace App\Service;
 
-use App\DataTransferObject\QuestionScoreDto;
-use App\DataTransferObject\QuizScoreDto;
+use App\Entity\AnswerOption;
 use App\Entity\Question;
 use App\Entity\QuizParticipation;
 
@@ -30,13 +29,13 @@ class QuizResultCalculatorService
         return round($totalScore, 2);
     }
 
-    public function calculateFractalScoreForQuestion(QuizParticipation $quizParticipation, $question): float
+    public function calculateFractalScoreForQuestion(QuizParticipation $quizParticipation, Question $question): float
     {
         $userAnswers = $quizParticipation->getAnswers()->filter(
-            fn($answer) => $answer->getQuestion()->getId() === $question->getId()
+            fn($answer): bool => $answer->getQuestion()->getId() === $question->getId()
         );
 
-        $correctAnswerOptions = $question->getAnswerOptions()->filter(fn($option) => $option->isCorrect());
+        $correctAnswerOptions = $question->getAnswerOptions()->filter(fn(AnswerOption $answerOption): ?bool => $answerOption->getIsCorrect());
 
         $numCorrectAnswers = $correctAnswerOptions->count();
         $numCorrectSelected = $userAnswers->filter(

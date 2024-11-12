@@ -2,8 +2,6 @@
 
 namespace App\DataTransferObject;
 
-use App\Entity\Quiz;
-use App\Entity\User;
 use App\Enum\Quiz\LevelEnum;
 use App\Enum\Quiz\CategoryEnum;
 

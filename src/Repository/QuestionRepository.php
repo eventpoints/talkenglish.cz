@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Answer;
 use App\Entity\Question;
-use App\Entity\QuizParticipation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -41,25 +38,4 @@ class QuestionRepository extends ServiceEntityRepository
         }
     }
 
-    public function getOneQuestionByQuizParticipation(QuizParticipation $quizParticipation): null|Question
-    {
-        $qb = $this->createQueryBuilder('question');
-        $qb->andWhere(
-            $qb->expr()->eq('question.categoryEnum', ':categoryEnum')
-        )->setParameter('categoryEnum', $quizParticipation->getCategoryEnum());
-
-        $qb->andWhere(
-            $qb->expr()->eq('question.levelEnum', ':levelEnum')
-        )->setParameter('levelEnum', $quizParticipation->getLevelEnum());
-
-        $questions = $quizParticipation->getQuestions()->map(fn($question) => $question->getId())->toArray();
-        if (count($questions) > 0) {
-            $qb->andWhere(
-                $qb->expr()->notIn('question.id', ':questions')
-            )->setParameter('questions', $questions);
-        }
-
-        $qb->setMaxResults(1);
-        return $qb->getQuery()->getOneOrNullResult();
-    }
 }

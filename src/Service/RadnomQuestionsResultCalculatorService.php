@@ -31,7 +31,7 @@ final readonly class RadnomQuestionsResultCalculatorService
         foreach ($quizParticipation->getQuestions() as $question) {
             $correctSelections = $this->calculateQuestionAnswer($quizParticipation, $question);
 
-            $totalCorrectAnswers = count($question->getAnswerOptions()->filter(fn($answerOption) => $answerOption->getIsCorrect()));
+            $totalCorrectAnswers = count($question->getAnswerOptions()->filter(fn($answerOption): ?bool => $answerOption->getIsCorrect()));
 
             $correctCount += $correctSelections * $totalCorrectAnswers;
             $totalPossible += $totalCorrectAnswers;
@@ -41,7 +41,7 @@ final readonly class RadnomQuestionsResultCalculatorService
     }
     public function calculateQuestionAnswer(QuizParticipation $quizParticipation, Question $question) : float
     {
-        $userAnswer = $quizParticipation->getAnswers()->filter(function (Answer $answer) use ($question) {
+        $userAnswer = $quizParticipation->getAnswers()->filter(function (Answer $answer) use ($question): bool {
             return $answer->getQuestion()->getId() === $question->getId();
         })->first();
 
@@ -49,7 +49,7 @@ final readonly class RadnomQuestionsResultCalculatorService
             return 0.0;
         }
 
-        $correctAnswerOptions = $question->getAnswerOptions()->filter(function (AnswerOption $answerOption) {
+        $correctAnswerOptions = $question->getAnswerOptions()->filter(function (AnswerOption $answerOption): ?bool {
             return $answerOption->getIsCorrect();
         });
 

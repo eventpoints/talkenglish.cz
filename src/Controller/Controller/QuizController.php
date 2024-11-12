@@ -134,7 +134,7 @@ class QuizController extends AbstractController
 
         $questions = $quizParticipation->getQuiz()->getQuestions();
         $answeredQuestions = $quizParticipation->getAnswers()
-            ->map(fn(Answer $answer) => $answer->getQuestion())
+            ->map(fn(Answer $answer): ?\App\Entity\Question => $answer->getQuestion())
             ->toArray();
 
         $question = null;
@@ -161,7 +161,7 @@ class QuizController extends AbstractController
             $quizParticipation->addQuestion($question);
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
 
-            if (!empty($quizParticipation->getCompletedAt()) || $quizParticipation->getStartAt()->addMinutes(20) <= new \DateTimeImmutable()) {
+            if ($quizParticipation->getCompletedAt() instanceof \Carbon\CarbonImmutable || $quizParticipation->getStartAt()->addMinutes(20) <= new \DateTimeImmutable()) {
                 $quizParticipation->setCompletedAt(new CarbonImmutable());
                 $this->quizParticipationRepository->save($quizParticipation, flush: true);
                 return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);

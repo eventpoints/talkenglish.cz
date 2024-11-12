@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Twig\Filter;
 
-use App\Entity\Question;
 use App\Entity\QuizParticipation;
 use App\Service\QuizResultCalculatorService;
 use Twig\Extension\AbstractExtension;
