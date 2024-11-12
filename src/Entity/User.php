@@ -52,15 +52,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $lessonParticipations;
 
     /**
-     * @var Collection<int, Quiz>
+     * @var Collection<int, QuizParticipation>
      */
-    #[ORM\OneToMany(targetEntity: Quiz::class, mappedBy: 'owner')]
-    private Collection $quizzes;
+    #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'owner')]
+    private Collection $quizParticipations;
 
     public function __construct()
     {
         $this->lessonParticipations = new ArrayCollection();
         $this->quizzes = new ArrayCollection();
+        $this->quizParticipations = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -194,29 +195,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Quiz>
+     * @return Collection<int, QuizParticipation>
      */
-    public function getQuizzes(): Collection
+    public function getQuizParticipations(): Collection
     {
-        return $this->quizzes;
+        return $this->quizParticipations;
     }
 
-    public function addQuiz(Quiz $quiz): static
+    public function addQuizParticipation(QuizParticipation $quizParticipation): static
     {
-        if (!$this->quizzes->contains($quiz)) {
-            $this->quizzes->add($quiz);
-            $quiz->setOwner($this);
+        if (!$this->quizParticipations->contains($quizParticipation)) {
+            $this->quizParticipations->add($quizParticipation);
+            $quizParticipation->setOwner($this);
         }
 
         return $this;
     }
 
-    public function removeQuiz(Quiz $quiz): static
+    public function removeQuizParticipation(QuizParticipation $quizParticipation): static
     {
-        if ($this->quizzes->removeElement($quiz)) {
+        if ($this->quizParticipations->removeElement($quizParticipation)) {
             // set the owning side to null (unless already changed)
-            if ($quiz->getOwner() === $this) {
-                $quiz->setOwner(null);
+            if ($quizParticipation->getOwner() === $this) {
+                $quizParticipation->setOwner(null);
             }
         }
 

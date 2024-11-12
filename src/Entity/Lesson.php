@@ -44,7 +44,7 @@ class Lesson
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $onlineUrl = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private CarbonImmutable $createdAt;
 
     #[ORM\Column(length: 255, nullable: true)]

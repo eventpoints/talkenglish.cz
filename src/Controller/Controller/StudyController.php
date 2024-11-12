@@ -18,13 +18,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class StudyController extends AbstractController
 {
 
-
-    public function __construct(
-        private readonly WordAssociationService $wordAssociationService
-    )
-    {
-    }
-
     /**
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
@@ -33,33 +26,9 @@ class StudyController extends AbstractController
      * @throws RedirectionExceptionInterface
      */
     #[Route(path: '/study-room', name: 'study_room')]
-    public function studyRoom(Request $request): Response
+    public function studyRoom(): Response
     {
-        $session = $request->getSession();
-        $currentWord = $session->get('currentWord', 'dog');
-        $wordAssociationDto = new WordAssociationDto(currentWord: $currentWord, potentiallyRelatedWord: null);
-        $wordAssociationForm = $this->createForm(WordAssociationFormType::class, $wordAssociationDto);
-
-        $wordAssociationForm->handleRequest($request);
-        if ($wordAssociationForm->isSubmitted() && $wordAssociationForm->isValid()) {
-            $isRelated = $this->wordAssociationService->isRelatedWord(
-                currentWord: $wordAssociationDto->getCurrentWord(),
-                potentiallyRelatedWord: $wordAssociationDto->getPotentiallyRelatedWord()
-            );
-
-            if ($isRelated) {
-                $session->set('currentWord', $wordAssociationDto->getPotentiallyRelatedWord());
-                $this->addFlash('success', 'Nice job!');
-            } else {
-                $this->addFlash('danger', 'Sorry, that is not a related word. Try again.');
-            }
-            return $this->redirectToRoute('study_room');
-        }
-
-        return $this->render('study/room.html.twig', [
-            'wordAssociationForm' => $wordAssociationForm->createView(),
-            'currentWord' => $currentWord,
-        ]);
+        return $this->render('study/room.html.twig');
     }
 
 

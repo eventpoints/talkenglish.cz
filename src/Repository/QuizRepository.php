@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\DataTransferObject\QuizFilterDto;
 use App\Entity\Quiz;
+use App\Enum\Quiz\CategoryEnum;
+use App\Enum\Quiz\LevelEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,28 +20,37 @@ class QuizRepository extends ServiceEntityRepository
         parent::__construct($registry, Quiz::class);
     }
 
-    //    /**
-    //     * @return Quiz[] Returns an array of Quiz objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('q.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @param QuizFilterDto $quizFilterDto
+     * @param bool $isQuery
+     * @return Query|array<int, Quiz>
+     */
+    public function findByQuizFilterDto(QuizFilterDto $quizFilterDto, bool $isQuery = false): Query|array
+    {
+        $qb = $this->createQueryBuilder('quiz');
 
-    //    public function findOneBySomeField($value): ?Quiz
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (!empty($quizFilterDto->getKeyword())) {
+            $qb->andWhere(
+                $qb->expr()->like('quiz.title', ':keyword')
+            )->setParameter('keyword', '%' . $quizFilterDto->getKeyword() . '%');
+        }
+
+        if ($quizFilterDto->getCategoryEnum() instanceof CategoryEnum) {
+            $qb->andWhere(
+                $qb->expr()->eq('quiz.categoryEnum', ':category')
+            )->setParameter('category', $quizFilterDto->getCategoryEnum());
+        }
+
+        if ($quizFilterDto->getLevelEnum() instanceof LevelEnum) {
+            $qb->andWhere(
+                $qb->expr()->eq('quiz.levelEnum', ':level')
+            )->setParameter('level', $quizFilterDto->getLevelEnum());
+        }
+
+        if ($isQuery) {
+            return $qb->getQuery();
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

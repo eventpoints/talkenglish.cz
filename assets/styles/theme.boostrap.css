@@ -3875,9 +3875,6 @@ textarea.form-control-lg {
 .card .list-group-item {
     background-color: var(--bs-card-bg);
 }
-.card .list-group-item:hover {
-    background-color: var(--bs-gray-300);
-}
 .card > .list-group:first-child {
     border-top-width: 0;
     border-top-left-radius: var(--bs-card-inner-border-radius);

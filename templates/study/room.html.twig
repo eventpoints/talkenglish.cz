@@ -5,31 +5,27 @@
 {% block body %}
     <div class="container">
         <div class="row justify-content-center my-3">
-            <div class="col-6">
-
-                {% for label, messages in app.flashes(['success', 'danger']) %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label }} my-3 text-center" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
-
-                <div class="card mb-3">
-                    <div class="card-body text-center">
-                        <div class="display-1 text-primary">
-                            {{ currentWord }}
+            <div class="col-12 col-md-6">
+                <div class="row justify-content-between g-3">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">{{ 'word-association-game'|trans }}</div>
+                            <div class="card-body">{{ 'expand-your-vocab'|trans }}</div>
+                            <div class="card-footer">
+                                <a class="btn btn-secondary w-100"
+                                   href="{{ path('word_association_game') }}">{{ 'play-now'|trans }}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="card">
-                    {{ form_start(wordAssociationForm) }}
-                    <div class="card-body">
-                        {{ form_row(wordAssociationForm.potentiallyRelatedWord) }}
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">{{ 'quiz'|trans }}</div>
+                            <div class="card-body">{{ 'test-yourself'|trans }}</div>
+                            <div class="card-footer">
+                                <a class="btn btn-secondary w-100" href="{{ path('quiz_pre_start') }}">{{ 'start-now'|trans }}</a>
+                            </div>
+                        </div>
                     </div>
-                    {{ form_end(wordAssociationForm) }}
                 </div>
             </div>
 

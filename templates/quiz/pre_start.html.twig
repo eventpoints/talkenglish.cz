@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ quiz.title|title }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center my-3">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header fs-3">{{ quiz.title }}</div>
+                    <div class="card-body">
+                        {{ quiz.description|nl2br }}
+                    </div>
+                    <div class="card-footer text-center">
+                        <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
+                            <button type="submit" class="btn btn-lg btn-primary">Start Quiz</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Enum\Quiz\QuizTypeEnum;
+use App\Enum\Quiz\CategoryEnum;
+use App\Enum\Quiz\LevelEnum;
 use App\Repository\QuizRepository;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -20,54 +22,46 @@ class Quiz
     #[ORM\CustomIdGenerator(UuidGenerator::class)]
     private null|Uuid $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
-
-    #[ORM\Column(enumType: QuizTypeEnum::class)]
-    private null|QuizTypeEnum $type = QuizTypeEnum::GENERAL;
-
-    #[ORM\ManyToOne(inversedBy: 'quizzes')]
-    private ?User $owner = null;
-
     /**
      * @var Collection<int, Question>
      */
-    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'quiz')]
+    #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'quizzes')]
     private Collection $questions;
+
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
+    #[ORM\Column(enumType: CategoryEnum::class)]
+    private null|CategoryEnum $categoryEnum;
+
+    #[ORM\Column(enumType: LevelEnum::class)]
+    private null|LevelEnum $levelEnum;
+
+    #[ORM\Column(type: Types::TEXT, length: 500)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private CarbonImmutable $createdAt;
+
+    #[ORM\Column(nullable: true)]
+    private null|int $timeLimitInMinutes = null;
+
+    /**
+     * @var Collection<int, QuizParticipation>
+     */
+    #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'quiz')]
+    private Collection $quizParticipations;
 
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->quizParticipations = new ArrayCollection();
+        $this->createdAt = new CarbonImmutable();
     }
 
     public function getId(): null|Uuid
     {
         return $this->id;
-    }
-
-    public function getType(): ?QuizTypeEnum
-    {
-        return $this->type;
-    }
-
-    public function setType(?QuizTypeEnum $type): void
-    {
-        $this->type = $type;
-    }
-
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): static
-    {
-        $this->owner = $owner;
-
-        return $this;
     }
 
     /**
@@ -82,7 +76,6 @@ class Quiz
     {
         if (!$this->questions->contains($question)) {
             $this->questions->add($question);
-            $question->setQuiz($this);
         }
 
         return $this;
@@ -90,12 +83,7 @@ class Quiz
 
     public function removeQuestion(Question $question): static
     {
-        if ($this->questions->removeElement($question)) {
-            // set the owning side to null (unless already changed)
-            if ($question->getQuiz() === $this) {
-                $question->setQuiz(null);
-            }
-        }
+        $this->questions->removeElement($question);
 
         return $this;
     }
@@ -105,9 +93,21 @@ class Quiz
         return $this->title;
     }
 
-    public function setTitle(?string $title): void
+    public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?CarbonImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?CarbonImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 
     public function getDescription(): ?string
@@ -120,4 +120,57 @@ class Quiz
         $this->description = $description;
     }
 
+    public function getCategoryEnum(): ?CategoryEnum
+    {
+        return $this->categoryEnum;
+    }
+
+    public function setCategoryEnum(?CategoryEnum $categoryEnum): void
+    {
+        $this->categoryEnum = $categoryEnum;
+    }
+
+    public function getLevelEnum(): ?LevelEnum
+    {
+        return $this->levelEnum;
+    }
+
+    public function setLevelEnum(?LevelEnum $levelEnum): void
+    {
+        $this->levelEnum = $levelEnum;
+    }
+
+    public function getTimeLimitInMinutes(): ?int
+    {
+        return $this->timeLimitInMinutes;
+    }
+
+    public function setTimeLimitInMinutes(?int $timeLimitInMinutes): void
+    {
+        $this->timeLimitInMinutes = $timeLimitInMinutes;
+    }
+
+
+    /**
+     * @return Collection<int, QuizParticipation>
+     */
+    public function getQuizParticipations(): Collection
+    {
+        return $this->quizParticipations;
+    }
+
+    public function addQuizParticipation(QuizParticipation $quizParticipation): static
+    {
+        if (!$this->quizParticipations->contains($quizParticipation)) {
+            $this->quizParticipations->add($quizParticipation);
+        }
+
+        return $this;
+    }
+
+    public function removeQuizParticipation(QuizParticipation $quizParticipation): static
+    {
+        $this->quizParticipations->removeElement($quizParticipation);
+        return $this;
+    }
 }

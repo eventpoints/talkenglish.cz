@@ -27,4 +27,10 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/quizzes', name: 'user_quizzes')]
+    public function quizzes() : Response
+    {
+        return  $this->render('user/quizzes.html.twig');
+    }
+
 }

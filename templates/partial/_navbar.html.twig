@@ -18,6 +18,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ path('user_dashboard') }}">{{ 'dashboard'|trans }}</a>
+                            <li><a class="dropdown-item" href="{{ path('quizzes') }}">{{ 'quizzes'|trans }}</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -28,11 +29,13 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' }}" aria-current="page"
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' }}"
+                           aria-current="page"
                            href="{{ path('app_login') }}">{{ 'login'|trans|title }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' }}" href="{{ path('app_register') }}">{{ 'register'|trans|title }}</a>
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' }}"
+                           href="{{ path('app_register') }}">{{ 'register'|trans|title }}</a>
                     </li>
                 {% endif %}
             </ul>

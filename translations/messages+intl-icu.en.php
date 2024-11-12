@@ -15,4 +15,18 @@ return array(
     'join-call' => 'join video call',
     'no-participants' => 'Be the first to join and invite your friends.',
     'student-joined' => '{name} joined the lesson {when}',
+    'category.ilets'=>'ILETS',
+    'category.sat'=>'SAT',
+    'category.general'=>'General',
+    'category.speaking'=>'Speaking',
+    'category.listening'=>'Listening',
+    'category.level_assessment' => 'level assessment',
+
+    'level.beginner'=> 'Beginner',
+    'level.pre_intermediate'=> 'Pre-Intermediate',
+    'level.intermediate'=> 'Intermediate',
+    'level.upper_intermediate'=> 'Upper-Intermediate',
+    'level.advanced'=> 'Advanced',
+    'level.mastery'=> 'Mastery',
+
 );

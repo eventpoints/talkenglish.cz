@@ -1,0 +1,36 @@
+{% block entity_selection_group_label %}
+    <div class="list-group-item fw-bold">{{ form.vars.label|trans|capitalize }}</div>
+{% endblock %}
+
+{% block entity_selection_group_errors %}
+    {% if errors|length > 0 %}
+        <div class="list-group-item text-center text-danger">
+            {% for error in errors %}
+                {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}<br>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block entity_selection_group_row %}
+    <div class="vstack gap-3 mb-3">
+        {% for choice in choices %}
+            <div class="card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <label for="{{ id ~ '_' ~ choice.value }}" class="fw-bold w-75 text-start">
+                        {{ choice.label|default(null)|trans({}, translation_domain) }}
+                    </label>
+                    <input style="-ms-transform: scale(2)!important;-webkit-transform: scale(2)!important;transform: scale(2)!important; accent-color: var(--bs-primary)!important;"
+                           type="{{ form.vars.multiple ? 'checkbox' : 'radio' }}" id="{{ id ~ '_' ~ choice.value }}"
+                           name="{{ full_name ~ '[]' }}"
+                           value="{{ choice.value }}" {% if choice.value in value %}checked{% endif %}
+                            {{ stimulus_target('list-group-search', 'checkbox') }}
+                    >
+                </div>
+            </div>
+        {% else %}
+            <div class="card-body text-center text-muted">{{ form.vars.empty_message }}</div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnswerOptionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Uid\Uuid;
@@ -20,10 +22,29 @@ class AnswerOption
     private ?string $content = null;
 
     #[ORM\Column]
-    private ?bool $isCorrect = null;
+    private ?bool $isCorrect = false;
 
-    #[ORM\ManyToOne(inversedBy: 'answerOptions')]
-    private ?AnswerRequirement $answerRequirement = null;
+    #[ORM\ManyToOne(inversedBy: 'answerOptions', cascade: ['remove'])]
+    private ?Question $question = null;
+
+    /**
+     * @var Collection<int, Answer>
+     */
+    #[ORM\ManyToMany(targetEntity: Answer::class, mappedBy: 'answerOption',cascade: ['remove'])]
+    private Collection $answers;
+
+    /**
+     * @param string|null $content
+     * @param bool|null $isCorrect
+     */
+    public function __construct(?string $content = null, ?bool $isCorrect = null, ?Question $question = null)
+    {
+        $this->content = $content;
+        $this->isCorrect = $isCorrect;
+        $this->question = $question;
+        $this->answers = new ArrayCollection();
+    }
+
 
     public function getId(): null|Uuid
     {
@@ -42,27 +63,62 @@ class AnswerOption
         return $this;
     }
 
-    public function isCorrect(): ?bool
+    public function getIsCorrect(): ?bool
     {
         return $this->isCorrect;
     }
 
-    public function setCorrect(bool $isCorrect): static
+    public function setIsCorrect(bool $isCorrect): static
     {
         $this->isCorrect = $isCorrect;
 
         return $this;
     }
 
-    public function getAnswerRequirement(): ?AnswerRequirement
+    public function getQuestion(): ?Question
     {
-        return $this->answerRequirement;
+        return $this->question;
     }
 
-    public function setAnswerRequirement(?AnswerRequirement $answerRequirement): static
+    public function setQuestion(?Question $question): static
     {
-        $this->answerRequirement = $answerRequirement;
+        $this->question = $question;
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        $isCorrect = $this->getIsCorrect() ? " (correct)" : " (wrong)";
+
+        return $this->getContent() . $isCorrect;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): static
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->addAnswerOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): static
+    {
+        if ($this->answers->removeElement($answer)) {
+            $answer->removeAnswerOption($this);
+        }
+
+        return $this;
+    }
+
 }
