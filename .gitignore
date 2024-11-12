@@ -28,4 +28,4 @@
 phpstan.neon
 ###< phpstan/phpstan ###
 
-/docker
+/docker/*
