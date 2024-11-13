@@ -3,7 +3,7 @@ services:
     image: ghcr.io/eventpoints/talkenglish.cz-php:main
     volumes:
       - php_socket:/var/run/php
-      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./deployment/php.ini:/usr/local/etc/php/php.ini
     healthcheck:
       interval: 10s
       timeout: 3s

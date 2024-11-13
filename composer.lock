@@ -1923,16 +1923,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "3.7.0",
+            "version": "3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f4393b648b78a5408747de94fca38beb5f7e9ef8"
+                "reference": "32e515fdc02cdafbe4593e30a9350d486b125b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f4393b648b78a5408747de94fca38beb5f7e9ef8",
-                "reference": "f4393b648b78a5408747de94fca38beb5f7e9ef8",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/32e515fdc02cdafbe4593e30a9350d486b125b67",
+                "reference": "32e515fdc02cdafbe4593e30a9350d486b125b67",
                 "shasum": ""
             },
             "require": {
@@ -1952,12 +1952,14 @@
                 "guzzlehttp/psr7": "^2.2",
                 "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4 || ^3",
-                "phpstan/phpstan": "^1.9",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-strict-rules": "^1.4",
-                "phpunit/phpunit": "^10.5.17",
+                "php-console/php-console": "^3.1.8",
+                "phpstan/phpstan": "^2",
+                "phpstan/phpstan-deprecation-rules": "^2",
+                "phpstan/phpstan-strict-rules": "^2",
+                "phpunit/phpunit": "^10.5.17 || ^11.0.7",
                 "predis/predis": "^1.1 || ^2",
-                "ruflin/elastica": "^7",
+                "rollbar/rollbar": "^4.0",
+                "ruflin/elastica": "^7 || ^8",
                 "symfony/mailer": "^5.4 || ^6",
                 "symfony/mime": "^5.4 || ^6"
             },
@@ -2008,7 +2010,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/3.7.0"
+                "source": "https://github.com/Seldaek/monolog/tree/3.8.0"
             },
             "funding": [
                 {
@@ -2020,7 +2022,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-28T09:40:51+00:00"
+            "time": "2024-11-12T13:57:08+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -2294,16 +2296,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.10.2",
+            "version": "v0.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "efa92628ba9fb56f7877c0d616f5221c4a447856"
+                "reference": "4a565d145e0fb3ea1baba8fffe39d86c56b6dc2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/efa92628ba9fb56f7877c0d616f5221c4a447856",
-                "reference": "efa92628ba9fb56f7877c0d616f5221c4a447856",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/4a565d145e0fb3ea1baba8fffe39d86c56b6dc2c",
+                "reference": "4a565d145e0fb3ea1baba8fffe39d86c56b6dc2c",
                 "shasum": ""
             },
             "require": {
@@ -2321,11 +2323,10 @@
                 "laravel/pint": "^1.18.1",
                 "mockery/mockery": "^1.6.12",
                 "nunomaduro/collision": "^7.11.0|^8.5.0",
-                "pestphp/pest": "^2.36.0|^3.4.1",
+                "pestphp/pest": "^2.36.0|^3.5.0",
                 "pestphp/pest-plugin-arch": "^2.7|^3.0",
                 "pestphp/pest-plugin-type-coverage": "^2.8.7|^3.1.0",
-                "phpstan/phpstan": "^1.12.6",
-                "rector/rector": "^1.2.7",
+                "phpstan/phpstan": "^1.12.7",
                 "symfony/var-dumper": "^6.4.11|^7.1.5"
             },
             "type": "library",
@@ -2366,7 +2367,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.10.2"
+                "source": "https://github.com/openai-php/client/tree/v0.10.3"
             },
             "funding": [
                 {
@@ -2382,7 +2383,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-17T20:28:25+00:00"
+            "time": "2024-11-12T20:51:16+00:00"
         },
         {
             "name": "php-http/discovery",
@@ -2630,16 +2631,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.5.1",
+            "version": "5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "0c70d2c566e899666f367ab7b80986beb3581e6f"
+                "reference": "f3558a4c23426d12bffeaab463f8a8d8b681193c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/0c70d2c566e899666f367ab7b80986beb3581e6f",
-                "reference": "0c70d2c566e899666f367ab7b80986beb3581e6f",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/f3558a4c23426d12bffeaab463f8a8d8b681193c",
+                "reference": "f3558a4c23426d12bffeaab463f8a8d8b681193c",
                 "shasum": ""
             },
             "require": {
@@ -2648,7 +2649,7 @@
                 "php": "^7.4 || ^8.0",
                 "phpdocumentor/reflection-common": "^2.2",
                 "phpdocumentor/type-resolver": "^1.7",
-                "phpstan/phpdoc-parser": "^1.7",
+                "phpstan/phpdoc-parser": "^1.7|^2.0",
                 "webmozart/assert": "^1.9.1"
             },
             "require-dev": {
@@ -2688,9 +2689,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.5.1"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.0"
             },
-            "time": "2024-11-06T11:58:54+00:00"
+            "time": "2024-11-12T11:25:25+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -9439,16 +9440,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.8",
+            "version": "1.12.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "f6a60a4d66142b8156c9da923f1972657bc4748c"
+                "reference": "fc463b5d0fe906dcf19689be692c65c50406a071"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f6a60a4d66142b8156c9da923f1972657bc4748c",
-                "reference": "f6a60a4d66142b8156c9da923f1972657bc4748c",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/fc463b5d0fe906dcf19689be692c65c50406a071",
+                "reference": "fc463b5d0fe906dcf19689be692c65c50406a071",
                 "shasum": ""
             },
             "require": {
@@ -9493,7 +9494,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-06T19:06:49+00:00"
+            "time": "2024-11-11T15:37:09+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

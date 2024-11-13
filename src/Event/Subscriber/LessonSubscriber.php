@@ -13,15 +13,19 @@ use Square\Models\CreatePaymentLinkResponse;
 use Square\Models\Money;
 use Square\Models\QuickPay;
 use Square\SquareClient;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
 
-readonly class LessonSubscriber
+
+readonly class LessonSubscriber implements EventSubscriberInterface
 {
 
     public function __construct(
         private LessonRepository      $lessonRepository,
-        private UrlGeneratorInterface $urlGenerator
+        private UrlGeneratorInterface $urlGenerator,
+        private ParameterBagInterface $parameterBag
     )
     {
     }
@@ -52,14 +56,12 @@ readonly class LessonSubscriber
      */
     private function generatePaymentLink(Lesson $lesson): void
     {
-        $client = new SquareClient(
-            config: [
-                'accessToken' => '%squareup_key%',
-                'environment' => 'sandbox'
-            ]
-        );
+        $config = [
+            'accessToken' => $this->parameterBag->get('app.squareup_key'),
+            'environment' =>  $this->parameterBag->get('app.env') == 'prod' ? 'production' : 'sandbox'
+        ];
 
-
+        $client = new SquareClient(config: $config);
         $price_money = new Money();
         $price_money->setAmount(amount: $lesson->getPrice());
         $price_money->setCurrency(currency: 'USD');
@@ -90,6 +92,8 @@ readonly class LessonSubscriber
             $result = $apiResponse->getResult();
             $lesson->setPaymentLink($result->getPaymentLink()->getUrl());
             $this->lessonRepository->save(entity: $lesson, flush: true);
+        } else {
+            dd($apiResponse->getErrors());
         }
 
     }

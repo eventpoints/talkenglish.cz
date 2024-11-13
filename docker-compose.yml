@@ -5,7 +5,6 @@ services:
     volumes:
       - .:/app:cached
       - php_socket:/var/run/php
-      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     healthcheck:
       interval: 10s
       timeout: 3s

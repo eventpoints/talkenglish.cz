@@ -7,11 +7,11 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters = $containerConfigurator->parameters();
 
-    $parameters->set('squareup_key', '%env(SQUAREUP_PRIVATE_KEY)%');
-    $parameters->set('open_ai_key', '%env(OPENAI_API_KEY)%');
+    $parameters->set('app.env', '%env(APP_ENV)%');
+    $parameters->set('app.squareup_key', '%env(SQUAREUP_PRIVATE_KEY)%');
+//    $parameters->set('app.open_ai_key', '%env(OPENAI_API_KEY)%');
 
     $services = $containerConfigurator->services();
-
     $services->defaults()
         ->autowire()
         ->autoconfigure();
