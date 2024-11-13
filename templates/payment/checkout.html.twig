@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="container" {{ stimulus_controller('stripe-payment', {
+        publicKey: stripe_public_key,
+        path: path('pay_for_lesson', {id: lesson.id}),
+        csrfToken: csrf_token('pay_for_lesson_token'),
+        returnPath: url('join_lesson_redirect', {id: lesson.id})
+    }) }}>
+        <div class="row justify-content-center my-3">
+            <div class="col-6">
+                <form id="payment-form" {{ stimulus_action('stripe-payment', 'handleSubmit') }}>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center py-5" {{ stimulus_target('stripe-payment', 'spinner') }}>
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="payment-message"
+                                 class="hidden" {{ stimulus_target('stripe-payment', 'paymentMessage') }}></div>
+                            <div id="payment-element" {{ stimulus_target('stripe-payment', 'paymentElement') }}>
+                                <!--Stripe.js injects the Payment Element-->
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button class="btn btn-primary btn-lg w-100"
+                                    id="submit" {{ stimulus_target('stripe-payment', 'submit') }}>
+                                <span id="button-text" {{ stimulus_target('stripe-payment', 'buttonText') }}>Pay now</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

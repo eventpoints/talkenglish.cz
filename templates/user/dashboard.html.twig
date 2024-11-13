@@ -36,8 +36,8 @@
                                         <i class="bi bi-arrow-right-short fs-3"></i>
                                     </a>
                                 {% else %}
-                                    <a class="btn btn-outline-primary fw-bold"
-                                       href="{{ lesson.paymentLink }}">{{ 'join-lesson'|trans({amount: lesson.price|format_currency(lesson.currency)}) }}</a>
+                                    <a href="{{ path('select_payment_option', {id: lesson.id}) }}"
+                                       class="btn btn-outline-primary fw-bold">{{ 'join-lesson'|trans({amount: (lesson.price / 100) |format_currency(lesson.currency)}) }}</a>
                                 {% endif %}
                             </div>
                         </div>

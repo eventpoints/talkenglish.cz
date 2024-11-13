@@ -15,8 +15,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route(path: '/lesson', name: '')]
 class LessonController extends AbstractController
 {
-
-
     public function __construct(
         private readonly LessonRepository $lessonRepository
     )
@@ -26,7 +24,7 @@ class LessonController extends AbstractController
     #[Route(path: '/view/{id}', name: 'show_lesson')]
     public function show(Lesson $lesson): Response
     {
-//        $this->denyAccessUnlessGranted(attribute: LessonVoter::VIEW, subject: $lesson, message: 'Sorry, you are not allow here.');
+        $this->denyAccessUnlessGranted(attribute: LessonVoter::VIEW, subject: $lesson, message: 'Sorry, you are not allow here.');
         return $this->render('lesson/show.html.twig', [
             'lesson' => $lesson
         ]);

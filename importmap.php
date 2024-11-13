@@ -50,4 +50,7 @@ return [
     '@stimulus-components/clipboard' => [
         'version' => '5.0.0',
     ],
+    '@stripe/stripe-js' => [
+        'version' => '4.10.0',
+    ],
 ];

@@ -7,6 +7,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('twig', [
         'file_name_pattern' => '*.twig',
+        'globals'=> [
+            'stripe_public_key' => '%env(resolve:STRIPE_PUBLIC_KEY)%'
+        ],
         'form_themes' => [
             'bootstrap_5_layout.html.twig',
             'form/fields/selection_group.html.twig',

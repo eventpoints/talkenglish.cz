@@ -47,9 +47,6 @@ class Lesson
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private CarbonImmutable $createdAt;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $paymentLink = null;
-
     /**
      * @var Collection<int, LessonParticipant>
      */
@@ -101,18 +98,6 @@ class Lesson
     public function setOnlineUrl(?string $onlineUrl): static
     {
         $this->onlineUrl = $onlineUrl;
-
-        return $this;
-    }
-
-    public function getPaymentLink(): ?string
-    {
-        return $this->paymentLink;
-    }
-
-    public function setPaymentLink(?string $paymentLink): static
-    {
-        $this->paymentLink = $paymentLink;
 
         return $this;
     }
