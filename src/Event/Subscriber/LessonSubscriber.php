@@ -69,7 +69,7 @@ readonly class LessonSubscriber implements EventSubscriberInterface
         $quick_pay = new QuickPay(
             name: $lesson->getTitle(),
             priceMoney: $price_money,
-            locationId: 'LN2GNC93EJRP8'
+            locationId: $this->parameterBag->get('app.location_id')
         );
 
         $redirectUrl = $this->urlGenerator->generate(name: 'join_lesson_redirect', parameters: ['id' => $lesson->getId()], referenceType: UrlGeneratorInterface::ABSOLUTE_URL);

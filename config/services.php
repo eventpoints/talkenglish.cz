@@ -9,6 +9,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set('app.env', '%env(APP_ENV)%');
     $parameters->set('app.squareup_key', '%env(SQUAREUP_PRIVATE_KEY)%');
+    $parameters->set('app.location_id', '%env(LOCATION_ID)%');
 //    $parameters->set('app.open_ai_key', '%env(OPENAI_API_KEY)%');
 
     $services = $containerConfigurator->services();
