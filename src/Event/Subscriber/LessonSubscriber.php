@@ -64,7 +64,7 @@ readonly class LessonSubscriber implements EventSubscriberInterface
         $client = new SquareClient(config: $config);
         $price_money = new Money();
         $price_money->setAmount(amount: $lesson->getPrice());
-        $price_money->setCurrency(currency: 'USD');
+        $price_money->setCurrency(currency: $lesson->getCurrency());
 
         $quick_pay = new QuickPay(
             name: $lesson->getTitle(),
