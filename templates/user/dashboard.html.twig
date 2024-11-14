@@ -30,7 +30,7 @@
                             {% endif %}
                             <div class="card-body">{{ lesson.description|raw }}</div>
                             <div class="card-footer text-end">
-                                {% if lesson.isParticipant(app.user) %}
+                                {% if lesson.isParticipant(app.user) or is_granted('ROLE_TEACHER', app.user) %}
                                     <a class="btn btn-primary rounded-pill"
                                        href="{{ path('show_lesson', {id: lesson.id}) }}">
                                         <i class="bi bi-arrow-right-short fs-3"></i>

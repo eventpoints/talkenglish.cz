@@ -5,6 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\Lesson;
 use App\Entity\LessonParticipant;
 use App\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -13,7 +14,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class LessonVoter extends Voter
 {
+
+
     public const VIEW = 'VIEW_LESSON';
+
+    public function __construct(
+        private readonly Security $security
+    )
+    {
+    }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -37,15 +46,19 @@ final class LessonVoter extends Voter
         }
 
         return match ($attribute) {
-             self::VIEW => $this->canUserJoinLesson($user, $subject),
-             default => false
+            self::VIEW => $this->canUserViewLesson($user, $subject),
+            default => false
         };
     }
 
-    private function canUserJoinLesson(User $user, Lesson $lesson): bool
+    private function canUserViewLesson(User $user, Lesson $lesson): bool
     {
-        return $lesson->getLessonParticipants()->exists(
-            fn(int $key, LessonParticipant $lessonParticipant): bool => $lessonParticipant->getOwner() === $user
-        );
+        return match (true) {
+            $lesson->getLessonParticipants()->exists(
+                fn(int $key, LessonParticipant $lessonParticipant): bool => $lessonParticipant->getOwner() === $user
+            ) => true,
+            $this->security->isGranted('ROLE_TEACHER', $user->getRoles()) => true,
+            default => false
+        };
     }
 }
