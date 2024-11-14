@@ -37,13 +37,40 @@
 
             </div>
             <div class="col-12 col-md-6">
+                <div class="vstack gap-3 mb-3" id="lesson_comments_{{ lesson.id }}" {{ turbo_stream_listen('lesson_comments_' ~ lesson.id) }}>
+                    {% for comment in lesson.comments %}
+                        <div class="card">
+                            <div class="card-body">
+                                {{ comment.content }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted">{{ 'no-comments'|trans }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="card">
+                    {{ form_start(commentForm) }}
+                    <div class="card-body">
+                        {{ form_row(commentForm.content) }}
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-primary rounded-pill">
+                            <span class="bi bi-send-fill fs-4"></span>
+                        </button>
+                    </div>
+                    {{ form_end(commentForm) }}
+                </div>
+            </div>
+
+            <div class="col-12 col-md-3">
                 {% if lesson.isStartingIn(5) %}
                     // TODO: add lesson commenting
                 {% else %}
                     <div class="vstack gap-3">
                         {% for lessonParticipant in lesson.lessonParticipants %}
-                            <div class="card">
-                                <div class="card-body">{{ 'student-joined'|trans({name: lessonParticipant.owner.fullName, when: lessonParticipant.createdAt.diffForHumans}) }}</div>
+                            <div class="alert alert-info" role="alert">
+                                {{ 'student-joined'|trans({name: lessonParticipant.owner.fullName, when: lessonParticipant.createdAt.diffForHumans}) }}
                             </div>
                         {% endfor %}
                     </div>
@@ -51,4 +78,16 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block create_comment %}
+    <turbo-stream action="append" target="#comments_{{ lesson.id }}">
+        <template>
+            <div class="card" id="comment_{{ comment.id }}">
+                <div class="card-body">
+                    {{ comment.content }}
+                </div>
+            </div>
+        </template>
+    </turbo-stream>
 {% endblock %}

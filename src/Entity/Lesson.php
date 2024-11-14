@@ -54,10 +54,17 @@ class Lesson
     #[ORM\OrderBy(['createdAt' => Order::Descending->value])]
     private Collection $lessonParticipants;
 
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'lesson')]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->createdAt = new CarbonImmutable();
         $this->lessonParticipants = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
 
@@ -206,5 +213,35 @@ class Lesson
     public function getIsParticipant(User $user): bool
     {
         return $this->getLessonParticipants()->exists(fn(int $key, LessonParticipant $lessonParticipant): bool => $lessonParticipant->getOwner() === $user);
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setLesson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getLesson() === $this) {
+                $comment->setLesson(null);
+            }
+        }
+
+        return $this;
     }
 }
