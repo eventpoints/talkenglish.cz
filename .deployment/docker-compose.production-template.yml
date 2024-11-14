@@ -72,9 +72,9 @@ services:
       - "8080"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.talkenglish-adminer..rule=Host(`adminer.talkenglish.cz`)"
-      - "traefik.http.routers.talkenglish-adminer..tls=true"
-      - "traefik.http.routers.talkenglish-adminer..tls.certresolver=le"
+      - "traefik.http.routers.talkenglish-adminer.rule=Host(`adminer.talkenglish.cz`)"
+      - "traefik.http.routers.talkenglish-adminer.tls=true"
+      - "traefik.http.routers.talkenglish-adminer.tls.certresolver=le"
     networks:
       - internal
       - traefik
