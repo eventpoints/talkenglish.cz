@@ -60,6 +60,12 @@ class Lesson
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'lesson')]
     private Collection $comments;
 
+    #[ORM\ManyToOne]
+    private ?User $owner = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lessons')]
+    private ?User $teacher = null;
+
     public function __construct()
     {
         $this->createdAt = new CarbonImmutable();
@@ -241,6 +247,30 @@ class Lesson
                 $comment->setLesson(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?User
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?User $teacher): static
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }
