@@ -37,13 +37,12 @@
 
             </div>
             <div class="col-12 col-md-6">
-                <div class="vstack gap-3 mb-3" id="lesson_comments_{{ lesson.id }}" {{ turbo_stream_listen('lesson_comments_' ~ lesson.id) }}>
+                <div class="vstack gap-3 mb-3"
+                     id="lesson_comments_{{ lesson.id }}" {{ turbo_stream_listen('lesson_comments_' ~ lesson.id) }}>
                     {% for comment in lesson.comments %}
-                        <div class="card">
-                            <div class="card-body">
-                                {{ comment.content }}
-                            </div>
-                        </div>
+                        {{ include('comment/_comment.html.twig',{
+                            comment: comment
+                        }) }}
                     {% else %}
                         <div class="text-center text-muted">{{ 'no-comments'|trans }}</div>
                     {% endfor %}
@@ -83,11 +82,9 @@
 {% block create_comment %}
     <turbo-stream action="append" target="#comments_{{ lesson.id }}">
         <template>
-            <div class="card" id="comment_{{ comment.id }}">
-                <div class="card-body">
-                    {{ comment.content }}
-                </div>
-            </div>
+            {{ include('comment/_comment.html.twig',{
+                comment: comment
+            }) }}
         </template>
     </turbo-stream>
 {% endblock %}

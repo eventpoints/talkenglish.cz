@@ -9,7 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CurrencyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class LessonCrudController extends AbstractCrudController
@@ -24,7 +24,7 @@ class LessonCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextareaField::new('description'),
             TextField::new('onlineUrl'),
             MoneyField::new('price')->setCurrencyPropertyPath('currency')->setStoredAsCents(true),
             CurrencyField::new('currency'),

@@ -1,5 +1,7 @@
 <turbo-stream action="append" targets="#lesson_comments_{{ lesson.id }}">
     <template>
-        <div>{{ comment.content }}</div>
+        {{ include('comment/_comment.html.twig',{
+            comment: comment
+        }) }}
     </template>
 </turbo-stream>

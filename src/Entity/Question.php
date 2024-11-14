@@ -23,7 +23,7 @@ class Question
     #[ORM\CustomIdGenerator(UuidGenerator::class)]
     private null|Uuid $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
     #[ORM\Column(enumType: QuestionTypeEnum::class)]
