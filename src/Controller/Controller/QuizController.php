@@ -15,6 +15,7 @@ use App\Form\Form\Quiz\QuizPreStartFormType;
 use App\Repository\AnswerRepository;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\QuizRepository;
+use App\Service\QuizResultCalculatorService;
 use Carbon\CarbonImmutable;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,6 +34,7 @@ class QuizController extends AbstractController
         private readonly QuizParticipationRepository $quizParticipationRepository,
         private readonly AnswerRepository            $answerRepository,
         private readonly PaginatorInterface          $paginator,
+        private readonly QuizResultCalculatorService $quizResultCalculatorService,
     )
     {
     }
@@ -77,6 +79,7 @@ class QuizController extends AbstractController
             quiz: $quiz
         );
 
+
         if ($request->isMethod('POST')) {
             $quizParticipation->setStartAt(new CarbonImmutable());
             $quizParticipation->setEndAt($quizParticipation->getStartAt()->addMinutes($quiz->getTimeLimitInMinutes()));
@@ -86,9 +89,12 @@ class QuizController extends AbstractController
             ]);
         }
 
+        $previousParticipations = $this->quizParticipationRepository->findByUser(quiz: $quiz, user: $currentUser);
+
         return $this->render('quiz/pre_start.html.twig', [
             'quiz' => $quiz,
             'quizParticipation' => $quizParticipation,
+            'previousParticipations' => $previousParticipations
         ]);
     }
 
@@ -126,6 +132,8 @@ class QuizController extends AbstractController
     #[Route(path: '/progress/{id}', name: 'quiz_in_progress')]
     public function quizInProgress(Request $request, QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
     {
+        dump($quizParticipation->getAnswers());
+
         if (CarbonImmutable::now()->isAfter($quizParticipation->getEndAt())) {
             $quizParticipation->setCompletedAt($quizParticipation->getEndAt());
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
@@ -133,9 +141,7 @@ class QuizController extends AbstractController
         }
 
         $questions = $quizParticipation->getQuiz()->getQuestions();
-        $answeredQuestions = $quizParticipation->getAnswers()
-            ->map(fn(Answer $answer): ?\App\Entity\Question => $answer->getQuestion())
-            ->toArray();
+        $answeredQuestions = $quizParticipation->getAnswers()->map(fn(Answer $answer): ?Question => $answer->getQuestion())->toArray();
 
         $question = null;
         foreach ($questions as $q) {
@@ -157,7 +163,6 @@ class QuizController extends AbstractController
         $answerForm->handleRequest($request);
         if ($answerForm->isSubmitted() && $answerForm->isValid()) {
             $this->answerRepository->save($answer, flush: true);
-
             $quizParticipation->addQuestion($question);
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
 

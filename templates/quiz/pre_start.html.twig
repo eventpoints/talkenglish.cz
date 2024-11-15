@@ -5,18 +5,50 @@
 {% block body %}
     <div class="container">
         <div class="row justify-content-center my-3">
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header fs-3">{{ quiz.title }}</div>
+            <div class="col-12 col-md-5">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="fs-3">{{ quiz.title }}</div>
+                    </div>
+                    <div class="card-header">
+                        <div class="badge fw-normal text-bg-primary text-white">
+                            <i class="bi bi-stopwatch-fill me-1"></i>
+                            {{ quiz.timeLimitInMinutes }} {{ 'minutes'|trans }}
+                        </div>
+                        <div class="badge fw-normal text-bg-secondary">
+                            {{ quiz.questions.count }}
+                            {{ 'questions'|trans }}
+                        </div>
+                    </div>
                     <div class="card-body">
                         {{ quiz.description|nl2br }}
                     </div>
                     <div class="card-footer text-center">
                         <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
-                            <button type="submit" class="btn btn-lg btn-primary">Start Quiz</button>
+                            <button type="submit" class="btn w-100 btn-primary">Start Quiz</button>
                         </form>
                     </div>
                 </div>
+
+                <div class="vstack gap-3">
+                    {% for previousParticipation in previousParticipations %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold text-primary">
+                                        {{ previousParticipation|calculate_quiz_percentage ~ '%' }}
+                                    </div>
+                                    <div class="text-center small">
+                                        You sat this quiz on{{ previousParticipation.completedAt|format_date }}
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="stretched-link"
+                               href="{{ path('quiz_result',{id: previousParticipation.id }) }}"></a>
+                        </div>
+                    {% endfor %}
+                </div>
+
             </div>
 
         </div>

@@ -7,6 +7,7 @@ use App\Entity\QuizParticipation;
 use App\Entity\User;
 use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Order;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -70,6 +71,31 @@ class QuizParticipationRepository extends ServiceEntityRepository
         $qb->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Quiz $quiz
+     * @param User $user
+     * @return array<int, QuizParticipation>
+     */
+    public function findByUser(Quiz $quiz, User $user):  array
+    {
+        $qb = $this->createQueryBuilder('quiz_participation');
+
+        $qb->andWhere(
+            $qb->expr()->eq('quiz_participation.quiz', ':quiz')
+        );
+        $qb->setParameter('quiz', $quiz);
+
+        $qb->andWhere(
+            $qb->expr()->eq('quiz_participation.owner', ':owner')
+        );
+        $qb->setParameter('owner', $user);
+
+        $qb->orderBy('quiz_participation.startAt', Order::Descending->value);
+        $qb->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
     }
 
 }

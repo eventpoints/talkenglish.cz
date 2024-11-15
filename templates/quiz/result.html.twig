@@ -29,17 +29,23 @@
             </div>
             <div class="col-12 col-md-6">
                 <div class="vstack gap-3">
-                    {% for answer in quizParticipation.answers %}
+                    {% for question in quizParticipation.quiz.questions %}
                         <div class="card">
-                            <div class="card-header lead d-flex justify-content-between align-items-center">
-                                <div class="">{{ answer.question.content }}</div>
-                                <div class="badge text-bg-dark">{{ quizParticipation|calculate_question_score(answer.question) }}</div>
+                            <div class="card-header lead d-flex justify-content-between align-items-start">
+                                <div>{{ question.content|nl2br }}</div>
+                                <div class="badge text-bg-dark rounded-pill">{{ quizParticipation|calculate_question_score(question) }}</div>
                             </div>
                             <div class="list-group list-group-flush">
-                                {% for answerOption in answer.question.answerOptions %}
-                                    <div class="list-group-item {{ answerOption in answer.answers ? 'active' }} d-flex justify-content-between align-items-center">
+                                {% for answerOption in question.answerOptions %}
+                                    {# Check if the answerOption is in any of the user's answers for this question #}
+                                    {% set isActive = false %}
+                                    {% for answer in quizParticipation.answers %}
+                                        {% if question == answer.question and answerOption in answer.answers %}
+                                            {% set isActive = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <div class="list-group-item {{ isActive ? 'active' : '' }} d-flex justify-content-between align-items-center">
                                         <div class="lead">{{ answerOption.content }}</div>
-
                                         {% if answerOption.isCorrect %}
                                             <div class="bi bi-check text-success fs-3"></div>
                                         {% else %}

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Answer;
 use App\Entity\AnswerOption;
 use App\Entity\Question;
 use App\Entity\QuizParticipation;
@@ -31,17 +32,49 @@ class QuizResultCalculatorService
 
     public function calculateFractalScoreForQuestion(QuizParticipation $quizParticipation, Question $question): float
     {
+        // Filter user answers for the current question
         $userAnswers = $quizParticipation->getAnswers()->filter(
-            fn($answer): bool => $answer->getQuestion()->getId() === $question->getId()
+            fn(Answer $answer): bool => $answer->getQuestion() === $question
         );
 
-        $correctAnswerOptions = $question->getAnswerOptions()->filter(fn(AnswerOption $answerOption): ?bool => $answerOption->getIsCorrect());
+        // Get correct answer options for the question
+        $correctAnswerOptions = $question->getAnswerOptions()->filter(
+            fn(AnswerOption $answerOption): bool => $answerOption->getIsCorrect()
+        );
+
+        // Flatten selected answer options
+        $selectedAnswerOptions = [];
+        foreach ($userAnswers as $userAnswer) {
+            foreach ($userAnswer->getAnswers() as $selectedOption) {
+                $selectedAnswerOptions[] = $selectedOption;
+            }
+        }
+
+        // Debugging to verify selected and correct options
+        dump([
+            'selectedAnswerOptions' => $selectedAnswerOptions,
+            'correctAnswerOptions' => $correctAnswerOptions->toArray(),
+        ]);
+
+        // Count the number of correct options selected
+        $numCorrectSelected = 0;
+        foreach ($selectedAnswerOptions as $selectedOption) {
+            foreach ($correctAnswerOptions as $correctOption) {
+                if ($selectedOption->getId() === $correctOption->getId()) {
+                    $numCorrectSelected++;
+                }
+            }
+        }
 
         $numCorrectAnswers = $correctAnswerOptions->count();
-        $numCorrectSelected = $userAnswers->filter(
-            fn($answer) => $correctAnswerOptions->contains($answer)
-        )->count();
 
-        return round($numCorrectAnswers > 0 ? $numCorrectSelected / $numCorrectAnswers : 0, 2);
+        // Debugging to verify the counts
+        dd([
+            'numCorrectSelected' => $numCorrectSelected,
+            'numCorrectAnswers' => $numCorrectAnswers,
+        ]);
+
+        return $numCorrectAnswers > 0 ? round($numCorrectSelected / $numCorrectAnswers, 2) : 0.0;
     }
+
 }

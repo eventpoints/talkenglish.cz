@@ -24,7 +24,7 @@ class Answer
     #[ORM\ManyToMany(targetEntity: AnswerOption::class, inversedBy: 'answers',cascade: ['remove'])]
     private Collection $answers;
 
-    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'answers')]
     private ?Question $question = null;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
