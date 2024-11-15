@@ -67,13 +67,6 @@ class QuizResultCalculatorService
         }
 
         $numCorrectAnswers = $correctAnswerOptions->count();
-
-        // Debugging to verify the counts
-        dd([
-            'numCorrectSelected' => $numCorrectSelected,
-            'numCorrectAnswers' => $numCorrectAnswers,
-        ]);
-
         return $numCorrectAnswers > 0 ? round($numCorrectSelected / $numCorrectAnswers, 2) : 0.0;
     }
 

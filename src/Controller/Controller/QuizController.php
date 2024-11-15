@@ -15,7 +15,6 @@ use App\Form\Form\Quiz\QuizPreStartFormType;
 use App\Repository\AnswerRepository;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\QuizRepository;
-use App\Service\QuizResultCalculatorService;
 use Carbon\CarbonImmutable;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +33,6 @@ class QuizController extends AbstractController
         private readonly QuizParticipationRepository $quizParticipationRepository,
         private readonly AnswerRepository            $answerRepository,
         private readonly PaginatorInterface          $paginator,
-        private readonly QuizResultCalculatorService $quizResultCalculatorService,
     )
     {
     }
