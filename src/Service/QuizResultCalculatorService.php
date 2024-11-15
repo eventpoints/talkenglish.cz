@@ -32,17 +32,14 @@ class QuizResultCalculatorService
 
     public function calculateFractalScoreForQuestion(QuizParticipation $quizParticipation, Question $question): float
     {
-        // Filter user answers for the current question
         $userAnswers = $quizParticipation->getAnswers()->filter(
             fn(Answer $answer): bool => $answer->getQuestion() === $question
         );
 
-        // Get correct answer options for the question
         $correctAnswerOptions = $question->getAnswerOptions()->filter(
             fn(AnswerOption $answerOption): bool => $answerOption->getIsCorrect()
         );
 
-        // Flatten selected answer options
         $selectedAnswerOptions = [];
         foreach ($userAnswers as $userAnswer) {
             foreach ($userAnswer->getAnswers() as $selectedOption) {
@@ -50,13 +47,6 @@ class QuizResultCalculatorService
             }
         }
 
-        // Debugging to verify selected and correct options
-        dump([
-            'selectedAnswerOptions' => $selectedAnswerOptions,
-            'correctAnswerOptions' => $correctAnswerOptions->toArray(),
-        ]);
-
-        // Count the number of correct options selected
         $numCorrectSelected = 0;
         foreach ($selectedAnswerOptions as $selectedOption) {
             foreach ($correctAnswerOptions as $correctOption) {
