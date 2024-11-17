@@ -77,7 +77,6 @@ class QuizController extends AbstractController
             quiz: $quiz
         );
 
-
         if ($request->isMethod('POST')) {
             $quizParticipation->setStartAt(new CarbonImmutable());
             $quizParticipation->setEndAt($quizParticipation->getStartAt()->addMinutes($quiz->getTimeLimitInMinutes()));
@@ -162,7 +161,9 @@ class QuizController extends AbstractController
             $quizParticipation->addQuestion($question);
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
 
-            if ($quizParticipation->getCompletedAt() instanceof CarbonImmutable || $quizParticipation->getStartAt()->addMinutes(20) <= new \DateTimeImmutable()) {
+            if ($quizParticipation->getCompletedAt() instanceof CarbonImmutable
+                || $quizParticipation->getStartAt()->addMinutes($quizParticipation->getQuiz()->getTimeLimitInMinutes()) <= new CarbonImmutable()
+            ) {
                 $quizParticipation->setCompletedAt(new CarbonImmutable());
                 $this->quizParticipationRepository->save($quizParticipation, flush: true);
                 return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
