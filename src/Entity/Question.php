@@ -45,7 +45,7 @@ class Question
     private Collection $quizParticipations;
 
     #[ORM\Column]
-    private ?int $timeLimitInSeconds = 30;
+    private ?int $timeLimitInSeconds = 60;
 
     /**
      * @var Collection<int, AnswerOption>

@@ -130,8 +130,6 @@ class QuizController extends AbstractController
     #[Route(path: '/progress/{id}', name: 'quiz_in_progress')]
     public function quizInProgress(Request $request, QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
     {
-        dump($quizParticipation->getAnswers());
-
         if (CarbonImmutable::now()->isAfter($quizParticipation->getEndAt())) {
             $quizParticipation->setCompletedAt($quizParticipation->getEndAt());
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
@@ -164,7 +162,7 @@ class QuizController extends AbstractController
             $quizParticipation->addQuestion($question);
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
 
-            if ($quizParticipation->getCompletedAt() instanceof \Carbon\CarbonImmutable || $quizParticipation->getStartAt()->addMinutes(20) <= new \DateTimeImmutable()) {
+            if ($quizParticipation->getCompletedAt() instanceof CarbonImmutable || $quizParticipation->getStartAt()->addMinutes(20) <= new \DateTimeImmutable()) {
                 $quizParticipation->setCompletedAt(new CarbonImmutable());
                 $this->quizParticipationRepository->save($quizParticipation, flush: true);
                 return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
@@ -176,7 +174,7 @@ class QuizController extends AbstractController
         return $this->render('/quiz/in_progress.html.twig', [
             'question' => $question,
             'quizParticipation' => $quizParticipation,
-            'answerForm' => $answerForm->createView(),
+            'answerForm' => $answerForm,
         ]);
     }
 
