@@ -66,18 +66,21 @@ class Question
     private Collection $quizzes;
 
     /**
+     * @param string|null $content
      * @param QuestionTypeEnum|null $questionTypeEnum
      * @param CategoryEnum|null $categoryEnum
      * @param LevelEnum|null $levelEnum
      * @param int|null $timeLimitInSeconds
      */
     public function __construct(
+        null|string $content = null,
         null|QuestionTypeEnum $questionTypeEnum = null,
         null|CategoryEnum     $categoryEnum = null,
         null|LevelEnum        $levelEnum = null,
         null|int              $timeLimitInSeconds = null,
     )
     {
+        $this->content = $content;
         $this->questionTypeEnum = $questionTypeEnum;
         $this->categoryEnum = $categoryEnum;
         $this->levelEnum = $levelEnum;

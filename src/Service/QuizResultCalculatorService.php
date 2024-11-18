@@ -11,7 +11,7 @@ class QuizResultCalculatorService
 {
     public function calculateQuizPercentage(QuizParticipation $quizParticipation): float
     {
-        $totalQuestions = count($quizParticipation->getQuestions());
+        $totalQuestions = count($quizParticipation->getQuiz()->getQuestions());
         $totalScore = $this->calculateTotalScore($quizParticipation);
 
         if ($totalQuestions === 0) {
@@ -24,7 +24,7 @@ class QuizResultCalculatorService
     private function calculateTotalScore(QuizParticipation $quizParticipation): float
     {
         $totalScore = 0;
-        foreach ($quizParticipation->getQuestions() as $question) {
+        foreach ($quizParticipation->getQuiz()->getQuestions() as $question) {
             $totalScore += $this->calculateFractalScoreForQuestion($quizParticipation, $question);
         }
         return round($totalScore, 2);
@@ -47,17 +47,26 @@ class QuizResultCalculatorService
             }
         }
 
+        // Ensure unique selected options to avoid double-counting
+        $selectedAnswerOptions = array_unique($selectedAnswerOptions);
+
+        // Count correct and incorrect selections
         $numCorrectSelected = 0;
+        $numIncorrectSelected = 0;
+
         foreach ($selectedAnswerOptions as $selectedOption) {
-            foreach ($correctAnswerOptions as $correctOption) {
-                if ($selectedOption->getId() === $correctOption->getId()) {
-                    $numCorrectSelected++;
-                }
+            if ($correctAnswerOptions->exists(fn($key, $correctOption) => $correctOption->getId() === $selectedOption->getId())) {
+                $numCorrectSelected++;
+            } else {
+                $numIncorrectSelected++;
             }
         }
 
-        $numCorrectAnswers = $correctAnswerOptions->count();
-        return $numCorrectAnswers > 0 ? round($numCorrectSelected / $numCorrectAnswers, 2) : 0.0;
+        // Calculate the score: correct / (correct + incorrect)
+        $totalSelected = $numCorrectSelected + $numIncorrectSelected;
+
+        return $totalSelected > 0 ? round($numCorrectSelected / $totalSelected, 2) : 0.0;
     }
+
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Controller;
 
 use App\DataTransferObject\QuizConfigurationDto;
@@ -15,6 +17,7 @@ use App\Form\Form\Quiz\QuizPreStartFormType;
 use App\Repository\AnswerRepository;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\QuizRepository;
+use App\Service\QuizHelperService;
 use Carbon\CarbonImmutable;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,6 +36,7 @@ class QuizController extends AbstractController
         private readonly QuizParticipationRepository $quizParticipationRepository,
         private readonly AnswerRepository            $answerRepository,
         private readonly PaginatorInterface          $paginator,
+        private readonly QuizHelperService           $quizHelperService
     )
     {
     }
@@ -127,24 +131,18 @@ class QuizController extends AbstractController
     }
 
     #[Route(path: '/progress/{id}', name: 'quiz_in_progress')]
-    public function quizInProgress(Request $request, QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
+    public function quizInProgress(
+        Request           $request,
+        QuizParticipation $quizParticipation,
+    ): Response
     {
-        if (CarbonImmutable::now()->isAfter($quizParticipation->getEndAt())) {
-            $quizParticipation->setCompletedAt($quizParticipation->getEndAt());
+        if ($this->quizHelperService->isQuizCompleted($quizParticipation)) {
+            $quizParticipation->setCompletedAt(new CarbonImmutable());
             $this->quizParticipationRepository->save($quizParticipation, flush: true);
             return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
         }
 
-        $questions = $quizParticipation->getQuiz()->getQuestions();
-        $answeredQuestions = $quizParticipation->getAnswers()->map(fn(Answer $answer): ?Question => $answer->getQuestion())->toArray();
-
-        $question = null;
-        foreach ($questions as $q) {
-            if (!in_array($q, $answeredQuestions, true)) {
-                $question = $q;
-                break;
-            }
-        }
+        $question = $this->quizHelperService->getNextUnansweredQuestion($quizParticipation);
 
         if (!$question instanceof Question) {
             $quizParticipation->setCompletedAt(new CarbonImmutable());
@@ -157,18 +155,7 @@ class QuizController extends AbstractController
 
         $answerForm->handleRequest($request);
         if ($answerForm->isSubmitted() && $answerForm->isValid()) {
-            $this->answerRepository->save($answer, flush: true);
-            $quizParticipation->addQuestion($question);
-            $this->quizParticipationRepository->save($quizParticipation, flush: true);
-
-            if ($quizParticipation->getCompletedAt() instanceof CarbonImmutable
-                || $quizParticipation->getStartAt()->addMinutes($quizParticipation->getQuiz()->getTimeLimitInMinutes()) <= new CarbonImmutable()
-            ) {
-                $quizParticipation->setCompletedAt(new CarbonImmutable());
-                $this->quizParticipationRepository->save($quizParticipation, flush: true);
-                return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
-            }
-
+            $this->handleAnswerSubmission($quizParticipation, $answer, $question);
             return $this->redirectToRoute('quiz_in_progress', ['id' => $quizParticipation->getId()]);
         }
 
@@ -177,6 +164,21 @@ class QuizController extends AbstractController
             'quizParticipation' => $quizParticipation,
             'answerForm' => $answerForm,
         ]);
+    }
+
+    public function handleAnswerSubmission(
+        QuizParticipation $quizParticipation,
+        Answer            $answer,
+        Question          $question,
+    ): void
+    {
+        $this->answerRepository->save($answer, flush: true);
+        $quizParticipation->addQuestion($question);
+        $this->quizParticipationRepository->save($quizParticipation, flush: true);
+
+        if ($this->quizHelperService->isQuizCompleted($quizParticipation)) {
+            $quizParticipation->setCompletedAt(new CarbonImmutable());
+        }
     }
 
 

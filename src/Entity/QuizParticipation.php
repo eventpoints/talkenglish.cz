@@ -21,7 +21,7 @@ class QuizParticipation
     private null|Uuid $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'quizParticipations')]
-    private User $owner;
+    private null|User $owner;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private null|CarbonImmutable $startAt;
@@ -48,12 +48,13 @@ class QuizParticipation
     private Collection $answers;
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'quizParticipation')]
-    private ?Quiz $quiz = null;
+    private null|Quiz $quiz = null;
 
     /**
      * @param User|null $owner
+     * @param Quiz|null $quiz
      */
-    public function __construct(?User $owner, null|Quiz $quiz = null)
+    public function __construct(null|User $owner = null, null|Quiz $quiz = null)
     {
         $this->owner = $owner;
         $this->createdAt = new CarbonImmutable();
@@ -68,12 +69,12 @@ class QuizParticipation
         return $this->id;
     }
 
-    public function getOwner(): ?User
+    public function getOwner(): null|User
     {
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): static
+    public function setOwner(null|User $owner): static
     {
         $this->owner = $owner;
 
@@ -196,9 +197,14 @@ class QuizParticipation
         $this->endAt = $endAt;
     }
 
-
     public function getCompletionTimeInMintues(): float
     {
         return round($this->getStartAt()->diffInMinutes($this->getCompletedAt()), 2);
     }
+
+    public function getCalculatedQuizEndAt() : CarbonImmutable
+    {
+        return $this->getStartAt()->addMinutes($this->getQuiz()->getTimeLimitInMinutes());
+    }
+
 }
