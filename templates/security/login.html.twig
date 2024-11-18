@@ -23,11 +23,18 @@
                                        placeholder="{{ 'email-placeholder'|trans }}" required autofocus>
                                 <label for="inputEmail">{{ 'email-address'|trans }}</label>
                             </div>
+                            <div class="input-group" {{ stimulus_controller('password-visibility') }}>
                             <div class="form-floating">
-                                <input type="password" name="password" id="inputPassword" class="form-control"
+                                <input {{ stimulus_target('password-visibility', 'input') }} type="password" name="password" id="inputPassword" class="form-control"
                                        autocomplete="current-password" required
                                        placeholder="{{ 'password-placeholder'|trans }}">
                                 <label for="inputPassword">{{ 'password'|trans }}</label>
+                            </div>
+                                <button {{ stimulus_action('password-visibility', 'toggle') }} class="btn btn-secondary" type="button"
+                                        id="button-addon2">
+                                    <span {{ stimulus_target('password-visibility', 'icon') }} class="bi bi-eye"></span>
+                                    <span {{ stimulus_target('password-visibility', 'icon') }} class="hidden bi bi-eye-slash"></span>
+                                </button>
                             </div>
 
                             <input type="hidden" name="_csrf_token"
