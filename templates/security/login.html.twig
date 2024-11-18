@@ -14,8 +14,7 @@
                         <div class="card-body vstack gap-3">
 
                             {% if error %}
-                                <div
-                                        class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                             {% endif %}
                             <div class="form-floating">
                                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
@@ -37,13 +36,7 @@
                                 </button>
                             </div>
 
-                            <input type="hidden" name="_csrf_token"
-                                   value="{{ csrf_token('authenticate') }}"
-                            >
-                            <div class="text-end">
-                                {#                                        <a class="btn btn-link" href="{{ path('user_forgot_password') }}">{{ 'forgot-password'|trans }}</a> #}
-                            </div>
-
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
                         </div>
                         <div class="card-footer">
                             <div class="vstack gap-3 text-center">
