@@ -81,9 +81,9 @@ class QuizHelperServiceTest extends TestCase
 
     public function testGetNextUnansweredQuestionReturnsNullWhenNoQuestions(): void
     {
-        $this->quiz->getQuestions()->filter(
-            fn(Question $question) => $this->quiz->removeQuestion($question)
-        );
+        foreach ($this->quiz->getQuestions() as $question) {
+            $this->quiz->removeQuestion($question);
+        }
 
         $this->assertNull($this->quizHelperService->getNextUnansweredQuestion($this->quizParticipation));
     }

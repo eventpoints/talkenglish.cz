@@ -55,7 +55,7 @@ class QuizResultCalculatorService
         $numIncorrectSelected = 0;
 
         foreach ($selectedAnswerOptions as $selectedOption) {
-            if ($correctAnswerOptions->exists(fn($key, $correctOption) => $correctOption->getId() === $selectedOption->getId())) {
+            if ($correctAnswerOptions->exists(fn($key, $correctOption): bool => $correctOption->getId() === $selectedOption->getId())) {
                 $numCorrectSelected++;
             } else {
                 $numIncorrectSelected++;
