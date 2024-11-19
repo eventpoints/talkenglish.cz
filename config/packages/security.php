@@ -29,6 +29,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'lazy' => true,
                 'provider' => 'app_user_provider',
                 'custom_authenticator' => CustomAuthenticator::class,
+                'entry_point' => CustomAuthenticator::class,
+                'form_login' => [
+                    'login_path' => 'app_login',
+                    'check_path' => 'app_login',
+                    'enable_csrf' => true
+                ],
                 'logout' => [
                     'path' => 'app_logout',
                 ],
