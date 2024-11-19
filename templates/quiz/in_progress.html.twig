@@ -18,6 +18,11 @@
                 </div>
                 <hr/>
 
+                {% if question.questionExtra is not empty %}
+                    <div class="">{{ question.questionExtra.content|raw }}</div>
+                    <hr/>
+                {% endif %}
+
                 <div class="my-4">{{ question.content|raw }}</div>
                 <p class="text-center text-muted small">Remember, more than one answer might be correct.</p>
 

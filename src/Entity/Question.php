@@ -65,6 +65,9 @@ class Question
     #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'questions')]
     private Collection $quizzes;
 
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    private ?QuestionExtra $questionExtra = null;
+
     /**
      * @param QuestionTypeEnum|null $questionTypeEnum
      * @param CategoryEnum|null $categoryEnum
@@ -276,6 +279,18 @@ class Question
         if ($this->quizzes->removeElement($quiz)) {
             $quiz->removeQuestion($this);
         }
+
+        return $this;
+    }
+
+    public function getQuestionExtra(): ?QuestionExtra
+    {
+        return $this->questionExtra;
+    }
+
+    public function setQuestionExtra(?QuestionExtra $questionExtra): static
+    {
+        $this->questionExtra = $questionExtra;
 
         return $this;
     }
