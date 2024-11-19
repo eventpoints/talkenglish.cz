@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\AnswerOption;
 use App\Entity\Lesson;
 use App\Entity\Question;
-use App\Entity\QuestionContent;
 use App\Entity\Quiz;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
