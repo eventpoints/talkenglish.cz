@@ -26,6 +26,20 @@
                     </div>
                     <div class="col-12 col-md-12">
                         <div class="vstack gap-3">
+
+                            {% if not app.user %}
+                                <div class="alert alert-info text-center small">
+                                    <div>Our quizzes are entirely free, with no ads, but you'll need to sign up to
+                                        access them all.
+                                    </div>
+                                    <hr class="my-2"/>
+                                    <div>
+                                        <a class="link link-dark"
+                                           href="{{ path('app_register') }}">{{ 'sign-up'|trans }}</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+
                             {% for quiz in quizzesPagination %}
                                 <div class="card mb-3">
                                     <div class="card-header">

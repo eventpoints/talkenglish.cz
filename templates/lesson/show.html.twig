@@ -25,7 +25,7 @@
                         <i class="bi bi-camera-video-fill"></i>
                     </a>
                 {% else %}
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-body text-center">
                             <i class="text-muted bi bi-exclamation-triangle fs-4"></i>
                             <div class="text-muted text-center">You will get the video call link 5 minutes before the
@@ -36,7 +36,7 @@
                 {% endif %}
 
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-5">
                 <div class="vstack gap-3 mb-3"
                      id="lesson_comments_{{ lesson.id }}" {{ turbo_stream_listen('lesson_comments_' ~ lesson.id) }}>
                     {% for comment in lesson.comments %}

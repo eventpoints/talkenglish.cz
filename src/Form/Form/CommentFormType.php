@@ -3,7 +3,9 @@
 namespace App\Form\Form;
 
 use App\Entity\Comment;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,10 +15,13 @@ class CommentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content', TextType::class, [
+            ->add('content', TextareaType::class, [
                 'label' => 'Write your comment here...',
                 'attr' => [
                     'placeholder' => 'Write your comment here...',
+                    'autocomplete' => 'off',
+                    'data-controller' => 'textarea-autogrow',
+                    'resize' => 'none'
                 ],
                 'row_attr' => [
                     'class' => 'form-floating',

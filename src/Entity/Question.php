@@ -66,7 +66,6 @@ class Question
     private Collection $quizzes;
 
     /**
-     * @param string|null $content
      * @param QuestionTypeEnum|null $questionTypeEnum
      * @param CategoryEnum|null $categoryEnum
      * @param LevelEnum|null $levelEnum

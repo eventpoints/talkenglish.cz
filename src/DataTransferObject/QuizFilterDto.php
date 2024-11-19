@@ -11,7 +11,6 @@ final class QuizFilterDto
     private null|LevelEnum $levelEnum = null;
 
     /**
-     * @param string|null $keyword
      * @param CategoryEnum|null $categoryEnum
      * @param LevelEnum|null $levelEnum
      */

@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 
 class QuestionCrudController extends AbstractCrudController
 {
@@ -24,7 +25,7 @@ class QuestionCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->onlyOnIndex(),
-            TextareaField::new('content'),
+            TextEditorField::new('content'),
             ChoiceField::new('questionTypeEnum')->setEmptyData(QuestionTypeEnum::FILL_IN_THE_BLACK),
             ChoiceField::new('categoryEnum')->setEmptyData(CategoryEnum::GENERAL),
             ChoiceField::new('levelEnum')->setEmptyData(LevelEnum::A1),

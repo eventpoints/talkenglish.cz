@@ -18,7 +18,7 @@
                 </div>
                 <hr/>
 
-                <div class="fs-4 my-4">{{ question.content|nl2br }}</div>
+                <div class="my-4">{{ question.content|raw }}</div>
                 <p class="text-center text-muted small">Remember, more than one answer might be correct.</p>
 
                 {{ form_start(answerForm) }}
