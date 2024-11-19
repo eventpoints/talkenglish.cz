@@ -7,7 +7,6 @@ use App\Enum\Quiz\LevelEnum;
 
 final class QuizFilterDto
 {
-    private null|string $keyword = null;
     private null|CategoryEnum $categoryEnum = null;
     private null|LevelEnum $levelEnum = null;
 
@@ -17,24 +16,12 @@ final class QuizFilterDto
      * @param LevelEnum|null $levelEnum
      */
     public function __construct(
-        null|string       $keyword = null,
         null|CategoryEnum $categoryEnum = null,
         null|LevelEnum    $levelEnum = null
     )
     {
-        $this->keyword = $keyword;
         $this->categoryEnum = $categoryEnum;
         $this->levelEnum = $levelEnum;
-    }
-
-    public function getKeyword(): ?string
-    {
-        return $this->keyword;
-    }
-
-    public function setKeyword(?string $keyword): void
-    {
-        $this->keyword = $keyword;
     }
 
     public function getCategoryEnum(): ?CategoryEnum

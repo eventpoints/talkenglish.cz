@@ -15,6 +15,8 @@ return array(
     'join-call' => 'join video call',
     'no-participants' => 'Be the first to join and invite your friends.',
     'student-joined' => '{name} joined the lesson {when}',
+    'nothing-found' => 'Sorry, nothing found',
+    'no-quizzes-found' => 'Apologies for the inconvenience. We are constantly adding new quizzes, try again in a few days.',
     'category.ilets'=>'ILETS',
     'category.sat'=>'SAT',
     'category.general'=>'General',

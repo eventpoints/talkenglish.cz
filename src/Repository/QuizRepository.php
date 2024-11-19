@@ -29,12 +29,6 @@ class QuizRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('quiz');
 
-        if (!empty($quizFilterDto->getKeyword())) {
-            $qb->andWhere(
-                $qb->expr()->like('quiz.title', ':keyword')
-            )->setParameter('keyword', '%' . $quizFilterDto->getKeyword() . '%');
-        }
-
         if ($quizFilterDto->getCategoryEnum() instanceof CategoryEnum) {
             $qb->andWhere(
                 $qb->expr()->eq('quiz.categoryEnum', ':category')

@@ -18,16 +18,7 @@ class QuizFilterType extends AbstractType
     {
         $builder
             ->setMethod(Request::METHOD_GET)
-            ->add('keyword', TextType::class, [
-                'required' => false,
-                'label' => 'Keyword',
-                'attr' => [
-                    'placeholder' => 'Keyword',
-                ],
-                'row_attr' => [
-                    'class' => 'form-floating',
-                ],
-            ])->add('categoryEnum', EnumType::class, [
+            ->add('categoryEnum', EnumType::class, [
                 'required' => false,
                 'class' => CategoryEnum::class,
                 'choice_label' => 'value',

@@ -9,15 +9,17 @@
             <div class="col-12 col-md-6">
                 <div class="row justify-content-center my-3 g-3">
                     <div class="col-12 col-md-12">
-                        <div class="shadow-sm mb-3">
+                        <div class="mb-3">
                             {{ form_start(quizFilter) }}
-                            <div class="input-group">
-                                {{ form_row(quizFilter.keyword) }}
-                                {{ form_row(quizFilter.categoryEnum) }}
-                                {{ form_row(quizFilter.levelEnum) }}
-                                <button class="btn btn-primary">
-                                    <i class="bi bi-search text-white px-3"></i>
-                                </button>
+                            <div class="row justify-content-between g-3 align-items-center">
+                                <div class="col-12 col-md-5">{{ form_row(quizFilter.categoryEnum) }}</div>
+                                <div class="col-12 col-md-5">{{ form_row(quizFilter.levelEnum) }}</div>
+                                <div class="col-12 col-md-2  text-end">
+                                    <button class="btn btn-primary btn-lg w-100 d-block d-md-none">{{ 'search'|trans }}</button>
+                                    <button class="btn btn-primary btn-lg d-none d-md-inline">
+                                        <i class="bi bi-search text-white fs-3"></i>
+                                    </button>
+                                </div>
                             </div>
                             {{ form_end(quizFilter) }}
                         </div>
@@ -43,13 +45,18 @@
                                         {{ quiz.description|nl2br }}
                                     </div>
                                     <div class="card-footer text-end">
-                                        <a href="{{ path('quiz_start', { 'id': quiz.id }) }}" class="btn rounded-pill btn-secondary">
+                                        <a href="{{ path('quiz_start', { 'id': quiz.id }) }}"
+                                           class="btn rounded-pill btn-secondary">
                                             <i class="bi bi-arrow-right-short fs-3"></i>
                                         </a>
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="list-group-item text-center text-muted">{{ 'no-quizzes-found'|trans }}</div>
+                                <hr/>
+                                <div class="text-center">
+                                    <h5>{{ 'nothing-found'|trans }}</h5>
+                                    <div class="list-group-item text-center text-muted">{{ 'no-quizzes-found'|trans }}</div>
+                                </div>
                             {% endfor %}
 
                             <div class="col-12">
