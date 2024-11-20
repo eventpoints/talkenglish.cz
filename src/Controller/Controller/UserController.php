@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Controller;
 
 
-use App\DataTransferObject\LessonFilterDto;
 use App\Entity\User;
 use App\Enum\FlashEnum;
-use App\Form\Filter\LessonFilterType;
 use App\Form\Form\UserAccountFormType;
-use App\Repository\LessonRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +20,6 @@ class UserController extends AbstractController
 {
 
     public function __construct(
-        private readonly LessonRepository $lessonRepository,
         private readonly UserRepository   $userRepository
     )
     {
