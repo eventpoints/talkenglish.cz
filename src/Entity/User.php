@@ -8,6 +8,7 @@ use App\Enum\Quiz\LevelEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -35,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private null|string $avatar = null;
 
     #[ORM\Column(nullable: true, enumType: LevelEnum::class)]
     private null|LevelEnum $levelEnum = LevelEnum::A1;
@@ -331,6 +335,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLevelEnum(?LevelEnum $levelEnum): void
     {
         $this->levelEnum = $levelEnum;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
     }
 
 }

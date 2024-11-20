@@ -22,7 +22,7 @@ use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route(path: '/lesson', name: '')]
+#[Route(path: '/lessons')]
 class LessonController extends AbstractController
 {
     public function __construct(
@@ -33,7 +33,7 @@ class LessonController extends AbstractController
     {
     }
 
-    #[Route(path: '/lessons', name: 'lessons')]
+    #[Route(path: '/', name: 'lessons')]
     public function index(Request $request): Response
     {
         $lessonFilterDto = new LessonFilterDto();

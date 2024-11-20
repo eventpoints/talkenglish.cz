@@ -8,7 +8,7 @@ return array(
     'email-placeholder' => 'theslowlazyfox@example.com',
     'email-address' => 'E-mail address',
     'password-placeholder' => 'shhh, it\'s a secret',
-    'find-a-lesson' => 'find a lesson for your needs',
+    'find-a-lesson' => 'find a lesson',
     'password' => 'password',
     'view-lesson' => 'view lesson',
     'join-lesson' => 'Join for {amount}',

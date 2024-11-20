@@ -7,6 +7,7 @@ namespace App\Controller\Controller;
 use App\Entity\User;
 use App\Form\Form\RegistrationFormType;
 use App\Security\CustomAuthenticator;
+use App\Service\AvatarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -17,6 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrationController extends AbstractController
 {
+
+    public function __construct(
+        private readonly AvatarService $avatarService
+    )
+    {
+    }
+
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
@@ -25,6 +33,9 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $avatar = $this->avatarService->createAvatar($user->getEmail());
+            $user->setAvatar($avatar);
+
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 

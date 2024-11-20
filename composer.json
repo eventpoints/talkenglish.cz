@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.3",
         "easycorp/easyadmin-bundle": "^4.14",
+        "jdenticon/jdenticon": "^1.0",
         "knplabs/knp-paginator-bundle": "^6.6",
         "nesbot/carbon": "^3.8",
         "nette/utils": "^4.0",
