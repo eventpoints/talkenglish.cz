@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -8,6 +8,8 @@
 
             <div class="col-12 col-md-6">
                 <div class="vstack gap-3">
+                    <div class="fs-4">{{ 'available-lessons'|trans|title }}</div>
+                    <hr class="my-2"/>
                     {% for lesson in lessons %}
                         <div class="card">
                             <div class="card-header">

@@ -13,6 +13,11 @@ class AppController extends AbstractController
     public function priceList() : Response
     {
         return $this->render('app/price-list.html.twig');
+    }
 
+    #[Route(path: '/about-us', name: 'about_us')]
+    public function about() : Response
+    {
+        return $this->render('app/about-us.html.twig');
     }
 }

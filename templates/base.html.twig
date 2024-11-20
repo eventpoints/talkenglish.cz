@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/white-logo.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/white-logo.ico') }}"/>
     <meta property="og:title" content="Learn English Online | Interactive Lessons & Quizzes"/>
     <meta property="og:description"
           content="Join our online English courses with native speakers and improve your skills through conversational lessons and interactive quizzes. Perfect for all levels!"/>
@@ -39,7 +39,20 @@
 <body data-bs-theme="light">
 {{ include('partial/_navbar.html.twig') }}
 
-{% block body %}
-{% endblock %}
+<div class="container">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} border-0 my-3 alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<div class="min-vh-70">
+    {% block body %}{% endblock %}
+</div>
+{{ include('partial/_footer.html.twig') }}
 </body>
 </html>

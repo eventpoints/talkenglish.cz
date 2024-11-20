@@ -69,6 +69,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'teacher')]
     private Collection $lessons;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $timezone = null;
+
     public function __construct()
     {
         $this->lessonParticipations = new ArrayCollection();
@@ -300,5 +303,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getFullName();
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): static
+    {
+        $this->timezone = $timezone;
+
+        return $this;
     }
 }

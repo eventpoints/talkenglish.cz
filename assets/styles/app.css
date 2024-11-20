@@ -17,3 +17,7 @@ body {
 textarea {
     resize: none;
 }
+
+.min-vh-70{
+    min-height: 70vh;
+}
