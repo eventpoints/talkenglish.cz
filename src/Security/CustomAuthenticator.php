@@ -49,7 +49,7 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-         return new RedirectResponse($this->urlGenerator->generate('user_dashboard'));
+         return new RedirectResponse($this->urlGenerator->generate('lessons'));
     }
 
     protected function getLoginUrl(Request $request): string
