@@ -7,9 +7,26 @@
         <div class="row justify-content-center my-3">
 
             <div class="col-12 col-md-6">
+
+                <div class="display-5">{{ 'find-a-lesson'|trans|title }}</div>
+                <hr/>
+
+                <div class="mb-3">
+                    {{ form_start(lessonFilter) }}
+                    <div class="row justify-content-between g-3 align-items-center">
+                        <div class="col-12 col-md-5">{{ form_row(lessonFilter.categoryEnum) }}</div>
+                        <div class="col-12 col-md-5">{{ form_row(lessonFilter.levelEnum) }}</div>
+                        <div class="col-12 col-md-2  text-end">
+                            <button class="btn btn-primary btn-lg w-100 d-block d-md-none">{{ 'search'|trans }}</button>
+                            <button class="btn btn-primary btn-lg d-none d-md-inline">
+                                <i class="bi bi-search text-white fs-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_end(lessonFilter) }}
+                </div>
+
                 <div class="vstack gap-3">
-                    <div class="fs-4">{{ 'available-lessons'|trans|title }}</div>
-                    <hr class="my-2"/>
                     {% for lesson in lessons %}
                         <div class="card">
                             <div class="card-header">
@@ -44,7 +61,10 @@
                             </div>
                         </div>
                     {% else %}
-                        <div class="list-group-item text-center text-muted">{{ 'no-available-lessons'|trans }}</div>
+                        <hr/>
+                        <div class="text-center">
+                            <div class="list-group-item text-center text-muted">{{ 'no-lessons-found'|trans|title }}</div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

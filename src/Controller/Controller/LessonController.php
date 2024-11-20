@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Controller;
 
+use App\DataTransferObject\LessonFilterDto;
 use App\Entity\Comment;
 use App\Entity\Lesson;
 use App\Entity\LessonParticipant;
 use App\Entity\User;
+use App\Form\Filter\LessonFilterType;
 use App\Form\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\LessonRepository;
@@ -29,6 +31,28 @@ class LessonController extends AbstractController
         private readonly HubInterface $hub
     )
     {
+    }
+
+    #[Route(path: '/lessons', name: 'lessons')]
+    public function index(Request $request): Response
+    {
+        $lessonFilterDto = new LessonFilterDto();
+        $lessonFilter = $this->createForm(LessonFilterType::class, $lessonFilterDto);
+        $lessons = $this->lessonRepository->findByLessonFilterDto(lessonFilterDto: $lessonFilterDto);
+
+        $lessonFilter->handleRequest(request: $request);
+        if ($lessonFilter->isSubmitted() && $lessonFilter->isValid()) {
+            $lessons = $this->lessonRepository->findByLessonFilterDto(lessonFilterDto: $lessonFilterDto);
+            return $this->render('lesson/index.html.twig', [
+                'lessonFilter' => $lessonFilter,
+                'lessons' => $lessons
+            ]);
+        }
+
+        return $this->render('lesson/index.html.twig', [
+            'lessonFilter' => $lessonFilter,
+            'lessons' => $lessons
+        ]);
     }
 
     #[Route(path: '/view/{id}', name: 'show_lesson')]

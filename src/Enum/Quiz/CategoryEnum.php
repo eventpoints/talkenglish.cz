@@ -10,7 +10,7 @@ enum CategoryEnum: string
     case ILETS = 'category.ilets';
     case SAT = 'category.sat';
     case GENERAL = 'category.general';
-    case SPEAKING = 'category.speaking';
-    case LISTENING = 'category.listening';
+    case BUSINESS = 'category.business';
 
+    case CONVERSATIONAL = 'category.conversation';
 }

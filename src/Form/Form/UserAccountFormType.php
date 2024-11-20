@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Form\Form;
 
 use App\Entity\User;
+use App\Enum\Quiz\LevelEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,6 +55,20 @@ class UserAccountFormType extends AbstractType
                     'class' => 'form-floating',
                 ],
                 'autocomplete' => true
+            ])
+            ->add('levelEnum', EnumType::class, [
+                'required' => false,
+                'class' => LevelEnum::class,
+                'choice_label' => function (LevelEnum $levelEnum): string {
+                    return $levelEnum->name . " - " . $levelEnum->value;
+                },
+                'label' => 'Level',
+                'attr' => [
+                    'placeholder' => 'Level',
+                ],
+                'row_attr' => [
+                    'class' => 'form-floating',
+                ],
             ]);
     }
 

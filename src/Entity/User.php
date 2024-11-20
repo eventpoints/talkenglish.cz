@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\Quiz\LevelEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,6 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+    #[ORM\Column(nullable: true, enumType: LevelEnum::class)]
+    private null|LevelEnum $levelEnum = LevelEnum::A1;
 
     /**
      * @var list<string> The user roles
@@ -318,4 +322,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getLevelEnum(): ?LevelEnum
+    {
+        return $this->levelEnum;
+    }
+
+    public function setLevelEnum(?LevelEnum $levelEnum): void
+    {
+        $this->levelEnum = $levelEnum;
+    }
+
 }

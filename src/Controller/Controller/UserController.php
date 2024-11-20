@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Controller;
 
 
+use App\DataTransferObject\LessonFilterDto;
 use App\Entity\User;
 use App\Enum\FlashEnum;
+use App\Form\Filter\LessonFilterType;
 use App\Form\Form\UserAccountFormType;
 use App\Repository\LessonRepository;
 use App\Repository\UserRepository;
@@ -26,16 +28,6 @@ class UserController extends AbstractController
     )
     {
     }
-
-    #[Route(path: '/dashboard', name: 'user_dashboard')]
-    public function dashboard(): Response
-    {
-        $lessons = $this->lessonRepository->findAvailableLessons();
-        return $this->render('user/dashboard.html.twig', [
-            'lessons' => $lessons
-        ]);
-    }
-
     #[Route(path: '/account', name: 'user_account')]
     public function account(#[CurrentUser] User $currentUser, Request $request): Response
     {

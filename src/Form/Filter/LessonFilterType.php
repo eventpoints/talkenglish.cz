@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Filter;
 
-use App\DataTransferObject\QuizFilterDto;
+use App\DataTransferObject\LessonFilterDto;
 use App\Enum\Quiz\LevelEnum;
 use App\Enum\Quiz\CategoryEnum;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class QuizFilterType extends AbstractType
+class LessonFilterType extends AbstractType
 {
 
     public function __construct(
@@ -31,9 +31,9 @@ class QuizFilterType extends AbstractType
                 'required' => false,
                 'class' => CategoryEnum::class,
                 'choice_label' => 'value',
-                'label' => 'Quiz Category',
+                'label' => 'Category',
                 'attr' => [
-                    'placeholder' => 'Quiz Category',
+                    'placeholder' => 'Category',
                 ],
                 'row_attr' => [
                     'class' => 'form-floating',
@@ -59,7 +59,7 @@ class QuizFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => QuizFilterDto::class,
+            'data_class' => LessonFilterDto::class,
         ]);
     }
 }

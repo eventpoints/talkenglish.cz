@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\Quiz\CategoryEnum;
+use App\Enum\Quiz\LevelEnum;
 use App\Repository\LessonRepository;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -52,7 +54,7 @@ class Lesson
     /**
      * @var Collection<int, LessonParticipant>
      */
-    #[ORM\OneToMany(targetEntity: LessonParticipant::class, mappedBy: 'lesson',cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: LessonParticipant::class, mappedBy: 'lesson', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['createdAt' => Order::Descending->value])]
     private Collection $lessonParticipants;
 
@@ -67,6 +69,12 @@ class Lesson
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     private ?User $teacher = null;
+
+    #[ORM\Column(nullable: true, enumType: CategoryEnum::class)]
+    private null|CategoryEnum $categoryEnum = CategoryEnum::GENERAL;
+
+    #[ORM\Column(nullable: true, enumType: LevelEnum::class)]
+    private null|LevelEnum $levelEnum = LevelEnum::A1;
 
     public function __construct()
     {
@@ -276,4 +284,25 @@ class Lesson
 
         return $this;
     }
+
+    public function getCategoryEnum(): ?CategoryEnum
+    {
+        return $this->categoryEnum;
+    }
+
+    public function setCategoryEnum(?CategoryEnum $categoryEnum): void
+    {
+        $this->categoryEnum = $categoryEnum;
+    }
+
+    public function getLevelEnum(): ?LevelEnum
+    {
+        return $this->levelEnum;
+    }
+
+    public function setLevelEnum(?LevelEnum $levelEnum): void
+    {
+        $this->levelEnum = $levelEnum;
+    }
+
 }
