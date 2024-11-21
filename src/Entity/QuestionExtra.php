@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\Quiz\SupportingContentTypeEnum;
 use App\Repository\QuestionExtraRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,6 +24,11 @@ class QuestionExtra
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $path = null;
+
+    #[ORM\Column(nullable: true, enumType: SupportingContentTypeEnum::class)]
+    private null|SupportingContentTypeEnum $supportingContentTypeEnum = null;
 
     /**
      * @var Collection<int, Question>
@@ -86,4 +92,25 @@ class QuestionExtra
     {
         return substr($this->getContent(), 0, 100);
     }
+
+    public function getSupportingContentTypeEnum(): ?SupportingContentTypeEnum
+    {
+        return $this->supportingContentTypeEnum;
+    }
+
+    public function setSupportingContentTypeEnum(?SupportingContentTypeEnum $supportingContentTypeEnum): void
+    {
+        $this->supportingContentTypeEnum = $supportingContentTypeEnum;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): void
+    {
+        $this->path = $path;
+    }
+
 }

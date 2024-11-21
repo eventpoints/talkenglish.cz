@@ -185,7 +185,7 @@ class QuizParticipation
         $endAt = $this->startAt->addMinutes($this->quiz->getTimeLimitInMinutes());
 
         return CarbonImmutable::now()->diffInSeconds($endAt, false) > 0
-            ? CarbonImmutable::now()->diffInSeconds($endAt)
+            ? (int) CarbonImmutable::now()->diffInSeconds($endAt)
             : 0;
     }
 

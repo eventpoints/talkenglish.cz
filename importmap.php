@@ -70,4 +70,7 @@ return [
         'version' => '2.4.1',
         'type' => 'css',
     ],
+    '@stimulus-components/sound' => [
+        'version' => '2.0.1',
+    ],
 ];

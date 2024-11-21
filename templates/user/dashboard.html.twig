@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center my-3">
+
+            <div class="col-12 col-md-6">
+
+                <div class="row justify-content-between g-3">
+
+                    <div class="fs-4">{{ 'dashboard'|trans|title }}</div>
+                    <hr/>
+
+                    <div class="col-12 col-md-4">
+                        <a class="btn btn-outline-secondary w-100 py-3" href="{{ path('lessons') }}">{{ 'find-lesson'|trans|title }}</a>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <a class="btn btn-outline-secondary w-100 py-3" href="{{ path('quizzes') }}">{{ 'find-quiz'|trans|title }}</a>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <a class="btn btn-outline-secondary w-100 py-3" href="{{ path('user_quiz_history') }}">{{ 'quiz-history'|trans|title }}</a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a class="btn btn-outline-secondary w-100 py-3"
+                           href="{{ path('user_lesson_history') }}">{{ 'lesson-history'|trans }}</a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a class="btn btn-outline-secondary w-100 py-3" href="{{ path('user_account') }}">{{ 'account'|trans|title }}</a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a class="btn btn-outline-secondary text-danger w-100 py-3" href="{{ path('app_logout') }}">{{ 'logout'|trans|title }}</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -40,10 +40,22 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/quizzes', name: 'user_quizzes')]
+    #[Route(path: '/dashboard', name: 'user_dashboard')]
+    public function dashboard(#[CurrentUser] User $currentUser, Request $request): Response
+    {
+        return $this->render('user/dashboard.html.twig');
+    }
+
+    #[Route(path: '/history/quizzes', name: 'user_quiz_history')]
     public function quizzes(): Response
     {
         return $this->render('user/quizzes.html.twig');
+    }
+
+    #[Route(path: '/history/lesson', name: 'user_lesson_history')]
+    public function lessons(): Response
+    {
+        return $this->render('user/lessons.html.twig');
     }
 
 }

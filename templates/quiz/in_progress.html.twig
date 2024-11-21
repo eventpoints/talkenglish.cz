@@ -19,7 +19,40 @@
                 <hr/>
 
                 {% if question.questionExtra is not empty %}
-                    <div class="">{{ question.questionExtra.content|raw }}</div>
+                    {% if question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::TEXT') %}
+                        <div class="">{{ question.questionExtra.content|raw }}</div>
+                    {% elseif question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::AUDIO') %}
+                        <div class="d-flex justify-content-around align-items-center g-3 bg-light p-2 rounded-pill" data-controller="sound" data-sound-url-value="{{ question.questionExtra.path }}">
+                            <a class="btn btn-primary rounded-pill" data-action="sound#play">
+                                <i class="bi bi-play-fill fs-4"></i>
+                            </a>
+                            <a class="btn btn-secondary rounded-pill" data-action="sound#pause">
+                                <i class="bi bi-pause-fill fs-4"></i>
+                            </a>
+                            <a class="btn btn-secondary rounded-pill" data-action="sound#reset">
+                                <i class="bi bi-arrow-counterclockwise fs-4"></i>
+                            </a>
+                        </div>
+                    {% elseif question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::VIDEO') %}
+                        {% if question.questionExtra.path matches '/youtube\.com|youtu\.be/' %}
+                            <iframe
+                                    width="100%"
+                                    height="350"
+                                    class="w-100 object-fit-cover"
+                                    src="{{ question.questionExtra.path }}"
+                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                            </iframe>
+                        {% else %}
+                            <video class="w-100 object-fit-cover" controls>
+                                <source src="{{ asset(question.questionExtra.path) }}" type="video/mp4">
+                                Your browser does not support the video element.
+                            </video>
+                        {% endif %}
+                    {% elseif question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::IMAGE') %}
+                        <img class="img-fluid rounded" src="{{ question.questionExtra.path }}" alt="Supporting Content">
+                    {% else %}
+                    {% endif %}
                     <hr/>
                 {% endif %}
 

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'quiz-history'|trans|title }}{% endblock %}
+{% block title %}{{ 'lesson-history'|trans|title }}{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -9,28 +9,26 @@
             <div class="col-12 col-md-6">
 
                 <div class="vstack gap-3">
-                    <div class="fs-4">{{ 'quiz-history'|trans|title }}</div>
+                    <div class="fs-4">{{ 'lesson-history'|trans|title }}</div>
                     <hr class="my-2"/>
-                    {% for quizParticipation in app.user.quizParticipations %}
+                    {% for lessonParticipation in app.user.lessonParticipations %}
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="fw-bold text-primary">{{ quizParticipation.quiz.title|title }}</div>
-                                        <div>{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
+                                        <div class="fw-bold text-primary">{{ lessonParticipation.lesson.title|title }}</div>
+                                        <div>{{ lessonParticipation.lesson.price|format_currency(lessonParticipation.lesson.currency) }}</div>
                                     </div>
                                     <div class="text-center small">
-                                        {{ quizParticipation.completedAt.diffForHumans }}
+                                        {{ lessonParticipation.createdAt.diffForHumans }}
                                     </div>
                                 </div>
                             </div>
-                            <a class="stretched-link"
-                               href="{{ path('quiz_result',{id: quizParticipation.id }) }}"></a>
                         </div>
                     {% else %}
                         <div class="text-center">
                             <h5>{{ 'nothing-found'|trans }}</h5>
-                            <div class="list-group-item text-center text-muted">{{ 'no-quizzes-found'|trans }}</div>
+                            <div class="list-group-item text-center text-muted">{{ 'no-lessons-found'|trans }}</div>
                         </div>
                     {% endfor %}
                 </div>
