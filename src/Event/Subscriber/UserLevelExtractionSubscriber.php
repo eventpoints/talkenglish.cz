@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Event\Subscriber;
 
 use App\Entity\QuizParticipation;
@@ -62,7 +64,7 @@ class UserLevelExtractionSubscriber
         $score = $this->quizResultCalculatorService->calculateQuizPercentage($quizParticipation);
 
         return match (true) {
-            $score <= 30 => LevelEnum::A1,
+            default => LevelEnum::A1,
             $score > 30 && $score <= 50 => LevelEnum::A2,
             $score > 50 && $score <= 70 => LevelEnum::B1,
             $score > 70 && $score <= 85 => LevelEnum::B2,

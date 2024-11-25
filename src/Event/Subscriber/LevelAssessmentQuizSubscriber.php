@@ -52,7 +52,7 @@ readonly class LevelAssessmentQuizSubscriber
             return;
         }
 
-        if (empty($user->getLevelAssessmentQuizTakenAt()) && empty($user->getLevelEnum())) {
+        if (!$user->getLevelAssessmentQuizTakenAt() instanceof \Carbon\CarbonImmutable && !$user->getLevelEnum() instanceof \App\Enum\Quiz\LevelEnum) {
             $quiz = $this->quizRepository->findOneBy(['categoryEnum' => CategoryEnum::LEVEL_ASSESSMENT]);
 
             if(!$quiz instanceof Quiz){

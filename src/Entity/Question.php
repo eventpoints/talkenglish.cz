@@ -40,12 +40,6 @@ class Question
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private CarbonImmutable $createdAt;
 
-    /**
-     * @var Collection<int, QuizParticipation>
-     */
-    #[ORM\ManyToMany(targetEntity: QuizParticipation::class, mappedBy: 'questions', cascade: ['remove'])]
-    private Collection $quizParticipations;
-
     #[ORM\Column]
     private ?int $timeLimitInSeconds = 60;
 
@@ -72,6 +66,7 @@ class Question
     private ?QuestionExtra $questionExtra = null;
 
     /**
+     * @param string|null $content
      * @param QuestionTypeEnum|null $questionTypeEnum
      * @param CategoryEnum|null $categoryEnum
      * @param LevelEnum|null $levelEnum
@@ -91,7 +86,6 @@ class Question
         $this->levelEnum = $levelEnum;
         $this->timeLimitInSeconds = $timeLimitInSeconds;
         $this->createdAt = CarbonImmutable::now();
-        $this->quizParticipations = new ArrayCollection();
         $this->answerOptions = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->quizzes = new ArrayCollection();
@@ -133,33 +127,6 @@ class Question
     public function setCreatedAt(CarbonImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return Collection<int, QuizParticipation>
-     */
-    public function getQuizParticipations(): Collection
-    {
-        return $this->quizParticipations;
-    }
-
-    public function addQuizParticipation(QuizParticipation $quizParticipation): static
-    {
-        if (!$this->quizParticipations->contains($quizParticipation)) {
-            $this->quizParticipations->add($quizParticipation);
-            $quizParticipation->addQuestion($this);
-        }
-
-        return $this;
-    }
-
-    public function removeQuizParticipation(QuizParticipation $quizParticipation): static
-    {
-        if ($this->quizParticipations->removeElement($quizParticipation)) {
-            $quizParticipation->removeQuestion($this);
-        }
-
-        return $this;
     }
 
     public function getTimeLimitInSeconds(): ?int
