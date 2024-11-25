@@ -11,18 +11,34 @@ use App\Entity\QuestionExtra;
 use App\Entity\Quiz;
 use App\Entity\QuizParticipation;
 use App\Entity\User;
+use App\Enum\RoleEnum;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+
+    public function __construct(
+        private readonly Security $security
+    )
+    {
+    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+        $currentUser = $this->security->getUser();
+
+        if(!$currentUser instanceof User){
+            return $this->redirect($this->generateUrl('app_login'));
+        }
+
+        $this->denyAccessUnlessGranted(attribute: RoleEnum::ADMIN->value, subject: $currentUser);
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
          return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
     }

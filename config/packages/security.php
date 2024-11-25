@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Entity\User;
+use App\Enum\RoleEnum;
 use App\Security\CustomAuthenticator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -45,7 +46,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 ],
             ],
         ],
-        'access_control' => null,
+        'access_control' => [
+            [
+                'path' => '/admin',
+                'roles' => [RoleEnum::ADMIN->value]
+            ],
+            [
+                'path' => '/user',
+                'roles' => [RoleEnum::STUDENT->value, RoleEnum::TEACHER->value]
+            ],
+            [
+                'path' => '/quizzes',
+                'roles' => [RoleEnum::STUDENT->value, RoleEnum::TEACHER->value]
+            ]
+        ],
     ]);
     if ($containerConfigurator->env() === 'test') {
         $containerConfigurator->extension('security', [
