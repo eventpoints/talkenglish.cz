@@ -3,14 +3,27 @@
 {% block title %}Quiz{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center my-3">
+    <div class="container" {{ stimulus_controller('confetti', {
+        score: quizParticipation|calculate_quiz_percentage
+    }) }}>
+        <div class="row justify-content-center g-3 my-3">
             <div class="col-12 col-md-3">
-                <div class="card">
+                <div class="card sticky-top">
                     <div class="card-header text-center">
-                        <div class="fw-lighter text-center display-2 text-primary">{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
+                        <div class="fw-lighter text-center display-1 text-primary">{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
                     </div>
                     <div class="list-group list-group-flush">
+                        <div class="list-group-item text-center">
+                            <div class="fw-bold">{{ quizParticipation.quiz.title|title }}</div>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ 'start-at'|trans }}</div>
+                            <div>{{ quizParticipation.startAt|format_datetime }}</div>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ 'end-at'|trans }}</div>
+                            <div>{{ quizParticipation.completedAt|format_datetime }}</div>
+                        </div>
                         <div class="list-group-item d-flex justify-content-between align-items-center">
                             <div>{{ 'duration'|trans }}</div>
                             <div>{{ quizParticipation.completionTimeInMintues ~ ' min' }}</div>
@@ -23,7 +36,21 @@
                             <div>{{ 'level'|trans }}</div>
                             <div>{{ quizParticipation.quiz.levelEnum.value|trans }}</div>
                         </div>
-
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ 'startedAt'|trans }} {{ quizParticipation.startAt.diffForHumans }}</div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <div {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
+                            <div class="hidden" {{ stimulus_target('clipboard', 'source') }}
+                                    data-value="{{ url('quiz_result', {id: quizParticipation.id}) }}">
+                                {{ url('quiz_result', {id: quizParticipation.id}) }}
+                            </div>
+                            <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}
+                                    class="btn rounded-pill btn-light">
+                                <div class="bi bi-share-fill fs-4"></div>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,7 +71,7 @@
                                             {% set isActive = true %}
                                         {% endif %}
                                     {% endfor %}
-                                    <div class="list-group-item {{ isActive ? 'active' : '' }} d-flex justify-content-between align-items-center">
+                                    <div class="list-group-item {{ isActive ? 'custom-active' : '' }} d-flex justify-content-between align-items-center">
                                         <div class="lead">{{ answerOption.content }}</div>
                                         {% if answerOption.isCorrect %}
                                             <div class="bi bi-check text-success fs-3"></div>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Controller;
 
 use App\Entity\User;
+use App\Enum\RoleEnum;
 use App\Form\Form\RegistrationFormType;
 use App\Security\CustomAuthenticator;
 use App\Service\AvatarService;
@@ -41,12 +42,13 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $user->setRoles([RoleEnum::STUDENT->value]);
+
 
             $entityManager->persist($user);
             $entityManager->flush();
 
             // do anything else you need here, like send an email
-
             return $security->login($user, CustomAuthenticator::class, 'main');
         }
 

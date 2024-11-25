@@ -12,7 +12,7 @@
                         <div class="fs-5">{{ quizParticipation.quiz.title|title }}</div>
                         <div class="text-muted">{{ 'started'|trans }} {{ quizParticipation.startAt.diffForHumans({short:true}) }}</div>
                     </div>
-                    <div {{ stimulus_controller('countdown', {seconds: quizParticipation.quizDurationInSeconds}) }}>
+                    <div class="sticky-top" {{ stimulus_controller('countdown', {seconds: quizParticipation.quizDurationInSeconds}) }}>
                         <div class="text-white fw-normal fs-2 badge text-bg-primary rounded-pill" {{ stimulus_target('countdown', 'display') }}></div>
                     </div>
                 </div>

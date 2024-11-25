@@ -52,8 +52,9 @@ class Question
     /**
      * @var Collection<int, AnswerOption>
      */
-    #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question')]
     private Collection $answerOptions;
+
 
     /**
      * @var Collection<int, Answer>
@@ -77,7 +78,7 @@ class Question
      * @param int|null $timeLimitInSeconds
      */
     public function __construct(
-        null|string $content = null,
+        null|string           $content = null,
         null|QuestionTypeEnum $questionTypeEnum = null,
         null|CategoryEnum     $categoryEnum = null,
         null|LevelEnum        $levelEnum = null,

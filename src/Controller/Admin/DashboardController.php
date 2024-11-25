@@ -9,6 +9,7 @@ use App\Entity\Lesson;
 use App\Entity\Question;
 use App\Entity\QuestionExtra;
 use App\Entity\Quiz;
+use App\Entity\QuizParticipation;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -41,5 +42,6 @@ class DashboardController extends AbstractDashboardController
          yield MenuItem::linkToCrud('Questions', 'fas fa-list', Question::class);
          yield MenuItem::linkToCrud('QuestionExtra', 'fas fa-list', QuestionExtra::class);
          yield MenuItem::linkToCrud('AnswerOptions', 'fas fa-list', AnswerOption::class);
+         yield MenuItem::linkToCrud('Quiz Participations', 'fas fa-list', QuizParticipation::class);
     }
 }

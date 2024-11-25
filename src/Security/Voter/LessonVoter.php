@@ -7,6 +7,7 @@ namespace App\Security\Voter;
 use App\Entity\Lesson;
 use App\Entity\LessonParticipant;
 use App\Entity\User;
+use App\Enum\RoleEnum;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -59,7 +60,7 @@ final class LessonVoter extends Voter
             $lesson->getLessonParticipants()->exists(
                 fn(int $key, LessonParticipant $lessonParticipant): bool => $lessonParticipant->getOwner() === $user
             ) => true,
-            $this->security->isGranted('ROLE_TEACHER', $user->getRoles()) => true,
+            $this->security->isGranted(RoleEnum::TEACHER->value, $user->getRoles()) => true,
             default => false
         };
     }

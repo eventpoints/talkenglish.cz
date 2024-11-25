@@ -29,12 +29,12 @@
     --bs-gray-800: #343a40;
     --bs-gray-900: #212529;
     --bs-primary: #EC4E20;
-    --bs-secondary: #000000;
+    --bs-secondary: #335C67;
     --bs-success: #214E34;
-    --bs-info: #ecedea;
+    --bs-info: #eeeeea;
     --bs-warning: #F7DD72;
     --bs-danger: #D7263D;
-    --bs-light: #a5a5a3;
+    --bs-light: #cbd3da;
     --bs-dark: #2d3034;
     --bs-primary-rgb: 236, 78, 32;
     --bs-secondary-rgb: 0, 0, 0;
@@ -102,7 +102,7 @@
     --bs-highlight-bg: #fff3cd;
     --bs-border-width: 1px;
     --bs-border-style: solid;
-    --bs-border-color: #dee2e6;
+    --bs-border-color: #d7d7ce;
     --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
     --bs-border-radius: 0.25rem;
     --bs-border-radius-sm: 0.1rem;
@@ -3838,7 +3838,7 @@ textarea.form-control-lg {
     --bs-card-title-color: ;
     --bs-card-subtitle-color: ;
     --bs-card-border-width: 1px;
-    --bs-card-border-color: var(--bs-light);
+    --bs-card-border-color: var(--bs-border-color);
     --bs-card-border-radius: var(--bs-border-radius);
     --bs-card-box-shadow: ;
     --bs-card-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
@@ -3874,6 +3874,9 @@ textarea.form-control-lg {
 }
 .card .list-group-item {
     background-color: var(--bs-card-bg);
+}
+.card .list-group-item.custom-active {
+    background-color: #e3e3dc !important;
 }
 .card > .list-group:first-child {
     border-top-width: 0;

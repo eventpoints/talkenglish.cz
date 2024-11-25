@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Controller;
 
-use App\DataTransferObject\QuizConfigurationDto;
 use App\DataTransferObject\QuizFilterDto;
 use App\Entity\Answer;
 use App\Entity\Question;
@@ -13,12 +12,12 @@ use App\Entity\QuizParticipation;
 use App\Entity\User;
 use App\Form\Filter\QuizFilterType;
 use App\Form\Form\Quiz\AnswerFormType;
-use App\Form\Form\Quiz\QuizPreStartFormType;
 use App\Repository\AnswerRepository;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\QuizRepository;
 use App\Service\QuizHelperService;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +35,8 @@ class QuizController extends AbstractController
         private readonly QuizParticipationRepository $quizParticipationRepository,
         private readonly AnswerRepository            $answerRepository,
         private readonly PaginatorInterface          $paginator,
-        private readonly QuizHelperService           $quizHelperService
+        private readonly QuizHelperService           $quizHelperService,
+        private readonly EntityManagerInterface      $entityManager
     )
     {
     }
@@ -99,26 +99,6 @@ class QuizController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/practice', name: 'practice_start')]
-    public function configureRandomQuiz(Request $request, #[CurrentUser] User $currentUser): Response
-    {
-        $quizConfigurationDto = new QuizConfigurationDto();
-        $quizPreStartForm = $this->createForm(QuizPreStartFormType::class, $quizConfigurationDto);
-        $quizPreStartForm->handleRequest(request: $request);
-        if ($quizPreStartForm->isSubmitted() && $quizPreStartForm->isValid()) {
-            $quizParticipation = new QuizParticipation(
-                owner: $currentUser
-            );
-
-            $this->quizParticipationRepository->save(entity: $quizParticipation, flush: true);
-            return $this->redirectToRoute('quiz_in_progress', ['id' => $quizParticipation->getId()]);
-        }
-
-        return $this->render('quiz/configure.html.twig', [
-            'quizPreStartForm' => $quizPreStartForm
-        ]);
-    }
-
     #[Route(path: '/result/{id}', name: 'quiz_result')]
     public function quizResult(QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
     {
@@ -138,15 +118,17 @@ class QuizController extends AbstractController
     {
         if ($this->quizHelperService->isQuizCompleted($quizParticipation)) {
             $quizParticipation->setCompletedAt(new CarbonImmutable());
-            $this->quizParticipationRepository->save($quizParticipation, flush: true);
+            $this->entityManager->persist($quizParticipation);
+            $this->entityManager->flush();
+
             return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
         }
-
         $question = $this->quizHelperService->getNextUnansweredQuestion($quizParticipation);
 
         if (!$question instanceof Question) {
             $quizParticipation->setCompletedAt(new CarbonImmutable());
-            $this->quizParticipationRepository->save($quizParticipation, flush: true);
+            $this->entityManager->persist($quizParticipation);
+            $this->entityManager->flush();
             return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
         }
 
@@ -155,7 +137,8 @@ class QuizController extends AbstractController
 
         $answerForm->handleRequest($request);
         if ($answerForm->isSubmitted() && $answerForm->isValid()) {
-            $this->handleAnswerSubmission($quizParticipation, $answer, $question);
+            $this->handleAnswerSubmission($quizParticipation, $answer);
+
             return $this->redirectToRoute('quiz_in_progress', ['id' => $quizParticipation->getId()]);
         }
 
@@ -166,14 +149,13 @@ class QuizController extends AbstractController
         ]);
     }
 
+
     public function handleAnswerSubmission(
         QuizParticipation $quizParticipation,
         Answer            $answer,
-        Question          $question,
     ): void
     {
         $this->answerRepository->save($answer, flush: true);
-        $quizParticipation->addQuestion($question);
         $this->quizParticipationRepository->save($quizParticipation, flush: true);
 
         if ($this->quizHelperService->isQuizCompleted($quizParticipation)) {

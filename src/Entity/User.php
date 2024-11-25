@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\Quiz\LevelEnum;
+use App\Enum\RoleEnum;
 use App\Repository\UserRepository;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -82,6 +84,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $timezone = null;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private null|CarbonImmutable $levelAssessmentQuizTakenAt = null;
+
     public function __construct()
     {
         $this->lessonParticipations = new ArrayCollection();
@@ -126,7 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = RoleEnum::USER->value;
 
         return array_unique($roles);
     }
@@ -345,6 +350,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): void
     {
         $this->avatar = $avatar;
+    }
+
+    public function getLevelAssessmentQuizTakenAt(): null|CarbonImmutable
+    {
+        return $this->levelAssessmentQuizTakenAt;
+    }
+
+    public function setLevelAssessmentQuizTakenAt(null|CarbonImmutable $levelAssessmentQuizTakenAt): static
+    {
+        $this->levelAssessmentQuizTakenAt = $levelAssessmentQuizTakenAt;
+
+        return $this;
     }
 
 }

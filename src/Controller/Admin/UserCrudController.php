@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Enum\RoleEnum;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -26,9 +27,10 @@ class UserCrudController extends AbstractCrudController
             TextField::new('lastName'),
             EmailField::new('email'),
             ChoiceField::new('roles')->setChoices([
-                'student' => 'ROLE_STUDENT',
-                'admin' => 'ROLE_ADMIN',
-                'teacher' => 'ROLE_TEACHER',
+                'student' => RoleEnum::STUDENT,
+                'teacher' => RoleEnum::TEACHER,
+                'observer' => RoleEnum::OBSERVER,
+                'admin' => RoleEnum::ADMIN,
             ])->allowMultipleChoices()
         ];
     }

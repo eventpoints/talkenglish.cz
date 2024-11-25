@@ -38,18 +38,12 @@ class QuizParticipation
     private CarbonImmutable $createdAt;
 
     /**
-     * @var Collection<int, Question>
-     */
-    #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'quizParticipations')]
-    private Collection $questions;
-
-    /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'quizParticipation')]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'quizParticipation', orphanRemoval: true)]
     private Collection $answers;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: 'quizParticipation')]
+    #[ORM\ManyToOne(cascade: [], inversedBy: 'quizParticipation')]
     private null|Quiz $quiz = null;
 
     /**
@@ -61,7 +55,6 @@ class QuizParticipation
         $this->owner = $owner;
         $this->createdAt = new CarbonImmutable();
         $this->startAt = new CarbonImmutable();
-        $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->quiz = $quiz;
     }
@@ -114,30 +107,6 @@ class QuizParticipation
     }
 
     /**
-     * @return Collection<int, Question>
-     */
-    public function getQuestions(): Collection
-    {
-        return $this->questions;
-    }
-
-    public function addQuestion(Question $question): static
-    {
-        if (!$this->questions->contains($question)) {
-            $this->questions->add($question);
-        }
-
-        return $this;
-    }
-
-    public function removeQuestion(Question $question): static
-    {
-        $this->questions->removeElement($question);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Answer>
      */
     public function getAnswers(): Collection
@@ -185,7 +154,7 @@ class QuizParticipation
         $endAt = $this->startAt->addMinutes($this->quiz->getTimeLimitInMinutes());
 
         return CarbonImmutable::now()->diffInSeconds($endAt, false) > 0
-            ? (int) CarbonImmutable::now()->diffInSeconds($endAt)
+            ? (int)CarbonImmutable::now()->diffInSeconds($endAt)
             : 0;
     }
 
@@ -204,7 +173,7 @@ class QuizParticipation
         return round($this->getStartAt()->diffInMinutes($this->getCompletedAt()), 2);
     }
 
-    public function getCalculatedQuizEndAt() : CarbonImmutable
+    public function getCalculatedQuizEndAt(): CarbonImmutable
     {
         return $this->getStartAt()->addMinutes($this->getQuiz()->getTimeLimitInMinutes());
     }

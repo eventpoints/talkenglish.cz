@@ -11,7 +11,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
-readonly class LessonSubscriber implements EventSubscriberInterface
+readonly class LessonOwnerSubscriber implements EventSubscriberInterface
 {
 
     public function __construct(

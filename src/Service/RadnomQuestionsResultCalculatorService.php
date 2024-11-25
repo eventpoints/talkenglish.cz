@@ -14,7 +14,7 @@ final readonly class RadnomQuestionsResultCalculatorService
 {
     public function calculateQuizPercentage(QuizParticipation $quizParticipation) : float
     {
-        $questions = $quizParticipation->getQuestions();
+        $questions = $quizParticipation->getQuiz()->getQuestions();
         $totalQuestions = count($questions);
         $correctAnswers = 0;
 
@@ -30,7 +30,7 @@ final readonly class RadnomQuestionsResultCalculatorService
         $correctCount = 0.0;
         $totalPossible = 0.0;
 
-        foreach ($quizParticipation->getQuestions() as $question) {
+        foreach ($quizParticipation->getQuiz()->getQuestions() as $question) {
             $correctSelections = $this->calculateQuestionAnswer($quizParticipation, $question);
 
             $totalCorrectAnswers = count($question->getAnswerOptions()->filter(fn($answerOption): ?bool => $answerOption->getIsCorrect()));

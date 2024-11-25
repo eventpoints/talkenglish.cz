@@ -175,4 +175,9 @@ class Quiz
         $this->quizParticipations->removeElement($quizParticipation);
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getTitle();
+    }
 }

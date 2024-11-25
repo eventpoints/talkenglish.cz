@@ -6,6 +6,20 @@
     <div class="container">
         <div class="row justify-content-center my-3">
             <div class="col-12 col-md-5">
+
+                {% if app.request.get('post-signup-check') %}
+                    <div class="card mb-3 d-flex justify-content-start gap-5 align-items-center" role="alert">
+                        <div class="card-body text-center vstack gap-3">
+                            <div>
+                                <i class="bi bi-rocket-takeoff fs-1"></i>
+                            </div>
+                            <div class="fw-bold">{{ 'thanks-for-joining'|trans }}</div>
+                            <div>{{ 'required-level-quiz-explainer'|trans }}</div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
                 <div class="card mb-3">
                     <div class="card-header">
                         <div class="fs-3">{{ quiz.title }}</div>

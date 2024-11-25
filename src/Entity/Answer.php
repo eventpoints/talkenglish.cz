@@ -23,9 +23,9 @@ class Answer
     /**
      * @var Collection<int, AnswerOption>
      */
-    #[ORM\ManyToMany(targetEntity: AnswerOption::class, inversedBy: 'answers',cascade: ['remove'])]
+    #[ORM\ManyToMany(targetEntity: AnswerOption::class, inversedBy: 'answers')]
+    #[ORM\JoinTable(name: 'answer_answer_option')]
     private Collection $answers;
-
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'answers')]
     private ?Question $question = null;
 
@@ -38,7 +38,7 @@ class Answer
      */
     public function __construct(
         QuizParticipation $quizParticipation,
-        Question $question
+        Question          $question
     )
     {
         $this->quizParticipation = $quizParticipation;
@@ -99,5 +99,9 @@ class Answer
 
         return $this;
     }
-    
+
+    public function __toString(): string
+    {
+        return implode(',', $this->getAnswers()->toArray());
+    }
 }

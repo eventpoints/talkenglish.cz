@@ -20,15 +20,17 @@ class QuizResultCalculatorService
             return 0;
         }
 
-        return round(($totalScore / $totalQuestions) * 100, 2);
+        return round(($totalScore / $totalQuestions) * 100);
     }
 
     private function calculateTotalScore(QuizParticipation $quizParticipation): float
     {
         $totalScore = 0;
+
         foreach ($quizParticipation->getQuiz()->getQuestions() as $question) {
             $totalScore += $this->calculateFractalScoreForQuestion($quizParticipation, $question);
         }
+
         return round($totalScore, 2);
     }
 
@@ -53,22 +55,31 @@ class QuizResultCalculatorService
         $selectedAnswerOptions = array_unique($selectedAnswerOptions);
 
         // Count correct and incorrect selections
-        $numCorrectSelected = 0;
-        $numIncorrectSelected = 0;
+        $correctSelectedCount = 0;
+        $incorrectSelectedCount = 0;
 
         foreach ($selectedAnswerOptions as $selectedOption) {
             if ($correctAnswerOptions->exists(fn($key, $correctOption): bool => $correctOption->getId() === $selectedOption->getId())) {
-                $numCorrectSelected++;
+                $correctSelectedCount++;
             } else {
-                $numIncorrectSelected++;
+                $incorrectSelectedCount++;
             }
         }
 
-        // Calculate the score: correct / (correct + incorrect)
-        $totalSelected = $numCorrectSelected + $numIncorrectSelected;
+        // Calculate score using partial credit: correct / total correct - incorrect / total incorrect
+        $totalCorrect = count($correctAnswerOptions);
+        $totalIncorrect = count($question->getAnswerOptions()) - $totalCorrect;
 
-        return $totalSelected > 0 ? round($numCorrectSelected / $totalSelected, 2) : 0.0;
+        $score = 0.0;
+        if ($totalCorrect > 0) {
+            $score += $correctSelectedCount / $totalCorrect;
+        }
+
+        if ($totalIncorrect > 0) {
+            $score -= $incorrectSelectedCount / $totalIncorrect;
+        }
+
+        // Ensure the score doesn't go below zero
+        return max(0.0, round($score, 2));
     }
-
-
 }

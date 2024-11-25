@@ -35,10 +35,6 @@ class CalculateQuizResultServiceTest extends TestCase
 
         // Create quiz participation
         $this->quizParticipation = new QuizParticipation(quiz: $quiz);
-
-        // Add questions to quiz participation
-        $this->quizParticipation->addQuestion($this->question1);
-        $this->quizParticipation->addQuestion($this->question2);
     }
 
     public function testCalculateQuizPercentageWithAllCorrectAnswers(): void
