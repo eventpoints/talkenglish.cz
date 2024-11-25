@@ -7,6 +7,7 @@ namespace App\Form\Form;
 use App\Entity\User;
 use App\Enum\Quiz\LevelEnum;
 use App\Exception\ShouldNotHappenException;
+use Carbon\CarbonImmutable;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -83,7 +84,7 @@ class UserAccountFormType extends AbstractType
                 'choice_label' => function (LevelEnum $levelEnum): string {
                     return $levelEnum->name . " - " . $levelEnum->value;
                 },
-                'help' => $this->translator->trans('level-assessment-next-available', ['date' => $currentUser->getLevelAssessmentQuizTakenAt()->addMonths(3)->toFormattedDateString()]),
+                'help' => !$currentUser->getLevelAssessmentQuizTakenAt() instanceof CarbonImmutable ? "" : $this->translator->trans('level-assessment-next-available', ['date' => $currentUser->getLevelAssessmentQuizTakenAt()->addMonths(3)->toFormattedDateString()]),
                 'label' => 'Level',
                 'attr' => [
                     'placeholder' => 'Level',
