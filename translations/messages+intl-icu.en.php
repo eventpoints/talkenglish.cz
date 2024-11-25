@@ -18,6 +18,7 @@ return array(
     'password' => 'password',
     'view-lesson' => 'view lesson',
     'level-assessment-next-available' => 'You can take a level assessment test again from {date}',
+    'register-explainer' => 'Join our vibrant community of international students and learn English with native speakers! Enhance your conversational skills through live video call lessons tailored for remote learners, and enjoy a variety of free quizzes designed to make learning fun and engaging.',
     'join-lesson' => 'Join for {amount}',
     'no-available-lessons' => 'no available lessons',
     'no-lessons-found' => 'no lessons found',
