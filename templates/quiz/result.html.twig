@@ -8,6 +8,17 @@
     }) }}>
         <div class="row justify-content-center g-3 my-3">
             <div class="col-12 col-md-3">
+
+
+                {% if quizParticipation.quiz.categoryEnum == constant('App\\Enum\\CategoryEnum::LEVEL_ASSESSMENT') %}
+                    <div class="card">
+                        <div class="card-body">
+                            {{ app.user.levelEnum }}
+                        </div>
+                    </div>
+                {% endif %}
+
+
                 <div class="card sticky-top">
                     <div class="card-header text-center">
                         <div class="fw-lighter text-center display-1 text-primary">{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
@@ -43,7 +54,7 @@
                     <div class="card-footer text-end">
                         <div {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
                             <div class="hidden" {{ stimulus_target('clipboard', 'source') }}
-                                    data-value="{{ url('quiz_result', {id: quizParticipation.id}) }}">
+                                 data-value="{{ url('quiz_result', {id: quizParticipation.id}) }}">
                                 {{ url('quiz_result', {id: quizParticipation.id}) }}
                             </div>
                             <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}

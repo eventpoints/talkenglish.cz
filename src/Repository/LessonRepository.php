@@ -83,6 +83,12 @@ class LessonRepository extends ServiceEntityRepository
             )->setParameter('level', $lessonFilterDto->getLevelEnum());
         }
 
+        $qb->andWhere(
+            $qb->expr()->gt('lesson.endAt', ':now')
+        )->setParameter('now', CarbonImmutable::now());
+
+        $qb->orderBy(sort: 'lesson.startAt', order: Order::Ascending->value);
+
         if ($isQuery) {
             return $qb->getQuery();
         }

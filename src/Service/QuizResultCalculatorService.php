@@ -8,6 +8,7 @@ use App\Entity\Answer;
 use App\Entity\AnswerOption;
 use App\Entity\Question;
 use App\Entity\QuizParticipation;
+use App\Enum\Quiz\LevelEnum;
 
 class QuizResultCalculatorService
 {
@@ -81,5 +82,19 @@ class QuizResultCalculatorService
 
         // Ensure the score doesn't go below zero
         return max(0.0, round($score, 2));
+    }
+
+    public function getLevelAssessmentScore(QuizParticipation $quizParticipation): LevelEnum
+    {
+        $score = $this->calculateQuizPercentage($quizParticipation);
+
+        return match (true) {
+            default => LevelEnum::A1,
+            $score > 30 && $score <= 50 => LevelEnum::A2,
+            $score > 50 && $score <= 70 => LevelEnum::B1,
+            $score > 70 && $score <= 85 => LevelEnum::B2,
+            $score > 85 && $score <= 95 => LevelEnum::C1,
+            $score > 95 => LevelEnum::C2,
+        };
     }
 }
