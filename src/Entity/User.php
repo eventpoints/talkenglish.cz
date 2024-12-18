@@ -364,4 +364,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function canRetakeLevelAssessmentQuiz() : bool
+    {
+       return (new CarbonImmutable()) > $this->getLevelAssessmentQuizTakenAt()->addMonths(3);
+    }
 }
