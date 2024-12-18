@@ -44,7 +44,6 @@ class RegistrationController extends AbstractController
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles([RoleEnum::STUDENT->value]);
 
-
             $entityManager->persist($user);
             $entityManager->flush();
 
