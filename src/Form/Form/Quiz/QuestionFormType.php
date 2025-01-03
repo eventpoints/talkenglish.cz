@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Form\Form\Quiz;
 
 use App\Entity\Question;
+use App\Entity\QuestionExtra;
 use App\Enum\Quiz\CategoryEnum;
 use App\Enum\Quiz\QuestionTypeEnum;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -22,18 +24,26 @@ class QuestionFormType extends AbstractType
             ->add('content', TextType::class, [
                 'label' => 'title',
             ])
-            ->add('questionTypeEnum', EnumType::class,[
+            ->add('questionTypeEnum', EnumType::class, [
                 'class' => QuestionTypeEnum::class
             ])
-            ->add('questionTypeEnum', EnumType::class,[
+            ->add('questionTypeEnum', EnumType::class, [
                 'class' => QuestionTypeEnum::class,
                 'data' => QuestionTypeEnum::MULTIPLE_CHOICE
             ])
-            ->add('categoryEnum', EnumType::class,[
+            ->add('categoryEnum', EnumType::class, [
                 'class' => CategoryEnum::class,
                 'data' => CategoryEnum::GENERAL
             ])
-            ->add('answerOptions', CollectionType::class,[
+            ->add('questionExtra', EntityType::class, [
+                'required' => false,
+                'class' => QuestionExtra::class,
+                'choice_label' => function (QuestionExtra $questionExtra): string {
+                    return substr(string: $questionExtra->getContent(), offset: 0, length: 250);
+                },
+                'autocomplete' => true,
+            ])
+            ->add('answerOptions', CollectionType::class, [
                 'entry_type' => AnswerOptionFormType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
