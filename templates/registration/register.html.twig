@@ -6,13 +6,11 @@
     <div class="container">
         <div class="row justify-content-center g-3 mt-3">
             <div class="col-md-6">
-                <div class="p-5 text-center bg-body-tertiary rounded-3">
-                    <img class="mb-4 object-fit-cover" width="120" height="120" src="{{ asset('images/logo.webp') }}"/>
-                    <h1 class="text-body-emphasis">Talk English</h1>
+                <div class="p-5 text-center bg-body-tertiary rounded-3 vstack gap-3">
+                    <h1 class="text-body-emphasis">English Quizzes</h1>
                     <p class="col-lg-8 mx-auto fs-5 text-muted">
                         {{ 'register-explainer'|trans }}
                     </p>
-                    <a class="btn btn-primary" href="{{ path('price_list') }}">{{ 'price-list'|trans }}</a>
                 </div>
             </div>
             <div class="col-md-4">
@@ -46,7 +44,7 @@
                     <div class="card-footer vstack gap-2 text-center">
                         <button type="submit" class="btn btn-lg btn-primary">{{ 'continue'|trans }}</button>
                         <a href="{{ path('app_login') }}" type="button"
-                           class="btn btn-lg btn-light">{{ 'login'|trans }}</a>
+                           class="link-dark">{{ 'login'|trans }}</a>
                     </div>
 
                     {{ form_end(registrationForm) }}

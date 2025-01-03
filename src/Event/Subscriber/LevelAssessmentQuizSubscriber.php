@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[AsEventListener(event: RequestEvent::class, method: 'setLevelAssessmentQuiz', priority: 7)]
+//#[AsEventListener(event: RequestEvent::class, method: 'setLevelAssessmentQuiz', priority: 7)]
 readonly class LevelAssessmentQuizSubscriber
 {
 

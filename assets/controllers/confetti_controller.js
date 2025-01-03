@@ -13,7 +13,8 @@ export default class extends Controller {
         if (score > 70) {
             confetti({
                 particleCount: 250,
-                spread: 120,
+                spread: 220,
+                scalar: 1.1
             });
         }
     }

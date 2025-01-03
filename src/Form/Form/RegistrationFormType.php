@@ -42,6 +42,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'placeholder' => 'E-mail Address',
                 ],
+                'help' => 'confirmation not required',
                 'row_attr' => [
                     'class' => 'form-floating',
                 ],

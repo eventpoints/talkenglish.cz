@@ -35,7 +35,6 @@
         <div class="offcanvas-body">
             <div class="list-group list-group-flush">
                 <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_dashboard' ? 'active rounded' }}" href="{{ path('user_dashboard') }}">{{ 'dashboard'|trans|title }}</a>
-                <a class="list-group-item {{ app.request.attributes.get('_route') == 'lessons' ? 'active rounded' }}" href="{{ path('lessons') }}">{{ 'lessons'|trans|title }}</a>
                 <a class="list-group-item {{ app.request.attributes.get('_route') == 'quizzes' ? 'active rounded' }}" href="{{ path('quizzes') }}">{{ 'quizzes'|trans|title }}</a>
                 <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_account' ? 'active rounded' }}" href="{{ path('user_account') }}">{{ 'account'|trans|title }}</a>
                 <a class="list-group-item text-danger"
