@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\Quiz\QuestionTypeEnum;
-use App\Enum\Quiz\LevelEnum;
 use App\Enum\Quiz\CategoryEnum;
 use App\Repository\QuestionRepository;
 use Carbon\CarbonImmutable;
