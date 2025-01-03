@@ -46,7 +46,7 @@ class Question
     /**
      * @var Collection<int, AnswerOption>
      */
-    #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question')]
+    #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question',cascade: ['persist'])]
     private Collection $answerOptions;
 
 
