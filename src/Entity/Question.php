@@ -34,21 +34,14 @@ class Question
     #[ORM\Column(enumType: CategoryEnum::class)]
     private null|CategoryEnum $categoryEnum = CategoryEnum::GENERAL;
 
-    #[ORM\Column(enumType: LevelEnum::class)]
-    private null|LevelEnum $levelEnum = LevelEnum::A1;
-
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private CarbonImmutable $createdAt;
-
-    #[ORM\Column]
-    private ?int $timeLimitInSeconds = 60;
 
     /**
      * @var Collection<int, AnswerOption>
      */
     #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question',cascade: ['persist'])]
     private Collection $answerOptions;
-
 
     /**
      * @var Collection<int, Answer>
@@ -63,28 +56,22 @@ class Question
     private Collection $quizzes;
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
-    private ?QuestionExtra $questionExtra = null;
+    private null|QuestionExtra $questionExtra = null;
 
     /**
      * @param string|null $content
      * @param QuestionTypeEnum|null $questionTypeEnum
      * @param CategoryEnum|null $categoryEnum
-     * @param LevelEnum|null $levelEnum
-     * @param int|null $timeLimitInSeconds
      */
     public function __construct(
         null|string           $content = null,
-        null|QuestionTypeEnum $questionTypeEnum = null,
-        null|CategoryEnum     $categoryEnum = null,
-        null|LevelEnum        $levelEnum = null,
-        null|int              $timeLimitInSeconds = null,
+        null|QuestionTypeEnum $questionTypeEnum = QuestionTypeEnum::FILL_IN_THE_BLACK,
+        null|CategoryEnum     $categoryEnum = CategoryEnum::GENERAL,
     )
     {
         $this->content = $content;
         $this->questionTypeEnum = $questionTypeEnum;
         $this->categoryEnum = $categoryEnum;
-        $this->levelEnum = $levelEnum;
-        $this->timeLimitInSeconds = $timeLimitInSeconds;
         $this->createdAt = CarbonImmutable::now();
         $this->answerOptions = new ArrayCollection();
         $this->answers = new ArrayCollection();
@@ -129,21 +116,9 @@ class Question
         $this->createdAt = $createdAt;
     }
 
-    public function getTimeLimitInSeconds(): ?int
-    {
-        return $this->timeLimitInSeconds;
-    }
-
-    public function setTimeLimitInSeconds(int $timeLimitInSeconds): static
-    {
-        $this->timeLimitInSeconds = $timeLimitInSeconds;
-
-        return $this;
-    }
-
     public function __toString(): string
     {
-        return $this->levelEnum->name . ' - ' . $this->categoryEnum->name . ' - ' . $this->content;
+        return $this->content;
     }
 
     public function getCategoryEnum(): ?CategoryEnum
@@ -155,17 +130,6 @@ class Question
     {
         $this->categoryEnum = $categoryEnum;
     }
-
-    public function getLevelEnum(): ?LevelEnum
-    {
-        return $this->levelEnum;
-    }
-
-    public function setLevelEnum(?LevelEnum $levelEnum): void
-    {
-        $this->levelEnum = $levelEnum;
-    }
-
     /**
      * @return Collection<int, AnswerOption>
      */

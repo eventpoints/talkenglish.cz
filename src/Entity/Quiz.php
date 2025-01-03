@@ -27,17 +27,17 @@ class Quiz
     /**
      * @var Collection<int, Question>
      */
-    #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'quizzes')]
+    #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'quizzes',cascade: ['persist', 'remove'])]
     private Collection $questions;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     #[ORM\Column(enumType: CategoryEnum::class)]
-    private null|CategoryEnum $categoryEnum;
+    private null|CategoryEnum $categoryEnum = CategoryEnum::GENERAL;
 
     #[ORM\Column(enumType: LevelEnum::class)]
-    private null|LevelEnum $levelEnum;
+    private null|LevelEnum $levelEnum = LevelEnum::B2;
 
     #[ORM\Column(type: Types::TEXT, length: 500)]
     private ?string $description = null;
@@ -46,7 +46,7 @@ class Quiz
     private CarbonImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
-    private null|int $timeLimitInMinutes = null;
+    private null|int $timeLimitInMinutes = 10;
 
     /**
      * @var Collection<int, QuizParticipation>
