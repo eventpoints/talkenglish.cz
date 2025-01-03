@@ -366,6 +366,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function canRetakeLevelAssessmentQuiz() : bool
     {
+        if(!$this->getLevelAssessmentQuizTakenAt() instanceof \Carbon\CarbonImmutable){
+            return false;
+        }
+
        return (new CarbonImmutable()) > $this->getLevelAssessmentQuizTakenAt()->addMonths(3);
     }
 }

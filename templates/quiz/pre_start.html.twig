@@ -39,10 +39,8 @@
                         {{ quiz.description|nl2br }}
                     </div>
                     <div class="card-footer text-center">
-                        {% if quiz.categoryEnum.value == 'category.level_assessment' %}
-                            {% if not app.user.canRetakeLevelAssessmentQuiz %}
-                                You can retake this quiz on {{ app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }}
-                            {% endif %}
+                        {% if quiz.categoryEnum.value == 'category.level_assessment' and app.user.canRetakeLevelAssessmentQuiz %}
+                            You can retake this quiz on {{ app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }}
                         {% else %}
                             <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
                                 <button type="submit" class="btn w-100 btn-primary">Start Quiz</button>
