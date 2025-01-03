@@ -39,38 +39,40 @@
                                 </div>
                             {% endif %}
 
-                            {% for quiz in quizzesPagination %}
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        <div class="fs-3">{{ quiz.title }}</div>
-                                    </div>
-                                    <div class="card-header">
-                                        <div class="badge fw-normal text-bg-primary text-white">
-                                            <i class="bi bi-stopwatch-fill me-1"></i>
-                                            {{ quiz.timeLimitInMinutes }} {{ 'minutes'|trans }}
+                            <div class="vstack gap-3">
+                                {% for quiz in quizzesPagination %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="fw-bold">{{ quiz.title }}</div>
                                         </div>
-                                        <div class="badge fw-normal text-bg-secondary">
-                                            {{ quiz.questions.count }}
-                                            {{ 'questions'|trans }}
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <div class="badge fw-normal text-bg-primary rounded-pill text-white">
+                                                <i class="bi bi-stopwatch-fill me-1"></i>
+                                                {{ quiz.timeLimitInMinutes }} {{ 'minutes'|trans }}
+                                            </div>
+                                            <div class="badge fw-normal rounded-pill text-bg-secondary">
+                                                {{ quiz.questions.count }}
+                                                {{ 'questions'|trans }}
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            {{ quiz.description|nl2br }}
+                                        </div>
+                                        <div class="card-footer text-end">
+                                            <a href="{{ path('quiz_start', { 'id': quiz.id }) }}"
+                                               class="btn rounded-pill btn-outline-secondary">
+                                                <i class="bi bi-arrow-right-short"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        {{ quiz.description|nl2br }}
+                                {% else %}
+                                    <hr/>
+                                    <div class="text-center">
+                                        <h5>{{ 'nothing-found'|trans }}</h5>
+                                        <div class="list-group-item text-center text-muted">{{ 'no-quizzes-found'|trans }}</div>
                                     </div>
-                                    <div class="card-footer text-end">
-                                        <a href="{{ path('quiz_start', { 'id': quiz.id }) }}"
-                                           class="btn rounded-pill btn-secondary">
-                                            <i class="bi bi-arrow-right-short fs-3"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <hr/>
-                                <div class="text-center">
-                                    <h5>{{ 'nothing-found'|trans }}</h5>
-                                    <div class="list-group-item text-center text-muted">{{ 'no-quizzes-found'|trans }}</div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
 
                             <div class="col-12">
                                 <div class="my-5">

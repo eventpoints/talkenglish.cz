@@ -36,6 +36,7 @@ return array(
     'company-details' => 'company details',
     'bank-details' => 'bank details',
     'no-quizzes-found' => 'Apologies for the inconvenience. We are constantly adding new quizzes, try again in a few days.',
+    'no-quiz-history-found' => 'Looks like you haven\'t taken any quizzes, head over to the quiz page to take a quiz.',
     'category.ilets'=>'ILETS',
     'category.sat'=>'SAT',
     'category.general'=>'General',
