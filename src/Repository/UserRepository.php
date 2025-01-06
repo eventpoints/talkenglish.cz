@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
+use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -57,4 +60,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
+    public function getUserWhoHasNotReceivedQuizEmailThisWeek(): null|User
+    {
+        $qb = $this->createQueryBuilder('user');
+        $qb->leftJoin('user.emailTransmissions', 'email_transmission');
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->isNull('email_transmission.id'),
+                $qb->expr()->lt('email_transmission.createdAt', ':startOfWeek')
+            )
+        )->setParameter('startOfWeek', CarbonImmutable::now()->startOfWeek()->toDateTimeImmutable());
+
+        $qb->andWhere(
+            $qb->expr()->eq('user.isSubscribedToWeeklyQuizEmail', ':true')
+        )->setParameter('true', true, Types::BOOLEAN);
+
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

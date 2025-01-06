@@ -1,0 +1,14 @@
+{% extends 'email/email.base.html.twig' %}
+
+{% block content %}
+    <div style="text-align: center">
+        <h1 style="margin-bottom: 10px;">{{ 'email.hello'|trans({name: user.fullName}) }}</h1>
+        <p>{{ 'email.weekly-quiz-explainer'|trans({title: quiz.title}) }}</p>
+        <a class="btn btn-primary" style="margin: 10px 0;" target="_blank"
+           href="{{ url('quiz_start', {id: quiz.id}) }}">
+            {{ 'email.take-quiz-now'|trans }}
+        </a>
+        <hr/>
+        <div style="font-size:10px;color: #cccccc">{{ 'email.disclaimer'|trans }}</div>
+    </div>
+{% endblock %}

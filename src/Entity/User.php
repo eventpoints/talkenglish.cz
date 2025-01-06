@@ -87,12 +87,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private null|CarbonImmutable $levelAssessmentQuizTakenAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private null|bool $isSubscribedToWeeklyQuizEmail = true;
+
+    /**
+     * @var Collection<int, EmailTransmission>
+     */
+    #[ORM\OneToMany(targetEntity: EmailTransmission::class, mappedBy: 'owner')]
+    private Collection $emailTransmissions;
+
     public function __construct()
     {
         $this->lessonParticipations = new ArrayCollection();
         $this->quizParticipations = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->lessons = new ArrayCollection();
+        $this->emailTransmissions = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -371,5 +381,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
        return (new CarbonImmutable()) > $this->getLevelAssessmentQuizTakenAt()->addMonths(3);
+    }
+
+    public function isSubscribedToWeeklyQuizEmail(): null|bool
+    {
+        return $this->isSubscribedToWeeklyQuizEmail;
+    }
+
+    public function setSubscribedToWeeklyQuizEmail(null|bool $isSubscribedToWeeklyQuizEmail): static
+    {
+        $this->isSubscribedToWeeklyQuizEmail = $isSubscribedToWeeklyQuizEmail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmailTransmission>
+     */
+    public function getEmailTransmissions(): Collection
+    {
+        return $this->emailTransmissions;
+    }
+
+    public function addEmailTransmission(EmailTransmission $emailTransmission): static
+    {
+        if (!$this->emailTransmissions->contains($emailTransmission)) {
+            $this->emailTransmissions->add($emailTransmission);
+            $emailTransmission->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmailTransmission(EmailTransmission $emailTransmission): static
+    {
+        if ($this->emailTransmissions->removeElement($emailTransmission)) {
+            // set the owning side to null (unless already changed)
+            if ($emailTransmission->getOwner() === $this) {
+                $emailTransmission->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

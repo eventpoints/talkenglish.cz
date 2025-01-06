@@ -10,6 +10,7 @@ use App\Exception\ShouldNotHappenException;
 use Carbon\CarbonImmutable;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,7 +24,7 @@ class UserAccountFormType extends AbstractType
 
 
     public function __construct(
-        private readonly Security $security,
+        private readonly Security            $security,
         private readonly TranslatorInterface $translator
     )
     {
@@ -35,7 +36,7 @@ class UserAccountFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $currentUser = $this->security->getUser();
-        if(!$currentUser instanceof User){
+        if (!$currentUser instanceof User) {
             throw new ShouldNotHappenException(message: 'The user should be logged in by now.');
         }
 
@@ -91,6 +92,13 @@ class UserAccountFormType extends AbstractType
                 ],
                 'row_attr' => [
                     'class' => 'form-floating',
+                ],
+            ])
+            ->add('subscribedToWeeklyQuizEmail', CheckboxType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('receive-weekly-quiz-email'),
+                'label_attr' => [
+                    'class' => 'checkbox-switch',
                 ],
             ]);
     }
