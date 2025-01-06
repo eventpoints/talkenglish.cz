@@ -7,7 +7,6 @@
         <div class="row justify-content-center my-3">
             <div class="col-12 col-md-5">
 
-
                 {% if app.request.get('post-signup-check') %}
                     <div class="card mb-3 d-flex justify-content-start gap-5 align-items-center" role="alert">
                         <div class="card-body text-center vstack gap-3">
@@ -21,16 +20,40 @@
 
                 {% endif %}
 
-                <div class="card mb-3">
+                {% if lastParticipation is not empty %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="fw-bold text-primary fs-5">
+                                    {{ lastParticipation|calculate_quiz_percentage ~ '%' }}
+                                </div>
+                                <div class="text-end">
+                                    <div>{{ 'quiz-last-completed-at'|trans({date: lastParticipation.completedAt|format_date }) }}</div>
+                                    <a class="link-dark"
+                                       href="{{ path('user_quiz_history') }}">{{ 'view-quiz-history'|trans }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+                <div class="card border-0">
                     <div class="card-header">
                         <div class="fw-bold">{{ quiz.title }}</div>
+                        <div class="text-muted small">{{ 'quiz_taken_by'|trans({count: quiz.quizParticipations.count|compact_notation }) }}</div>
                     </div>
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div class="badge lead fw-normal rounded-pill text-bg-primary text-white">
-                            <i class="bi bi-stopwatch-fill me-1"></i>
+                    <div class="card-header d-flex justify-content-around align-items-center gap-2 fs-5">
+                        <div class="badge fw-normal rounded-pill text-bg-primary text-white">
+                            {{ quiz.levelEnum.value|trans }}
+                        </div>
+                        <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                            {{ quiz.categoryEnum.value|trans }}
+                        </div>
+                        <div class="badge fw-normal text-bg-secondary rounded-pill text-black">
                             {{ quiz.timeLimitInMinutes }} {{ 'minutes'|trans }}
                         </div>
-                        <div class="badge lead fw-normal rounded-pill text-bg-secondary">
+                        <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
                             {{ quiz.questions.count }}
                             {{ 'questions'|trans }}
                         </div>
@@ -38,35 +61,32 @@
                     <div class="card-body">
                         {{ quiz.description|nl2br }}
                     </div>
-                    <div class="card-footer text-center">
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <div {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
+                            <div class="hidden" {{ stimulus_target('clipboard', 'source') }}
+                                 data-value="{{ url('quiz_start', {id: quiz.id}) }}">
+                                {{ url('quiz_start', {id: quiz.id}) }}
+                            </div>
+                            <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}
+                                    class="btn rounded-pill btn-light">
+                                <div class="bi bi-copy fs-4"></div>
+                            </button>
+                        </div>
                         {% if quiz.categoryEnum.value == 'category.level_assessment' and app.user.canRetakeLevelAssessmentQuiz %}
-                            You can retake this quiz on {{ app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }}
+                            <div class="text-end">
+                                {{ 'quiz-permitted-retake-date'|trans({date: app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }) }}
+                            </div>
                         {% else %}
-                            <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
-                                <button type="submit" class="btn w-100 btn-primary">Start Quiz</button>
-                            </form>
+                            <div class="text-end">
+                                <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
+                                    <button type="submit"
+                                            class="btn btn-primary">{{ 'start-quiz'|trans|title }}</button>
+                                </form>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
 
-                <div class="vstack gap-3">
-                    {% for previousParticipation in previousParticipations %}
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="fw-bold text-primary">
-                                        {{ previousParticipation|calculate_quiz_percentage ~ '%' }}
-                                    </div>
-                                    <div class="text-center small">
-                                        You sat this quiz on{{ previousParticipation.completedAt|format_date }}
-                                    </div>
-                                </div>
-                            </div>
-                            <a class="stretched-link"
-                               href="{{ path('quiz_result',{id: previousParticipation.id }) }}"></a>
-                        </div>
-                    {% endfor %}
-                </div>
 
             </div>
 

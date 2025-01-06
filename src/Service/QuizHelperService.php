@@ -17,6 +17,13 @@ class QuizHelperService
             || new CarbonImmutable() >= $quizParticipation->getCalculatedQuizEndAt();
     }
 
+    public function completeQuiz(QuizParticipation $quizParticipation, QuizResultCalculatorService $quizResultCalculatorService) : void
+    {
+        $quizParticipation->setCompletedAt(new CarbonImmutable());
+        $score = $quizResultCalculatorService->calculateQuizPercentage(quizParticipation: $quizParticipation);
+        $quizParticipation->setScore(score: (string) $score);
+    }
+
     public function getNextUnansweredQuestion(QuizParticipation $quizParticipation): ?Question
     {
         $questions = $quizParticipation->getQuiz()->getQuestions();

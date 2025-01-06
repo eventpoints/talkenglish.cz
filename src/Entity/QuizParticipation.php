@@ -46,6 +46,9 @@ class QuizParticipation
     #[ORM\ManyToOne(cascade: [], inversedBy: 'quizParticipation')]
     private null|Quiz $quiz = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    private null|string $score = null;
+
     /**
      * @param User|null $owner
      * @param Quiz|null $quiz
@@ -176,6 +179,18 @@ class QuizParticipation
     public function getCalculatedQuizEndAt(): CarbonImmutable
     {
         return $this->getStartAt()->addMinutes($this->getQuiz()->getTimeLimitInMinutes());
+    }
+
+    public function getScore(): null|string
+    {
+        return $this->score;
+    }
+
+    public function setScore(null|string $score): static
+    {
+        $this->score = $score;
+
+        return $this;
     }
 
 }

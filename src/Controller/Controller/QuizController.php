@@ -16,6 +16,7 @@ use App\Repository\AnswerRepository;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\QuizRepository;
 use App\Service\QuizHelperService;
+use App\Service\QuizResultCalculatorService;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -36,7 +37,8 @@ class QuizController extends AbstractController
         private readonly AnswerRepository            $answerRepository,
         private readonly PaginatorInterface          $paginator,
         private readonly QuizHelperService           $quizHelperService,
-        private readonly EntityManagerInterface      $entityManager
+        private readonly EntityManagerInterface      $entityManager,
+        private readonly QuizResultCalculatorService      $quizResultCalculatorService
     )
     {
     }
@@ -90,21 +92,24 @@ class QuizController extends AbstractController
             ]);
         }
 
-        $previousParticipations = $this->quizParticipationRepository->findByUser(quiz: $quiz, user: $currentUser);
+        $lastParticipation = $this->quizParticipationRepository->findLastTaken(quiz: $quiz, user: $currentUser);
 
         return $this->render('quiz/pre_start.html.twig', [
             'quiz' => $quiz,
             'quizParticipation' => $quizParticipation,
-            'previousParticipations' => $previousParticipations
+            'lastParticipation' => $lastParticipation
         ]);
     }
 
     #[Route(path: '/result/{id}', name: 'quiz_result')]
     public function quizResult(QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
     {
+        $quizParticipationStatistic = $this->quizParticipationRepository->getUserPerformanceStats(quizParticipation: $quizParticipation);
+
         return $this->render(
             view: '/quiz/result.html.twig',
             parameters: [
+                'quizParticipationStatistic' => $quizParticipationStatistic,
                 'quizParticipation' => $quizParticipation,
             ]
         );
@@ -117,7 +122,7 @@ class QuizController extends AbstractController
     ): Response
     {
         if ($this->quizHelperService->isQuizCompleted($quizParticipation)) {
-            $quizParticipation->setCompletedAt(new CarbonImmutable());
+            $this->quizHelperService->completeQuiz(quizParticipation: $quizParticipation, quizResultCalculatorService: $this->quizResultCalculatorService);
             $this->entityManager->persist($quizParticipation);
             $this->entityManager->flush();
 
@@ -126,7 +131,7 @@ class QuizController extends AbstractController
         $question = $this->quizHelperService->getNextUnansweredQuestion($quizParticipation);
 
         if (!$question instanceof Question) {
-            $quizParticipation->setCompletedAt(new CarbonImmutable());
+            $this->quizHelperService->completeQuiz(quizParticipation: $quizParticipation, quizResultCalculatorService: $this->quizResultCalculatorService);
             $this->entityManager->persist($quizParticipation);
             $this->entityManager->flush();
             return $this->redirectToRoute('quiz_result', ['id' => $quizParticipation->getId()]);
@@ -138,7 +143,6 @@ class QuizController extends AbstractController
         $answerForm->handleRequest($request);
         if ($answerForm->isSubmitted() && $answerForm->isValid()) {
             $this->handleAnswerSubmission($quizParticipation, $answer);
-
             return $this->redirectToRoute('quiz_in_progress', ['id' => $quizParticipation->getId()]);
         }
 
@@ -159,7 +163,7 @@ class QuizController extends AbstractController
         $this->quizParticipationRepository->save($quizParticipation, flush: true);
 
         if ($this->quizHelperService->isQuizCompleted($quizParticipation)) {
-            $quizParticipation->setCompletedAt(new CarbonImmutable());
+            $this->quizHelperService->completeQuiz(quizParticipation: $quizParticipation, quizResultCalculatorService: $this->quizResultCalculatorService);
         }
     }
 

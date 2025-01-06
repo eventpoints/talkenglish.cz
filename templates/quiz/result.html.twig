@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="w-100 z-3" {{ stimulus_controller('confetti', {
-        score: quizParticipation|calculate_quiz_percentage
+        score: quizParticipation.score
     }) }}></div>
     <div class="container">
         <div class="row justify-content-center g-3 my-3">
@@ -12,7 +12,10 @@
             <div class="col-12 col-md-3">
                 <div class="card sticky-top">
                     <div class="card-header text-center">
-                        <div class="fw-lighter text-center display-1 text-primary">{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
+                        <div class="fw-lighter text-center display-1 text-primary">{{ quizParticipation.score|round ~ '%' }}</div>
+                        {% if quizParticipationStatistic.betterThanPercentage >= 80 %}
+                            <div class="text-center text-muted small">{{ 'better-then-stat'|trans({betterThan: quizParticipationStatistic.betterThanPercentage }) }}</div>
+                        {% endif %}
                     </div>
                     <div class="list-group list-group-flush">
                         <div class="list-group-item text-center">
@@ -26,7 +29,7 @@
                             {{ quizParticipation.startAt|format_date }}
                         </div>
                     </div>
-                    <div class="card-footer text-end">
+                    <div class="card-footer">
                         <div {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
                             <div class="hidden" {{ stimulus_target('clipboard', 'source') }}
                                  data-value="{{ url('quiz_result', {id: quizParticipation.id}) }}">
