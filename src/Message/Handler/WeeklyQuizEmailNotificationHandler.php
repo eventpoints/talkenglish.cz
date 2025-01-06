@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Message\Handler;
 
 use App\Entity\EmailTransmission;
 use App\Entity\Quiz;
-use App\Entity\QuizParticipation;
 use App\Entity\User;
 use App\Message\Message\WeeklyQuizEmailNotification;
 use App\Repository\EmailTransmissionRepository;
-use App\Repository\QuizParticipationRepository;
 use App\Repository\UserRepository;
 use App\Repository\WeeklyQuizRepository;
 use App\Service\EmailService;
@@ -34,7 +34,7 @@ class WeeklyQuizEmailNotificationHandler
      * @throws TransportExceptionInterface
      */
     public
-    function __invoke(WeeklyQuizEmailNotification $weeklyQuizEmailNotification)
+    function __invoke(WeeklyQuizEmailNotification $weeklyQuizEmailNotification): void
     {
         // 1. Get a random user who has not received an email this week.
         $user = $this->userRepository->getUserWhoHasNotReceivedQuizEmailThisWeek();
