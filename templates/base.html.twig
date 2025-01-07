@@ -39,6 +39,14 @@
 <body data-bs-theme="light">
 {{ include('partial/_navbar.html.twig') }}
 
+{% if app.user and app.user.email is empty or app.user and app.user.password is empty %}
+    <div class="alert alert-warning text-center" role="alert">
+        Please note you are logged in as a guest user, <a class="link-dark" href="{{ path('complete_registration') }}">complete registration</a> in
+        {{ app.user.daysRemainingUntilGuestAccountDelation }}
+        days or your account will be deleted.
+    </div>
+{% endif %}
+
 <div class="container">
     {% for label, messages in app.flashes %}
         {% for message in messages %}

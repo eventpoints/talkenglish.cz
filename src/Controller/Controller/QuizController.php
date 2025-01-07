@@ -15,12 +15,16 @@ use App\Form\Form\Quiz\AnswerFormType;
 use App\Repository\AnswerRepository;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\QuizRepository;
+use App\Repository\UserRepository;
+use App\Service\AvatarService;
+use App\Service\GuestNameGenerator;
 use App\Service\QuizHelperService;
 use App\Service\QuizResultCalculatorService;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,7 +42,11 @@ class QuizController extends AbstractController
         private readonly PaginatorInterface          $paginator,
         private readonly QuizHelperService           $quizHelperService,
         private readonly EntityManagerInterface      $entityManager,
-        private readonly QuizResultCalculatorService      $quizResultCalculatorService
+        private readonly QuizResultCalculatorService $quizResultCalculatorService,
+        private readonly GuestNameGenerator          $guestNameGenerator,
+        private readonly UserRepository              $userRepository,
+        private readonly AvatarService               $avatarService,
+        private readonly Security                    $security,
     )
     {
     }
@@ -70,36 +78,51 @@ class QuizController extends AbstractController
 
 
     #[Route(path: '/pre-start/{id}', name: 'quiz_start')]
-    public function startQuiz(Quiz $quiz, Request $request, #[CurrentUser] User $currentUser): Response
+    public function startQuiz(Quiz $quiz, Request $request): Response
     {
-        $quizParticipation = $this->quizParticipationRepository->findInProgressByUser(quiz: $quiz, user: $currentUser);
-
-        if ($quizParticipation instanceof QuizParticipation) {
-            return $this->redirectToRoute('quiz_in_progress', ['id' => $quizParticipation->getId()]);
-        }
-
-        $quizParticipation = new QuizParticipation(
-            owner: $currentUser,
-            quiz: $quiz
-        );
-
         if ($request->isMethod('POST')) {
-            $quizParticipation->setStartAt(new CarbonImmutable());
-            $quizParticipation->setEndAt($quizParticipation->getStartAt()->addMinutes($quiz->getTimeLimitInMinutes()));
-            $this->quizParticipationRepository->save(entity: $quizParticipation, flush: true);
+            /** @var ?User $user */
+            $user = $this->security->getUser();
+
+            if (!$user instanceof User) {
+                $fingerprint = $request->getSession()->get('fingerprint');
+                $user = $this->userRepository->findOneBy(['fingerprint' => $fingerprint]);
+
+                if (!$user instanceof User) {
+                    $avatar = $this->avatarService->createAvatar(hashString: $fingerprint);
+                    $user = new User(
+                        firstName: $this->guestNameGenerator->generateFirstName(),
+                        lastName: $this->guestNameGenerator->generateLastName(),
+                        avatar: $avatar,
+                        fingerprint: $fingerprint
+                    );
+                    $this->userRepository->save(entity: $user, flush: true);
+                }
+
+                $this->security->login(user: $user, authenticatorName: 'security.authenticator.form_login.main');
+            }
+
+            // Ensure a new QuizParticipation is created only if none exists
+            $quizParticipation = $this->quizParticipationRepository->findInProgressByUser($quiz, $user)
+                ?? new QuizParticipation(owner: $user, quiz: $quiz);
+
+            $now = new CarbonImmutable();
+            $quizParticipation->setStartAt($now);
+            $quizParticipation->setEndAt($now->addMinutes($quiz->getTimeLimitInMinutes()));
+
+            $this->quizParticipationRepository->save($quizParticipation, true);
+
             return $this->redirectToRoute('quiz_in_progress', [
                 'id' => $quizParticipation->getId(),
             ]);
         }
 
-        $lastParticipation = $this->quizParticipationRepository->findLastTaken(quiz: $quiz, user: $currentUser);
-
         return $this->render('quiz/pre_start.html.twig', [
             'quiz' => $quiz,
-            'quizParticipation' => $quizParticipation,
-            'lastParticipation' => $lastParticipation
+            'lastParticipation' => null
         ]);
     }
+
 
     #[Route(path: '/result/{id}', name: 'quiz_result')]
     public function quizResult(QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
