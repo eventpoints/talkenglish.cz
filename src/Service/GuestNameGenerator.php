@@ -4,16 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Service;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
 
-class GuestNameGenerator
+final readonly class GuestNameGenerator
 {
-    public function __construct(
-        private readonly UserRepository $userRepository
-    ) {
-    }
-
     public function generateFirstName(): string
     {
         $adjectives = $this->getHandleAdjectives();
@@ -26,6 +19,9 @@ class GuestNameGenerator
         return $nouns[rand(0, count($nouns) - 1)];
     }
 
+    /**
+     * @return string[]
+     */
     private function getHandleAdjectives(): array
     {
         return [
@@ -1129,6 +1125,9 @@ class GuestNameGenerator
         ];
     }
 
+    /**
+     * @return string[]
+     */
     private function getHandleNouns(): array
     {
         return [
