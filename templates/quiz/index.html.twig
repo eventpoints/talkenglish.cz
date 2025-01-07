@@ -10,6 +10,7 @@
                 <div class="row justify-content-center my-3 g-3">
                     <div class="col-12 col-md-12">
                         <div class="mb-3">
+                            <h5>{{ 'quizzes'|trans|title }}</h5>
                             {{ form_start(quizFilter) }}
                             <div class="row justify-content-between g-3 align-items-center">
                                 <div class="col-12 col-md-5">{{ form_row(quizFilter.categoryEnum) }}</div>
@@ -26,19 +27,6 @@
                     </div>
                     <div class="col-12 col-md-12">
                         <div>
-                            {% if not app.user %}
-                                <div class="alert alert-info text-center small">
-                                    <div>Our quizzes are entirely free, with no ads, but you'll need to sign up to
-                                        access them all.
-                                    </div>
-                                    <hr class="my-2"/>
-                                    <div>
-                                        <a class="link link-dark"
-                                           href="{{ path('app_register') }}">{{ 'sign-up'|trans }}</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-
                             <div class="vstack gap-3">
                                 {% for quiz in quizzesPagination %}
                                     <div class="card border-0">
@@ -46,7 +34,7 @@
                                             <div class="fw-bold">{{ quiz.title }}</div>
                                             <div class="text-muted small">{{ 'quiz_taken_by'|trans({count: quiz.quizParticipations.count|compact_notation }) }}</div>
                                         </div>
-                                        <div class="card-header d-flex justify-content-around align-items-center gap-2 fs-5">
+                                        <div class="card-header d-flex justify-content-around align-items-center flex-wrap gap-2 fs-5">
                                             <div class="badge fw-normal rounded-pill text-bg-primary text-white">
                                                 {{ quiz.levelEnum.value|trans }}
                                             </div>

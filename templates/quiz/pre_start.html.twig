@@ -43,7 +43,7 @@
                         <div class="fw-bold">{{ quiz.title }}</div>
                         <div class="text-muted small">{{ 'quiz_taken_by'|trans({count: quiz.quizParticipations.count|compact_notation }) }}</div>
                     </div>
-                    <div class="card-header d-flex justify-content-around align-items-center gap-2 fs-5">
+                    <div class="card-header d-flex justify-content-around align-items-center gap-2 fs-5 flex-wrap">
                         <div class="badge fw-normal rounded-pill text-bg-primary text-white">
                             {{ quiz.levelEnum.value|trans }}
                         </div>
