@@ -31,9 +31,9 @@ class QuizFilterType extends AbstractType
                 'required' => false,
                 'class' => CategoryEnum::class,
                 'choice_label' => 'value',
-                'label' => 'Quiz Category',
+                'label' => false,
                 'attr' => [
-                    'placeholder' => 'Quiz Category',
+                    'placeholder' => 'Category',
                 ],
                 'row_attr' => [
                     'class' => 'form-floating',
@@ -45,7 +45,7 @@ class QuizFilterType extends AbstractType
                 'choice_label' => function (LevelEnum $levelEnum): string {
                     return $levelEnum->name . " - " . $this->translator->trans($levelEnum->value);
                 },
-                'label' => 'Level',
+                'label' => false,
                 'attr' => [
                     'placeholder' => 'Level',
                 ],

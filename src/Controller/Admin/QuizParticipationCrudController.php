@@ -8,7 +8,9 @@ use App\Entity\QuizParticipation;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class QuizParticipationCrudController extends AbstractCrudController
 {
@@ -27,6 +29,10 @@ class QuizParticipationCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'by_reference' => false,
                 ]),
+            NumberField::new('score'),
+            DateTimeField::new('startAt'),
+            DateTimeField::new('completedAt'),
+
         ];
     }
 }

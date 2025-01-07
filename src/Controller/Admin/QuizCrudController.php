@@ -27,6 +27,7 @@ class QuizCrudController extends AbstractCrudController
             TextField::new('title'),
             TextareaField::new('description'),
             ChoiceField::new('categoryEnum'),
+            ChoiceField::new('levelEnum'),
             CollectionField::new('questions')
                 ->setEntryType(QuestionFormType::class)->setEntryIsComplex(),
         ];
