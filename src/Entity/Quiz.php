@@ -54,11 +54,18 @@ class Quiz
     #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'quiz')]
     private Collection $quizParticipations;
 
+    /**
+     * @var Collection<int, EmailTransmission>
+     */
+    #[ORM\OneToMany(targetEntity: EmailTransmission::class, mappedBy: 'quiz')]
+    private Collection $emailTransmissions;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->quizParticipations = new ArrayCollection();
         $this->createdAt = new CarbonImmutable();
+        $this->emailTransmissions = new ArrayCollection();
     }
 
     public function getId(): null|Uuid
@@ -179,5 +186,35 @@ class Quiz
     public function __toString(): string
     {
         return $this->getTitle();
+    }
+
+    /**
+     * @return Collection<int, EmailTransmission>
+     */
+    public function getEmailTransmissions(): Collection
+    {
+        return $this->emailTransmissions;
+    }
+
+    public function addEmailTransmission(EmailTransmission $emailTransmission): static
+    {
+        if (!$this->emailTransmissions->contains($emailTransmission)) {
+            $this->emailTransmissions->add($emailTransmission);
+            $emailTransmission->setQuiz($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmailTransmission(EmailTransmission $emailTransmission): static
+    {
+        if ($this->emailTransmissions->removeElement($emailTransmission)) {
+            // set the owning side to null (unless already changed)
+            if ($emailTransmission->getQuiz() === $this) {
+                $emailTransmission->setQuiz(null);
+            }
+        }
+
+        return $this;
     }
 }
