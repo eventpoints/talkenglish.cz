@@ -80,6 +80,15 @@ class QuizController extends AbstractController
     #[Route(path: '/pre-start/{id}', name: 'quiz_start')]
     public function startQuiz(Quiz $quiz, Request $request): Response
     {
+
+        $user = $this->security->getUser();
+        if ($user instanceof User) {
+            $quizParticipation = $this->quizParticipationRepository->findInProgressByUser($quiz, $user);
+            if ($quizParticipation instanceof QuizParticipation) {
+                return $this->redirectToRoute('quiz_in_progress', ['id' => $quizParticipation->getId()]);
+            }
+        }
+
         if ($request->isMethod('POST')) {
             /** @var ?User $user */
             $user = $this->security->getUser();
@@ -102,10 +111,7 @@ class QuizController extends AbstractController
                 $this->security->login(user: $user, authenticatorName: 'security.authenticator.form_login.main');
             }
 
-            // Ensure a new QuizParticipation is created only if none exists
-            $quizParticipation = $this->quizParticipationRepository->findInProgressByUser($quiz, $user)
-                ?? new QuizParticipation(owner: $user, quiz: $quiz);
-
+            $quizParticipation = new QuizParticipation(owner: $user, quiz: $quiz);
             $now = new CarbonImmutable();
             $quizParticipation->setStartAt($now);
             $quizParticipation->setEndAt($now->addMinutes($quiz->getTimeLimitInMinutes()));
