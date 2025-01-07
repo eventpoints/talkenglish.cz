@@ -78,16 +78,22 @@
                             </div>
                         {% else %}
                             <div class="text-end">
-                                <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
-                                    <button type="submit"
-                                            class="btn btn-primary">
-                                        {% if app.user %}
-                                        {{ 'start-quiz'|trans|title }}
-                                        {% else %}
-                                        {{ 'continue-as-guest'|trans|title }}
-                                        {% endif %}
-                                    </button>
-                                </form>
+                                {% if quiz.categoryEnum.value == 'category.level_assessment' and not app.user.canRetakeLevelAssessmentQuiz %}
+                                    <div class="text-end">
+                                        {{ 'quiz-permitted-retake-date'|trans({date: app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }) }}
+                                    </div>
+                                {% else %}
+                                    <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
+                                        <button type="submit"
+                                                class="btn btn-primary">
+                                            {% if app.user %}
+                                                {{ 'start-quiz'|trans|title }}
+                                            {% else %}
+                                                {{ 'continue-as-guest'|trans|title }}
+                                            {% endif %}
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>

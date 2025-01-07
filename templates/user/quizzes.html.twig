@@ -11,7 +11,7 @@
                 <div class="vstack gap-3">
                     <div class="fs-4">{{ 'quiz-history'|trans|title }}</div>
                     <hr class="my-2"/>
-                    {% for quizParticipation in app.user.quizParticipations %}
+                    {% for quizParticipation in quizParticipations %}
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -20,11 +20,7 @@
                                         <div>{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
                                     </div>
                                     <div class="text-center small">
-                                        {% if quizParticipation.completedAt is empty %}
-                                            <div>{{ 'in-progress'|trans }}</div>
-                                        {% else %}
-                                            {{ quizParticipation.completedAt.diffForHumans }}
-                                        {% endif %}
+                                        {{ quizParticipation.completedAt.diffForHumans }}
                                     </div>
                                 </div>
                             </div>

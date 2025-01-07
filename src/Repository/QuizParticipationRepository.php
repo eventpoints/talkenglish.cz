@@ -138,4 +138,20 @@ class QuizParticipationRepository extends ServiceEntityRepository
         );
     }
 
+    public function findByUser(User $user) : array
+    {
+        $qb = $this->createQueryBuilder('quiz_participation');
+
+        $qb->andWhere(
+            $qb->expr()->eq('quiz_participation.owner' ,':owner')
+        )->setParameter('owner', $user->getId(), 'uuid');
+
+        $qb->andWhere(
+            $qb->expr()->isNotNull('quiz_participation.completedAt')
+        );
+
+
+        return $qb->getQuery()->getResult();
+    }
+
 }
