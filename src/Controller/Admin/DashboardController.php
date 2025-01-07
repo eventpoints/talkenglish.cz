@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\AnswerOption;
-use App\Entity\Lesson;
 use App\Entity\Question;
 use App\Entity\QuestionExtra;
 use App\Entity\Quiz;
