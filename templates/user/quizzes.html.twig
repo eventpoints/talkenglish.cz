@@ -20,7 +20,11 @@
                                         <div>{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
                                     </div>
                                     <div class="text-center small">
-                                        {{ quizParticipation.completedAt.diffForHumans }}
+                                        {% if quizParticipation.completedAt is empty %}
+                                            <div>{{ 'in-progress'|trans }}</div>
+                                        {% else %}
+                                            {{ quizParticipation.completedAt.diffForHumans }}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

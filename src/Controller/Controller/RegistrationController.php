@@ -7,7 +7,7 @@ namespace App\Controller\Controller;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Form\Form\RegistrationFormType;
-use App\Security\CustomAuthenticator;
+use App\Security\EmailAuthenticator;
 use App\Service\AvatarService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,7 +48,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // do anything else you need here, like send an email
-            return $security->login($user, CustomAuthenticator::class, 'main');
+            return $security->login($user, EmailAuthenticator::class, 'main');
         }
 
         return $this->render('registration/register.html.twig', [

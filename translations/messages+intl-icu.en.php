@@ -44,6 +44,7 @@ return array(
     'no-quizzes-found' => 'Apologies for the inconvenience. We are constantly adding new quizzes, try again in a few days.',
     'no-quiz-history-found' => 'Looks like you haven\'t taken any quizzes, head over to the quiz page to take a quiz.',
     'receive-weekly-quiz-email' => 'receive weekly quiz email',
+    'continue-as-guest' => 'continue as guest',
     'email' => [
         'weekly-quiz-subject' => 'Weekly quiz: {title}',
         'hello' => 'Hello {name}',

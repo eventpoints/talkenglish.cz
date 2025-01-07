@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, nullable: true)]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -54,8 +54,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(nullable: true)]
+    private null|string $password;
 
     /**
      * @var Collection<int, LessonParticipant>
@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, QuizParticipation>
      */
-    #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'owner')]
+    #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'owner', cascade: ['remove'])]
     private Collection $quizParticipations;
 
     /**
@@ -96,14 +96,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: EmailTransmission::class, mappedBy: 'owner')]
     private Collection $emailTransmissions;
 
-    public function __construct()
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $fingerprint = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private CarbonImmutable $createdAt;
+
+    /**
+     * @param string|null $firstName
+     * @param string|null $lastName
+     * @param string|null $avatar
+     * @param string|null $fingerprint
+     * @param string|null $password
+     * @param string|null $email
+     */
+    public function __construct(?string $firstName = null, ?string $lastName = null, ?string $avatar = null, ?string $fingerprint = null, ?string $password = null, ?string $email = null)
     {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->avatar = $avatar;
+        $this->email = $email;
+        $this->password = $password;
+        $this->fingerprint = $fingerprint;
         $this->lessonParticipations = new ArrayCollection();
         $this->quizParticipations = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->lessons = new ArrayCollection();
         $this->emailTransmissions = new ArrayCollection();
+        $this->createdAt = new CarbonImmutable();
     }
+
 
     public function getId(): Uuid
     {
@@ -159,12 +181,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): null|string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(null|string $password): static
     {
         $this->password = $password;
 
@@ -374,13 +396,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function canRetakeLevelAssessmentQuiz() : bool
+    public function canRetakeLevelAssessmentQuiz(): bool
     {
-        if(!$this->getLevelAssessmentQuizTakenAt() instanceof \Carbon\CarbonImmutable){
+        if (!$this->getLevelAssessmentQuizTakenAt() instanceof \Carbon\CarbonImmutable) {
             return false;
         }
 
-       return (new CarbonImmutable()) > $this->getLevelAssessmentQuizTakenAt()->addMonths(3);
+        return (new CarbonImmutable()) > $this->getLevelAssessmentQuizTakenAt()->addMonths(3);
     }
 
     public function isSubscribedToWeeklyQuizEmail(): null|bool
@@ -424,4 +446,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getFingerprint(): ?string
+    {
+        return $this->fingerprint;
+    }
+
+    public function setFingerprint(?string $fingerprint): static
+    {
+        $this->fingerprint = $fingerprint;
+
+        return $this;
+    }
+
+    public function getIsSubscribedToWeeklyQuizEmail(): ?bool
+    {
+        return $this->isSubscribedToWeeklyQuizEmail;
+    }
+
+    public function setIsSubscribedToWeeklyQuizEmail(?bool $isSubscribedToWeeklyQuizEmail): void
+    {
+        $this->isSubscribedToWeeklyQuizEmail = $isSubscribedToWeeklyQuizEmail;
+    }
+
+    public function getCreatedAt(): CarbonImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(CarbonImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getDaysRemainingUntilGuestAccountDelation(): int
+    {
+        return (int) CarbonImmutable::now()->diffInDays($this->getCreatedAt()->addDays(30));
+    }
+
 }

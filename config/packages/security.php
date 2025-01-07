@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use App\Entity\User;
 use App\Enum\RoleEnum;
-use App\Security\CustomAuthenticator;
+use App\Security\EmailAuthenticator;
+use App\Security\FingerprintAuthenticator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -29,15 +30,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'main' => [
                 'lazy' => true,
                 'provider' => 'app_user_provider',
-                'custom_authenticator' => CustomAuthenticator::class,
-                'entry_point' => CustomAuthenticator::class,
+                'custom_authenticators' => [
+                    EmailAuthenticator::class,
+                    FingerprintAuthenticator::class,
+                ],
+                'entry_point' => EmailAuthenticator::class,
                 'form_login' => [
                     'login_path' => 'app_login',
                     'check_path' => 'app_login',
-                    'enable_csrf' => true
+                    'enable_csrf' => true,
                 ],
                 'logout' => [
                     'path' => 'app_logout',
+                    'invalidate_session' => true,
+                    'delete_cookies' => ['REMEMBERME'],
                 ],
                 'remember_me' => [
                     'secret' => '%kernel.secret%',
@@ -53,12 +59,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ],
             [
                 'path' => '/user',
-                'roles' => [RoleEnum::STUDENT->value, RoleEnum::TEACHER->value]
+                'roles' => [RoleEnum::USER->value, RoleEnum::STUDENT->value, RoleEnum::TEACHER->value]
             ],
-            [
-                'path' => '/quizzes',
-                'roles' => [RoleEnum::STUDENT->value, RoleEnum::TEACHER->value]
-            ]
         ],
     ]);
     if ($containerConfigurator->env() === 'test') {
