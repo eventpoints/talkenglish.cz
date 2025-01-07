@@ -138,6 +138,10 @@ class QuizParticipationRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * @param User $user
+     * @return array<int, QuizParticipation>
+     */
     public function findByUser(User $user) : array
     {
         $qb = $this->createQueryBuilder('quiz_participation');
@@ -149,7 +153,6 @@ class QuizParticipationRepository extends ServiceEntityRepository
         $qb->andWhere(
             $qb->expr()->isNotNull('quiz_participation.completedAt')
         );
-
 
         return $qb->getQuery()->getResult();
     }

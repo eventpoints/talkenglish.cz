@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Enum\FlashEnum;
 use App\Form\Form\UserAccountFormType;
 use App\Repository\QuizParticipationRepository;
-use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
