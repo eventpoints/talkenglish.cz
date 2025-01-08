@@ -403,7 +403,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function canRetakeLevelAssessmentQuiz(): bool
     {
-        if (empty($this->getLevelAssessmentQuizTakenAt())) {
+        if (!$this->getLevelAssessmentQuizTakenAt() instanceof CarbonImmutable) {
             return true;
         }
 
