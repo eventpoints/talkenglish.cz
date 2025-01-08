@@ -396,10 +396,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function daysUntilPermittedToRetakeLevelAssessmentQuiz(): int
+    {
+        return (int) CarbonImmutable::now()->diffInDays($this->getLevelAssessmentQuizTakenAt()->addDays(30));
+    }
+
     public function canRetakeLevelAssessmentQuiz(): bool
     {
-        if (!$this->getLevelAssessmentQuizTakenAt() instanceof \Carbon\CarbonImmutable) {
-            return false;
+        if (!$this->getLevelAssessmentQuizTakenAt() instanceof CarbonImmutable) {
+            return true;
         }
 
         return (new CarbonImmutable()) > $this->getLevelAssessmentQuizTakenAt()->addMonths(3);

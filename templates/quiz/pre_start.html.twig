@@ -72,30 +72,32 @@
                                 <div class="bi bi-copy fs-4"></div>
                             </button>
                         </div>
-                        {% if quiz.categoryEnum.value == 'category.level_assessment' and app.user and app.user.canRetakeLevelAssessmentQuiz %}
+                        {% if not app.user %}
+                            <!-- No user: Show the form for guest users -->
                             <div class="text-end">
-                                {{ 'quiz-permitted-retake-date'|trans({date: app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }) }}
+                                <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ 'continue-as-guest'|trans|title }}
+                                    </button>
+                                </form>
+
+                            </div>
+                        {% elseif quiz.categoryEnum.value == 'category.level_assessment' and not app.user.canRetakeLevelAssessmentQuiz %}
+                            <!-- User can't retake the level assessment yet -->
+                            <div class="text-end text-muted small">
+                                {{ 'quiz-permitted-retake-date'|trans({count: app.user.daysUntilPermittedToRetakeLevelAssessmentQuiz }) }}
                             </div>
                         {% else %}
+                            <!-- User can take the quiz -->
                             <div class="text-end">
-                                {% if quiz.categoryEnum.value == 'category.level_assessment' and not app.user.canRetakeLevelAssessmentQuiz %}
-                                    <div class="text-end">
-                                        {{ 'quiz-permitted-retake-date'|trans({date: app.user.levelAssessmentQuizTakenAt.addMonths(3)|format_date }) }}
-                                    </div>
-                                {% else %}
-                                    <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
-                                        <button type="submit"
-                                                class="btn btn-primary">
-                                            {% if app.user %}
-                                                {{ 'start-quiz'|trans|title }}
-                                            {% else %}
-                                                {{ 'continue-as-guest'|trans|title }}
-                                            {% endif %}
-                                        </button>
-                                    </form>
-                                {% endif %}
+                                <form method="post" action="{{ path('quiz_start', { 'id': quiz.id }) }}">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ 'start-quiz'|trans|title }}
+                                    </button>
+                                </form>
                             </div>
                         {% endif %}
+
                     </div>
                 </div>
 

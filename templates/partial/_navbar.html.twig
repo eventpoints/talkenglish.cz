@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand bg-info">
     <div class="container">
-        <a class="navbar-brand" href="{{ path('quizzes') }}">
-            <img src="{{ asset('images/logo.webp') }}" height="40" width="40"/>
+        <a class="text-decoration-none" href="{{ path('quizzes') }}">
+            <div class="fs-5 mb-0"><span class="text-black fw-bold">Talk</span> <span
+                        class="text-primary fw-bold">English</span></div>
         </a>
         <ul class="navbar-nav ms-auto mb-0 align-items-center">
             {% if app.user %}
@@ -34,9 +35,12 @@
         </div>
         <div class="offcanvas-body">
             <div class="list-group list-group-flush">
-                <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_dashboard' ? 'active rounded' }}" href="{{ path('user_dashboard') }}">{{ 'dashboard'|trans|title }}</a>
-                <a class="list-group-item {{ app.request.attributes.get('_route') == 'quizzes' ? 'active rounded' }}" href="{{ path('quizzes') }}">{{ 'quizzes'|trans|title }}</a>
-                <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_account' ? 'active rounded' }}" href="{{ path('user_account') }}">{{ 'account'|trans|title }}</a>
+                <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_dashboard' ? 'active rounded' }}"
+                   href="{{ path('user_dashboard') }}">{{ 'dashboard'|trans|title }}</a>
+                <a class="list-group-item {{ app.request.attributes.get('_route') == 'quizzes' ? 'active rounded' }}"
+                   href="{{ path('quizzes') }}">{{ 'quizzes'|trans|title }}</a>
+                <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_account' ? 'active rounded' }}"
+                   href="{{ path('user_account') }}">{{ 'account'|trans|title }}</a>
                 <a class="list-group-item text-danger"
                    href="{{ path('app_logout') }}">{{ 'logout'|trans|title }}</a></li>
             </div>

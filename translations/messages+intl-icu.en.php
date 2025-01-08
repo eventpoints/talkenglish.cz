@@ -17,7 +17,7 @@ return array(
     'view-quiz-history' => 'view quiz history',
     'lesson-history' => 'lesson history',
     'start-quiz' => 'start quiz',
-    'quiz-permitted-retake-date' => 'You can retake this quiz on {date}',
+    'quiz-permitted-retake-date' => 'You can retake this quiz in {count} days',
     'better-then-stat' => 'You did better than {betterThan}% of participants',
     'password' => 'password',
     'view-lesson' => 'view lesson',
