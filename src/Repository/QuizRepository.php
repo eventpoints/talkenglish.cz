@@ -8,6 +8,7 @@ use App\DataTransferObject\QuizFilterDto;
 use App\Entity\Quiz;
 use App\Enum\Quiz\CategoryEnum;
 use App\Enum\Quiz\LevelEnum;
+use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,9 +44,10 @@ class QuizRepository extends ServiceEntityRepository
             )->setParameter('level', $quizFilterDto->getLevelEnum());
         }
 
+
         $qb->andWhere(
-            $qb->expr()->isNotNull('quiz.publishedAt')
-        );
+            $qb->expr()->lte('quiz.publishedAt', ':now')
+        )->setParameter('now', CarbonImmutable::now());
 
         if ($isQuery) {
             return $qb->getQuery();

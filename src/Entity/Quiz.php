@@ -8,6 +8,7 @@ use App\Enum\Quiz\CategoryEnum;
 use App\Enum\Quiz\LevelEnum;
 use App\Repository\QuizRepository;
 use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -45,8 +46,8 @@ class Quiz
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private CarbonImmutable $createdAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private CarbonImmutable $publishedAt;
+    #[ORM\Column(nullable: true)]
+    private DateTimeImmutable $publishedAt;
 
     #[ORM\Column(nullable: true)]
     private null|int $timeLimitInMinutes = 10;
@@ -221,12 +222,12 @@ class Quiz
         return $this;
     }
 
-    public function getPublishedAt(): CarbonImmutable
+    public function getPublishedAt(): DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(CarbonImmutable $publishedAt): void
+    public function setPublishedAt(DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
