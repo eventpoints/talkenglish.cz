@@ -52,6 +52,11 @@ return array(
         'take-quiz-now' => 'take the quiz now',
         'disclaimer' => 'If you wish to unsubscribe from these emails, please login and change your account settings.'
     ],
+    'error' => [
+        'something-went-wrong' => 'hmm, something went wrong.',
+        'page-not-found' => 'We can\'t find that page.',
+        'something-went-wrong-on-our-side' => 'There seems to be an issue on our side, terribly sorry about that. Have a cup of tea and try again.'
+    ],
 
     'category.ilets' => 'ILETS',
     'category.sat' => 'SAT',
