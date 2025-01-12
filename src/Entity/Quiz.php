@@ -220,4 +220,15 @@ class Quiz
 
         return $this;
     }
+
+    public function getPublishedAt(): CarbonImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(CarbonImmutable $publishedAt): void
+    {
+        $this->publishedAt = $publishedAt;
+    }
+
 }

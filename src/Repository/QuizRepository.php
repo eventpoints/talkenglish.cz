@@ -43,6 +43,10 @@ class QuizRepository extends ServiceEntityRepository
             )->setParameter('level', $quizFilterDto->getLevelEnum());
         }
 
+        $qb->andWhere(
+            $qb->expr()->isNotNull('quiz.publishedAt')
+        );
+
         if ($isQuery) {
             return $qb->getQuery();
         }
