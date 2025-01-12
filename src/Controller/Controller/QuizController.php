@@ -125,7 +125,6 @@ class QuizController extends AbstractController
 
         return $this->render('quiz/pre_start.html.twig', [
             'quiz' => $quiz,
-            'lastParticipation' => null
         ]);
     }
 

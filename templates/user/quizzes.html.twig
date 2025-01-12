@@ -17,7 +17,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <div class="fw-bold text-primary">{{ quizParticipation.quiz.title|title }}</div>
-                                        <div>{{ quizParticipation|calculate_quiz_percentage ~ '%' }}</div>
+                                        <div>{{ quizParticipation.score ~ '%' }}</div>
                                     </div>
                                     <div class="text-center small">
                                         {{ quizParticipation.completedAt.diffForHumans }}

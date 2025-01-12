@@ -12,6 +12,7 @@ use App\Repository\EmailTransmissionRepository;
 use App\Repository\UserRepository;
 use App\Repository\WeeklyQuizRepository;
 use App\Service\EmailService;
+use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -41,6 +42,10 @@ class WeeklyQuizEmailNotificationHandler
 
         // 2. Get the current weekly quiz
         $weeklyQuiz = $this->weeklyQuizRepository->getCurrentWeeklyQuiz();
+
+        if(!$weeklyQuiz->getQuiz()->getPublishedAt() instanceof DateTimeImmutable){
+            return;
+        }
 
         $this->logger->info("sending weekly quiz: {$weeklyQuiz->getQuiz()->getTitle()} to {$user->getFullName()}");
         $this->emailService->sendQuizEmail(emailAddress: $user->getEmail(), quiz: $weeklyQuiz->getQuiz(), context: [

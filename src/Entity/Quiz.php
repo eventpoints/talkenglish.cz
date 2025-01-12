@@ -47,7 +47,7 @@ class Quiz
     private CarbonImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
-    private DateTimeImmutable $publishedAt;
+    private null|DateTimeImmutable $publishedAt = null;
 
     #[ORM\Column(nullable: true)]
     private null|int $timeLimitInMinutes = 10;
@@ -222,12 +222,12 @@ class Quiz
         return $this;
     }
 
-    public function getPublishedAt(): DateTimeImmutable
+    public function getPublishedAt(): null|DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(null|DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
