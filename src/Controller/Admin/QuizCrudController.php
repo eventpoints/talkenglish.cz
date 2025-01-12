@@ -9,6 +9,7 @@ use App\Form\Form\Quiz\QuestionFormType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -30,6 +31,7 @@ class QuizCrudController extends AbstractCrudController
             ChoiceField::new('levelEnum'),
             CollectionField::new('questions')
                 ->setEntryType(QuestionFormType::class)->setEntryIsComplex(),
+            DateField::new('publishedAt')->setRequired(false),
         ];
     }
 }
