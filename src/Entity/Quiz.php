@@ -45,6 +45,9 @@ class Quiz
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private CarbonImmutable $createdAt;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private CarbonImmutable $publishedAt;
+
     #[ORM\Column(nullable: true)]
     private null|int $timeLimitInMinutes = 10;
 
