@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}"/>
     <meta name="keywords" content="english quiz, language quiz, {{ quiz.title }}, {{ quiz.levelEnum.value|trans }}, {{ quiz.categoryEnum.value|trans }}"/>
-    <meta property="og:title" content="Quiz: {{ quiz.title }} ({{ quiz.levelEnum.value|trans }}) ({{ quiz.categoryEnum.value|trans }})"/>
+    <meta property="og:title" content="Quiz: {{ quiz.title }} - {{ quiz.levelEnum.value|trans }}) - {{ quiz.categoryEnum.value|trans }}"/>
     <meta property="og:description" content="{{ quiz.description }}"/>
 {% endblock %}
 

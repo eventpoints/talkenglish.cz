@@ -42,6 +42,10 @@ class WeeklyQuizEmailNotificationHandler
         // 2. Get the current weekly quiz
         $weeklyQuiz = $this->weeklyQuizRepository->getCurrentWeeklyQuiz();
 
+        if(empty($weeklyQuiz->getQuiz()->getPublishedAt())){
+            return;
+        }
+
         $this->logger->info("sending weekly quiz: {$weeklyQuiz->getQuiz()->getTitle()} to {$user->getFullName()}");
         $this->emailService->sendQuizEmail(emailAddress: $user->getEmail(), quiz: $weeklyQuiz->getQuiz(), context: [
             'user' => $user,
