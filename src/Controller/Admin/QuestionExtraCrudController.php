@@ -22,6 +22,7 @@ class QuestionExtraCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->onlyOnIndex(),
+            TextField::new('name'),
             TextEditorField::new('content'),
             TextField::new('path'),
             ChoiceField::new('supportingContentTypeEnum')
