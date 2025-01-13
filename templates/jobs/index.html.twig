@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block metatags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}"/>
+    <meta name="keywords" content="english teacher jobs, ESL jobs, TEFL jobs, IELTs jobs"/>
+    <meta name="og:title" content="English teaching jobs online and abroad">
+    <meta name="og:description"
+          content="Find the best English teaching jobs online and abroad. Explore opportunities for teachers of all experience levels and apply today.">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center my-3 g-3">
+
+            <div class="col-12 col-md-4">
+                <div class="sticky-top">
+                    {{ form_start(jobsFilter) }}
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="fw-bold">{{ 'job-filter'|trans|title }}</div>
+                        </div>
+                        <div class="card-body vstack gap-3">
+                            {{ form_row(jobsFilter.keyword) }}
+                            {{ form_row(jobsFilter.salary) }}
+                            {{ form_row(jobsFilter.currency) }}
+                            {{ form_row(jobsFilter.paymentFrequencyEnum) }}
+                            {{ form_row(jobsFilter.employmentTypeEnum) }}
+                            {{ form_row(jobsFilter.country) }}
+                            {{ form_row(jobsFilter.city) }}
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary w-100">{{ 'search'|trans }}</button>
+                        </div>
+                    </div>
+                    {{ form_end(jobsFilter) }}
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="vstack gap-3">
+
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <a href="{{ path('create_job') }}">{{ 'advertise'|trans }}</a> advertise a job for free.
+                        </div>
+                    </div>
+
+                    <div class="vstack gap-3">
+                        {% for job in jobs %}
+                            <div class="card border-0">
+                                <div class="card-header">
+                                    <div class="fw-bold">{{ job.title }}</div>
+                                    <div>{{ job.company }}</div>
+                                </div>
+                                <div class="card-header d-flex justify-content-around align-items-center flex-wrap gap-2 fs-5">
+                                    <div class="badge fw-normal rounded-pill text-bg-primary text-white">
+                                        {{ job.salary|format_currency(job.currency) }} {{ job.paymentFrequencyEnum.value|trans }}
+                                    </div>
+                                    <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                                        {{ job.employmentTypeEnum.value|trans|title }}
+                                    </div>
+                                    {% if job.relocationIncluded %}
+                                        <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                                            {{ 'relocation-package'|trans }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                                        {{ job.createdAt.diffForHumans }}
+                                    </div>
+                                </div>
+                                <div class="card-body" {{ stimulus_controller('read-more', {
+                                    moreText: 'read-more'|trans,
+                                    lessText: 'read-less'|trans,
+                                }) }} >
+                                    <div class="read-more-content" {{ stimulus_target('read-more', 'content') }}> {{ job.description|nl2br }}</div>
+                                    <div class="text-center">
+                                        <a class="link-primary" {{ stimulus_action('read-more', 'toggle') }}>Read
+                                            more</a>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <div {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
+                                        <div class="hidden" {{ stimulus_target('clipboard', 'source') }}
+                                             data-value="{{ url('job', {id: job.id}) }}">
+                                            {{ url('job', {id: job.id}) }}
+                                        </div>
+                                        <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}
+                                                class="btn rounded-pill btn-light">
+                                            <div class="bi bi-copy fs-4"></div>
+                                        </button>
+                                    </div>
+                                    <a href="{{ path('job', { id: job.id }) }}"
+                                       class="btn rounded-pill btn-light">
+                                        <i class="bi bi-arrow-right-short fs-4"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <hr/>
+                            <div class="text-center">
+                                <h5>{{ 'nothing-found'|trans }}</h5>
+                                <div class="list-group-item text-center text-muted">{{ 'no-jobs-found'|trans }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12">
+                        <div class="my-5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

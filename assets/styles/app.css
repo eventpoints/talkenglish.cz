@@ -2,6 +2,19 @@
     display: none !important;
 }
 
+.z-index-9000
+{
+    z-index: 90000!important;
+}
+
+.ts-wrapper.form-control, .ts-wrapper.form-select {
+    padding: 0.35rem 0 !important;
+}
+
+.ts-wrapper.form-control, .ts-wrapper.form-select .item {
+    margin-top: 20px !important;
+}
+
 body {
     font-family: "Ubuntu", sans-serif;
     font-weight: 400;
@@ -20,4 +33,11 @@ textarea {
 
 .min-vh-70{
     min-height: 70vh;
+}
+
+.read-more-content {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--read-more-line-clamp, 5);
 }

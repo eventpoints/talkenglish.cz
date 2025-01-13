@@ -103,6 +103,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private CarbonImmutable $createdAt;
 
     /**
+     * @var Collection<int, JobAdvertisement>
+     */
+    #[ORM\OneToMany(targetEntity: JobAdvertisement::class, mappedBy: 'owner')]
+    private Collection $jobAdvertisements;
+
+    /**
      * @param string|null $firstName
      * @param string|null $lastName
      * @param string|null $avatar
@@ -124,6 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lessons = new ArrayCollection();
         $this->emailTransmissions = new ArrayCollection();
         $this->createdAt = new CarbonImmutable();
+        $this->jobAdvertisements = new ArrayCollection();
     }
 
 
@@ -487,6 +494,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getDaysRemainingUntilGuestAccountDelation(): int
     {
         return (int) CarbonImmutable::now()->diffInDays($this->getCreatedAt()->addDays(30));
+    }
+
+    /**
+     * @return Collection<int, JobAdvertisement>
+     */
+    public function getJobAdvertisements(): Collection
+    {
+        return $this->jobAdvertisements;
+    }
+
+    public function addJobAdvertisement(JobAdvertisement $jobAdvertisement): static
+    {
+        if (!$this->jobAdvertisements->contains($jobAdvertisement)) {
+            $this->jobAdvertisements->add($jobAdvertisement);
+            $jobAdvertisement->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJobAdvertisement(JobAdvertisement $jobAdvertisement): static
+    {
+        if ($this->jobAdvertisements->removeElement($jobAdvertisement)) {
+            // set the owning side to null (unless already changed)
+            if ($jobAdvertisement->getOwner() === $this) {
+                $jobAdvertisement->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 
 }
