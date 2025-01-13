@@ -75,6 +75,11 @@ return array(
     'read-more' => 'read more',
     'read-less' => 'read less',
     'relocation-package' => 'relocation package',
+    'no-jobs-found' => 'no jobs found',
+    'filter' => 'filter',
+    'esl-jobs' => 'International English Teaching Jobs',
+    'esl-jobs-explainer' => 'Find English teaching jobs all over the world with our platform. Start your international teaching adventure today!',
+    'advertise-vacancy' => 'advertise vacancy',
 
     'category.ilets' => 'ILETS',
     'category.sat' => 'SAT',

@@ -21,7 +21,7 @@
                     {{ form_start(jobsFilter) }}
                     <div class="card">
                         <div class="card-header">
-                            <div class="fw-bold">{{ 'job-filter'|trans|title }}</div>
+                            <div class="fw-bold">{{ 'filter'|trans|title }}</div>
                         </div>
                         <div class="card-body vstack gap-3">
                             {{ form_row(jobsFilter.keyword) }}
@@ -42,11 +42,17 @@
             <div class="col-12 col-md-6">
                 <div class="vstack gap-3">
 
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <a href="{{ path('create_job') }}">{{ 'advertise'|trans }}</a> advertise a job for free.
-                        </div>
+                    <div class="text-end">
+                        <a class="btn btn-primary" href="{{ path('create_job') }}">
+                            {{ 'advertise-vacancy'|trans|title }}
+                        </a>
                     </div>
+
+                    <div class="position-relative p-5 vstack gap-3 text-center text-muted bg-body border border-dashed rounded">
+                        <h1 class="text-body-emphasis">{{ 'esl-jobs'|trans }}</h1>
+                        <div class="lead">{{ 'esl-jobs-explainer'|trans }}</div>
+                    </div>
+
 
                     <div class="vstack gap-3">
                         {% for job in jobs %}
