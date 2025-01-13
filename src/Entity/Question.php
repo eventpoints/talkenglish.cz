@@ -24,6 +24,9 @@ class Question
     #[ORM\CustomIdGenerator(UuidGenerator::class)]
     private null|Uuid $id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $instruction = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
@@ -39,7 +42,7 @@ class Question
     /**
      * @var Collection<int, AnswerOption>
      */
-    #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question',cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: AnswerOption::class, mappedBy: 'question', cascade: ['persist'])]
     private Collection $answerOptions;
 
     /**
@@ -129,6 +132,7 @@ class Question
     {
         $this->categoryEnum = $categoryEnum;
     }
+
     /**
      * @return Collection<int, AnswerOption>
      */
@@ -226,6 +230,16 @@ class Question
         $this->questionExtra = $questionExtra;
 
         return $this;
+    }
+
+    public function getInstruction(): ?string
+    {
+        return $this->instruction;
+    }
+
+    public function setInstruction(?string $instruction): void
+    {
+        $this->instruction = $instruction;
     }
 
 }

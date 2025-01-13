@@ -17,7 +17,6 @@
                     </div>
                 </div>
                 <hr/>
-
                 {% if question.questionExtra is not empty %}
                     {% if question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::TEXT') %}
                         <div class="">{{ question.questionExtra.content|raw }}</div>
@@ -56,7 +55,11 @@
                     <hr/>
                 {% endif %}
 
-                <div class="my-4">{{ question.content|raw }}</div>
+                {% if question.instruction is not empty %}
+                    <div class="text-muted">{{ question.instruction }}</div>
+                {% endif %}
+
+                <div class="my-4 lead">{{ question.content|raw }}</div>
                 <p class="text-center text-muted small">Remember, more than one answer might be correct.</p>
 
                 {{ form_start(answerForm) }}

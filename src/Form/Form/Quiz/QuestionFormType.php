@@ -21,6 +21,10 @@ class QuestionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('instruction', TextType::class, [
+                'required' => false,
+                'label' => 'instruction',
+            ])
             ->add('content', TextType::class, [
                 'label' => 'title',
             ])
