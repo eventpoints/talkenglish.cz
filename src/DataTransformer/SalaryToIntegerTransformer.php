@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+
+/**
+ * @implements DataTransformerInterface<string|int|null, string|int|null>
+ */
 class SalaryToIntegerTransformer implements DataTransformerInterface
 {
     /**

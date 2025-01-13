@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enum\Job\EmploymentTypeEnum;
 use App\Enum\Job\PaymentFrequencyEnum;
-use App\Enum\Job\SalaryRangeEnum;
 use App\Repository\JobAdvertisementRepository;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;

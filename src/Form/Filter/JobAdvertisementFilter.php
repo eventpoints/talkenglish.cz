@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Form\Filter;
 
 use App\DataTransferObject\JobFilterDto;
-use App\DataTransformer\SalaryToIntegerTransformer;
 use App\Enum\Job\EmploymentTypeEnum;
 use App\Enum\Job\PaymentFrequencyEnum;
 use App\Form\Type\SalaryType;
@@ -17,15 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JobAdvertisementFilter extends AbstractType
 {
-    public function __construct(
-        private readonly TranslatorInterface $translator,
-    )
-    {
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

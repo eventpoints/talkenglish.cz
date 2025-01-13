@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\DataTransferObject\JobFilterDto;
-use App\Entity\Answer;
 use App\Entity\JobAdvertisement;
 use App\Enum\Job\EmploymentTypeEnum;
 use App\Enum\Job\PaymentFrequencyEnum;
-use App\Enum\Job\SalaryRangeEnum;
-use App\Enum\Quiz\CategoryEnum;
 use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<JobAdvertisement>

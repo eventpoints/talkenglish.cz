@@ -58,28 +58,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private null|string $password;
 
     /**
-     * @var Collection<int, LessonParticipant>
-     */
-    #[ORM\OneToMany(targetEntity: LessonParticipant::class, mappedBy: 'owner')]
-    private Collection $lessonParticipations;
-
-    /**
      * @var Collection<int, QuizParticipation>
      */
     #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'owner', cascade: ['remove'])]
     private Collection $quizParticipations;
-
-    /**
-     * @var Collection<int, Comment>
-     */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'owner')]
-    private Collection $comments;
-
-    /**
-     * @var Collection<int, Lesson>
-     */
-    #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'teacher')]
-    private Collection $lessons;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $timezone = null;
@@ -124,10 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
         $this->password = $password;
         $this->fingerprint = $fingerprint;
-        $this->lessonParticipations = new ArrayCollection();
         $this->quizParticipations = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-        $this->lessons = new ArrayCollection();
         $this->emailTransmissions = new ArrayCollection();
         $this->createdAt = new CarbonImmutable();
         $this->jobAdvertisements = new ArrayCollection();
@@ -229,36 +208,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastName = $lastName;
     }
 
-    /**
-     * @return Collection<int, LessonParticipant>
-     */
-    public function getLessonParticipations(): Collection
-    {
-        return $this->lessonParticipations;
-    }
-
-    public function addLessonParticipation(LessonParticipant $lessonStudent): static
-    {
-        if (!$this->lessonParticipations->contains($lessonStudent)) {
-            $this->lessonParticipations->add($lessonStudent);
-            $lessonStudent->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLessonParticipation(LessonParticipant $lessonStudent): static
-    {
-        if ($this->lessonParticipations->removeElement($lessonStudent)) {
-            // set the owning side to null (unless already changed)
-            if ($lessonStudent->getOwner() === $this) {
-                $lessonStudent->setOwner(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getFullName(): string
     {
         return $this->firstName . ' ' . $this->lastName;
@@ -288,66 +237,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($quizParticipation->getOwner() === $this) {
                 $quizParticipation->setOwner(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Comment>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getOwner() === $this) {
-                $comment->setOwner(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Lesson>
-     */
-    public function getLessons(): Collection
-    {
-        return $this->lessons;
-    }
-
-    public function addLesson(Lesson $lesson): static
-    {
-        if (!$this->lessons->contains($lesson)) {
-            $this->lessons->add($lesson);
-            $lesson->setTeacher($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLesson(Lesson $lesson): static
-    {
-        if ($this->lessons->removeElement($lesson)) {
-            // set the owning side to null (unless already changed)
-            if ($lesson->getTeacher() === $this) {
-                $lesson->setTeacher(null);
             }
         }
 
