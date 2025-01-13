@@ -130,7 +130,7 @@ class QuizController extends AbstractController
 
 
     #[Route(path: '/result/{id}', name: 'quiz_result')]
-    public function quizResult(QuizParticipation $quizParticipation, #[CurrentUser] User $currentUser): Response
+    public function quizResult(QuizParticipation $quizParticipation): Response
     {
         $quizParticipationStatistic = $this->quizParticipationRepository->getUserPerformanceStats(quizParticipation: $quizParticipation);
 
