@@ -1,16 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Jobs{% endblock %}
-
-{% block metatags %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}"/>
-    <meta name="keywords" content="english teacher jobs, ESL jobs, TEFL jobs, IELTs jobs"/>
-    <meta name="og:title" content="English teaching jobs online and abroad">
-    <meta name="og:description"
-          content="Find the best English teaching jobs online and abroad. Explore opportunities for teachers of all experience levels and apply today.">
-{% endblock %}
+{% block title %}Advertise Vacancy{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -18,7 +8,7 @@
             <div class="col-12 col-md-6">
                 {{ form_start(jobForm) }}
                 <div class="card my-5">
-                    <div class="card-header fs-4">{{ 'advertise-job'|trans|title }}</div>
+                    <div class="card-header fs-4">{{ 'advertise-vacancy'|trans|title }}</div>
                     <div class="card-body vstack gap-3">
                         {{ form_row(jobForm.title) }}
                         {{ form_row(jobForm.description) }}

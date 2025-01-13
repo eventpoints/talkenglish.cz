@@ -1,6 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Quizzes{% endblock %}
+{% block title %}ESL Quizzes{% endblock %}
+
+{% block metatags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}"/>
+    <meta name="keywords" content="english quiz, language quiz"/>
+    <meta name="title" content="ESL Quizzes">
+    <meta name="description" content="Explore free online ESL quizzes designed to help English learners improve grammar, vocabulary, and language skills.">
+    <meta property="og:title" content="ESL Quizzes"/>
+    <meta property="og:description" content="Explore free online ESL quizzes designed to help English learners improve grammar, vocabulary, and language skills."/>
+{% endblock %}
 
 {% block body %}
     <div class="container">
