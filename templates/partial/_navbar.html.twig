@@ -39,6 +39,8 @@
                    href="{{ path('user_dashboard') }}">{{ 'dashboard'|trans|title }}</a>
                 <a class="list-group-item {{ app.request.attributes.get('_route') == 'quizzes' ? 'active rounded' }}"
                    href="{{ path('quizzes') }}">{{ 'quizzes'|trans|title }}</a>
+                <a class="list-group-item {{ app.request.attributes.get('_route') == 'jobs' ? 'active rounded' }}"
+                   href="{{ path('jobs') }}">{{ 'jobs'|trans|title }}</a>
                 <a class="list-group-item {{ app.request.attributes.get('_route') == 'user_account' ? 'active rounded' }}"
                    href="{{ path('user_account') }}">{{ 'account'|trans|title }}</a>
                 <a class="list-group-item text-danger"

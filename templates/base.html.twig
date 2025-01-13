@@ -49,16 +49,23 @@
     </div>
 {% endif %}
 
-<div class="container">
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }} border-0 my-3 alert-dismissible fade show">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+<div {{ stimulus_controller('toast') }} aria-live="polite" aria-atomic="true" class="position-fixed top-0 mt-3 d-flex z-index-9000 justify-content-center align-items-center w-100">
+    <div {{ stimulus_target('toast', 'container') }} class="top-0 start-0">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="toast w-100 align-items-center text-bg-{{ label }}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000" data-controller="toast">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    </div>
 </div>
+
 
 <div class="min-vh-70">
     {% block body %}{% endblock %}

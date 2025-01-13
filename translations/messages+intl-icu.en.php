@@ -45,6 +45,18 @@ return array(
     'no-quiz-history-found' => 'Looks like you haven\'t taken any quizzes, head over to the quiz page to take a quiz.',
     'receive-weekly-quiz-email' => 'receive weekly quiz email',
     'continue-as-guest' => 'continue as guest',
+    'payment' => [
+        'annually' => 'annually',
+        'monthly' => 'monthly',
+        'weekly' => 'weekly',
+        'hourly' => 'hourly',
+    ],
+    'employment' => [
+        'full_time' => 'full time',
+        'part_time' => 'part time',
+        'contract' => 'contract',
+        'internship' => 'internship'
+    ],
     'email' => [
         'weekly-quiz-subject' => 'Weekly quiz: {title}',
         'hello' => 'Hello {name}',
@@ -57,6 +69,12 @@ return array(
         'page-not-found' => 'We can\'t find that page.',
         'something-went-wrong-on-our-side' => 'There seems to be an issue on our side, terribly sorry about that. Have a cup of tea and try again.'
     ],
+    'advertise-job' => 'advertise job',
+    'application-types-explainer' => 'application options',
+    'application-options-explainer' => 'please provide one or more application options.',
+    'read-more' => 'read more',
+    'read-less' => 'read less',
+    'relocation-package' => 'relocation package',
 
     'category.ilets' => 'ILETS',
     'category.sat' => 'SAT',

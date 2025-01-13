@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block metatags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}"/>
+    <meta name="keywords" content="english teacher jobs, ESL jobs, TEFL jobs, IELTs jobs"/>
+    <meta name="og:title" content="English teaching jobs online and abroad">
+    <meta name="og:description"
+          content="Find the best English teaching jobs online and abroad. Explore opportunities for teachers of all experience levels and apply today.">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center g-3">
+            <div class="col-12 col-md-6">
+                {{ form_start(jobForm) }}
+                <div class="card my-5">
+                    <div class="card-header fs-4">{{ 'advertise-job'|trans|title }}</div>
+                    <div class="card-body vstack gap-3">
+                        {{ form_row(jobForm.title) }}
+                        {{ form_row(jobForm.description) }}
+                        <div class="input-group">
+                            {{ form_row(jobForm.salary) }}
+                            {{ form_row(jobForm.currency) }}
+                            {{ form_row(jobForm.paymentFrequencyEnum) }}
+                        </div>
+                        {{ form_row(jobForm.employmentTypeEnum) }}
+                        <div class="row g-3 justify-content-between align-items-center">
+                            <div class="col-6">{{ form_row(jobForm.country) }}</div>
+                            <div class="col-6">{{ form_row(jobForm.city) }}</div>
+                        </div>
+                        <hr/>
+                        <div class="text-center">{{ 'application-options-explainer'|trans|capitalize }}</div>
+                        {{ form_row(jobForm.applicationUrl) }}
+                        {{ form_row(jobForm.applicationEmailAddress) }}
+                        {{ form_row(jobForm.applicationPhoneNumber) }}
+                        <hr/>
+                        {{ form_row(jobForm.company) }}
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-primary">{{ 'submit-for-review'|trans }}</button>
+                    </div>
+                </div>
+                {{ form_end(jobForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

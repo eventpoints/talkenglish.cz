@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ job.title|title }}{% endblock %}
+
+{% block metatags %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.ico') }}"/>
+    <meta name="keywords" content="english teacher jobs, ESL jobs, TEFL jobs, IELTs jobs"/>
+    <meta name="og:title" content="{{ job.title|title }}">
+    <meta name="og:description"
+          content="{{ job.description }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center my-3 g-3">
+
+            <div class="col-12 col-md-6">
+                <div class="vstack gap-3">
+
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <a href="{{ path('create_job') }}">{{ 'advertise'|trans }}</a> advertise a job for free.
+                        </div>
+                    </div>
+
+                    <div class="vstack gap-3">
+                        <div class="card border-0">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-bold">{{ job.title }}</div>
+                                    <div>{{ job.company }}</div>
+                                </div>
+                                <div {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
+                                    <div class="hidden" {{ stimulus_target('clipboard', 'source') }}
+                                         data-value="{{ url('job', {id: job.id}) }}">
+                                        {{ url('job', {id: job.id}) }}
+                                    </div>
+                                    <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}
+                                            class="btn rounded-pill btn-light">
+                                        <div class="bi bi-copy fs-4"></div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-header d-flex justify-content-around align-items-center flex-wrap gap-2 fs-5">
+                                <div class="badge fw-normal rounded-pill text-bg-primary text-white">
+                                    {{ job.salary|format_currency(job.currency) }} {{ job.paymentFrequencyEnum.value|trans }}
+                                </div>
+                                <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                                    {{ job.employmentTypeEnum.value|trans|title }}
+                                </div>
+                                {% if job.relocationIncluded %}
+                                    <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                                        {{ 'relocation-package'|trans }}
+                                    </div>
+                                {% endif %}
+                                <div class="badge fw-normal rounded-pill text-bg-secondary text-black">
+                                    {{ job.createdAt.diffForHumans }}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {{ job.description|nl2br }}
+                            </div>
+                            <div class="list-group list-group-flush border-top">
+                                <div class="list-group-item text-center">
+                                    {{ 'application-types-explainer'|trans|title }}
+                                </div>
+                                {% if job.applicationEmailAddress is not empty %}
+                                    <div class="list-group-item d-flex justify-content-between align-items-center" {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
+                                        <div {{ stimulus_target('clipboard', 'source') }}
+                                                data-value="{{ job.applicationEmailAddress }}">
+                                            {{ job.applicationEmailAddress }}
+                                        </div>
+                                        <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}
+                                                class="btn rounded-pill btn-light">
+                                            <div class="bi bi-copy fs-4"></div>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                                {% if job.applicationPhoneNumber is not empty %}
+                                    <div class="list-group-item d-flex justify-content-between align-items-center" {{ stimulus_controller('clipboard', { successContent: '<div class="bi bi-check-lg text-success fs-4"></div>'|raw }) }}>
+                                        <div {{ stimulus_target('clipboard', 'source') }}
+                                                data-value="{{ job.applicationPhoneNumber }}">
+                                            {{ job.applicationPhoneNumber }}
+                                        </div>
+                                        <button type="button" {{ stimulus_action('clipboard', 'copy', 'click') }} {{ stimulus_target('clipboard', 'button') }}
+                                                class="btn rounded-pill btn-light">
+                                            <div class="bi bi-copy fs-4"></div>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                                {% if job.applicationUrl is not empty %}
+                                    <div class="list-group-item">
+                                        <a class="btn btn-primary w-100" target="_blank"
+                                           href="{{ absolute_url(job.applicationUrl) }}">{{ 'apply-via-link'|trans }}</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
