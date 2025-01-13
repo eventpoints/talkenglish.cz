@@ -38,9 +38,7 @@ class QuestionFormType extends AbstractType
             ->add('questionExtra', EntityType::class, [
                 'required' => false,
                 'class' => QuestionExtra::class,
-                'choice_label' => function (QuestionExtra $questionExtra): string {
-                    return substr(string: $questionExtra->getContent(), offset: 0, length: 250);
-                },
+                'choice_label' => 'name',
                 'autocomplete' => true,
             ])
             ->add('answerOptions', CollectionType::class, [
