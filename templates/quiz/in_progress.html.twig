@@ -19,7 +19,15 @@
                 <hr/>
                 {% if question.questionExtra is not empty %}
                     {% if question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::TEXT') %}
-                        <div class="">{{ question.questionExtra.content|raw }}</div>
+                        <div {{ stimulus_controller('read-more', {
+                            moreText: 'read-more'|trans,
+                            lessText: 'read-less'|trans,
+                        }) }} >
+                            <div class="read-more-content" {{ stimulus_target('read-more', 'content') }}> {{ question.questionExtra.content|raw }}</div>
+                            <div class="text-center mt-3">
+                                <a class="link-primary" {{ stimulus_action('read-more', 'toggle') }}>{{ 'read-more'|trans }}</a>
+                            </div>
+                        </div>
                     {% elseif question.questionExtra.supportingContentTypeEnum == constant('App\\Enum\\Quiz\\SupportingContentTypeEnum::AUDIO') %}
                         <div class="d-flex justify-content-around align-items-center g-3 bg-light p-2 rounded-pill" data-controller="sound" data-sound-url-value="{{ question.questionExtra.path }}">
                             <a class="btn btn-primary rounded-pill" data-action="sound#play">
