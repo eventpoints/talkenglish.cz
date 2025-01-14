@@ -142,17 +142,40 @@ class QuizParticipationRepository extends ServiceEntityRepository
      * @param User $user
      * @return array<int, QuizParticipation>
      */
-    public function findByUser(User $user) : array
+    public function findByUser(User $user): array
     {
         $qb = $this->createQueryBuilder('quiz_participation');
 
         $qb->andWhere(
-            $qb->expr()->eq('quiz_participation.owner' ,':owner')
+            $qb->expr()->eq('quiz_participation.owner', ':owner')
         )->setParameter('owner', $user->getId(), 'uuid');
 
         $qb->andWhere(
             $qb->expr()->isNotNull('quiz_participation.completedAt')
         );
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param User $user
+     * @return array<int, QuizParticipation>
+     */
+    public function findIncompleteQuizzes(User $user): array
+    {
+        $qb = $this->createQueryBuilder('quiz_participation');
+
+        $qb->andWhere(
+            $qb->expr()->eq('quiz_participation.owner', ':owner')
+        )->setParameter('owner', $user->getId(), 'uuid');
+
+        $qb->andWhere(
+            $qb->expr()->isNull('quiz_participation.completedAt')
+        );
+
+        $qb->andWhere(
+            $qb->expr()->lt('quiz_participation.endAt', ':now')
+        )->setParameter('now', CarbonImmutable::now()->toDateTimeImmutable());
 
         return $qb->getQuery()->getResult();
     }
