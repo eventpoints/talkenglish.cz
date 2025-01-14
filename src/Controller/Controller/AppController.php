@@ -22,4 +22,14 @@ class AppController extends AbstractController
     {
         return $this->render('app/about-us.html.twig');
     }
+
+    #[Route('/sitemap.xml', name: 'sitemap', defaults: ['_format' => 'xml'])]
+    public function sitemap(): Response
+    {
+        return $this->render('app/sitemap.xml.twig', [], new Response(
+            '',
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/xml']
+        ));
+    }
 }
