@@ -64,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'owner', cascade: ['remove'])]
     private Collection $quizParticipations;
 
-    #[ORM\Column(length: 255, nullable: true, options: ["default" => "STUDENT"])]
+    #[ORM\Column(length: 255, nullable: true, options: ["default" => AccountTypeEnum::STUDENT])]
     private null|AccountTypeEnum $accountTypeEnum = AccountTypeEnum::STUDENT;
 
     #[ORM\Column(length: 255, nullable: true)]
