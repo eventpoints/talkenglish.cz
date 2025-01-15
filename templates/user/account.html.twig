@@ -9,7 +9,7 @@
             <div class="col-12 col-md-6">
                 {{ form_start(userAccountForm) }}
 
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-header">
                         Account Details
                     </div>
@@ -19,15 +19,18 @@
                             {{ form_row(userAccountForm.lastName) }}
                         </div>
                         {{ form_row(userAccountForm.email) }}
-                        {{ form_row(userAccountForm.levelEnum) }}
+                        {{ form_row(userAccountForm.accountTypeEnum) }}
+                        {% if userAccountForm.levelEnum is defined %}
+                            {{ form_row(userAccountForm.levelEnum) }}
+                        {% endif %}
                         {{ form_row(userAccountForm.timezone) }}
                         {{ form_row(userAccountForm.subscribedToWeeklyQuizEmail) }}
                         <button type="submit" class="btn btn-primary">{{ 'save'|trans }}</button>
                     </div>
                 </div>
                 {{ form_end(userAccountForm) }}
-            </div>
 
+            </div>
         </div>
     </div>
 {% endblock %}

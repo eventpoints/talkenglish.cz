@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\AccountTypeEnum;
 use App\Enum\Quiz\LevelEnum;
 use App\Enum\RoleEnum;
 use App\Repository\UserRepository;
@@ -62,6 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: QuizParticipation::class, mappedBy: 'owner', cascade: ['remove'])]
     private Collection $quizParticipations;
+
+    #[ORM\Column(length: 255, nullable: true, options: ["default" => "STUDENT"])]
+    private null|AccountTypeEnum $accountTypeEnum = AccountTypeEnum::STUDENT;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $timezone = null;
@@ -413,6 +417,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getAccountTypeEnum(): ?AccountTypeEnum
+    {
+        return $this->accountTypeEnum;
+    }
+
+    public function setAccountTypeEnum(?AccountTypeEnum $accountTypeEnum): void
+    {
+        $this->accountTypeEnum = $accountTypeEnum;
     }
 
 }

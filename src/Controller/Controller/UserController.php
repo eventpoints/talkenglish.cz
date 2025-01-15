@@ -10,7 +10,9 @@ use App\Enum\FlashEnum;
 use App\Form\Form\UserAccountFormType;
 use App\Repository\QuizParticipationRepository;
 use App\Repository\UserRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,7 +30,12 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/account', name: 'user_account')]
-    public function account(#[CurrentUser] User $currentUser, Request $request): Response
+    public function account(
+        #[CurrentUser] User                                               $currentUser,
+        Request                                                           $request,
+        LoggerInterface                                                   $logger,
+        #[Autowire('%kernel.project_dir%/public/uploads/resumes')] string $resumesDirectory
+    ): Response
     {
         $userAccountForm = $this->createForm(UserAccountFormType::class, $currentUser);
         $userAccountForm->handleRequest(request: $request);
@@ -56,12 +63,6 @@ class UserController extends AbstractController
         return $this->render('user/quizzes.html.twig', [
             'quizParticipations' => $quizParticipations
         ]);
-    }
-
-    #[Route(path: '/history/lesson', name: 'user_lesson_history')]
-    public function lessons(): Response
-    {
-        return $this->render('user/lessons.html.twig');
     }
 
 }

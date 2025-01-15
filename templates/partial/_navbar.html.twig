@@ -27,6 +27,29 @@
     </div>
 </nav>
 
+<div class="bg-light border-top">
+    <div class="container">
+        <ul class="nav nav-underline">
+            {% if app.user %}
+                <li class="nav-item">
+                    <a href="{{ path('user_dashboard') }}"
+                       class="nav-link {{ app.request.attributes.get('_route') == 'user_dashboard' ? 'active' }}"
+                       aria-current="page">{{ 'dashboard'|trans|title }}</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a href="{{ path('quizzes') }}"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'quizzes' ? 'active' }}"
+                   aria-current="page">{{ 'quizzes'|trans|title }}</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('jobs') }}"
+                   class="nav-link {{ app.request.attributes.get('_route') == 'jobs' ? 'active' }}">{{ 'jobs'|trans|title }}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 {% if app.user %}
     <div class="offcanvas offcanvas-end" tabindex="-1" id="user-menu-off-canvas" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">

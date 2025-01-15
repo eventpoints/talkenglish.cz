@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Form;
 
 use App\Entity\User;
+use App\Enum\AccountTypeEnum;
 use App\Enum\Quiz\LevelEnum;
 use App\Exception\ShouldNotHappenException;
 use Carbon\CarbonImmutable;
@@ -78,7 +79,22 @@ class UserAccountFormType extends AbstractType
                 ],
                 'autocomplete' => true
             ])
-            ->add('levelEnum', EnumType::class, [
+            ->add('accountTypeEnum', EnumType::class, [
+                'empty_data' => AccountTypeEnum::STUDENT->value,
+                'class' => AccountTypeEnum::class,
+                'choice_label' => 'value',
+                'label' => 'Account Type',
+                'attr' => [
+                    'placeholder' => 'Account Type',
+                ],
+                'row_attr' => [
+                    'class' => 'form-floating',
+                ],
+            ]);
+
+        if ($currentUser->getAccountTypeEnum() === AccountTypeEnum::STUDENT) {
+            $builder->
+            add('levelEnum', EnumType::class, [
                 'disabled' => true,
                 'required' => false,
                 'class' => LevelEnum::class,
@@ -93,14 +109,16 @@ class UserAccountFormType extends AbstractType
                 'row_attr' => [
                     'class' => 'form-floating',
                 ],
-            ])
-            ->add('subscribedToWeeklyQuizEmail', CheckboxType::class, [
-                'required' => false,
-                'label' => $this->translator->trans('receive-weekly-quiz-email'),
-                'label_attr' => [
-                    'class' => 'checkbox-switch',
-                ],
             ]);
+        }
+
+        $builder->add('subscribedToWeeklyQuizEmail', CheckboxType::class, [
+            'required' => false,
+            'label' => $this->translator->trans('receive-weekly-quiz-email'),
+            'label_attr' => [
+                'class' => 'checkbox-switch',
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

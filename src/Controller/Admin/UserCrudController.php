@@ -7,7 +7,9 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -26,12 +28,14 @@ class UserCrudController extends AbstractCrudController
             TextField::new('firstName'),
             TextField::new('lastName'),
             EmailField::new('email'),
+            AssociationField::new('quizParticipations')->onlyOnIndex(),
             ChoiceField::new('roles')->setChoices([
                 'student' => RoleEnum::STUDENT,
                 'teacher' => RoleEnum::TEACHER,
                 'observer' => RoleEnum::OBSERVER,
                 'admin' => RoleEnum::ADMIN,
-            ])->allowMultipleChoices()
+            ])->allowMultipleChoices(),
+            DateTimeField::new('createdAt')->onlyOnIndex()
         ];
     }
 }
