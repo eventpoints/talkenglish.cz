@@ -11,6 +11,7 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -28,7 +29,8 @@ class Quiz
     /**
      * @var Collection<int, Question>
      */
-    #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'quizzes',cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Question::class, inversedBy: 'quizzes', cascade: ['persist', 'remove'])]
+    #[ORM\OrderBy(['createdAt' => Order::Ascending->value])]
     private Collection $questions;
 
     #[ORM\Column(length: 255)]
