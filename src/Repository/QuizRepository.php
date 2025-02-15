@@ -12,7 +12,6 @@ use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Quiz>
@@ -58,7 +57,7 @@ class QuizRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Quiz|null $getQuiz
+     * @param Quiz|null $quiz
      * @return array<int, Quiz>
      */
     public function findRelatedByQuiz(?Quiz $quiz): array

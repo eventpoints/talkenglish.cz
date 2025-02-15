@@ -13,6 +13,10 @@ enum LevelEnum : string
     case C1 = 'level.advanced';
     case C2 = 'level.mastery';
 
+    /**
+     * @param LevelEnum $currentLevel
+     * @return LevelEnum[]
+     */
     public static function getSimilarLevels(LevelEnum $currentLevel): array
     {
         $levels = [
