@@ -33,8 +33,11 @@ class Quiz
     #[ORM\OrderBy(['createdAt' => Order::Ascending->value])]
     private Collection $questions;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $title = null;
+
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $slug = null;
 
     #[ORM\Column(enumType: CategoryEnum::class)]
     private null|CategoryEnum $categoryEnum = CategoryEnum::GENERAL;
@@ -232,6 +235,16 @@ class Quiz
     public function setPublishedAt(null|DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): void
+    {
+        $this->slug = $slug;
     }
 
 }

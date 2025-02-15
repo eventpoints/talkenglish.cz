@@ -23,8 +23,10 @@ use App\Service\QuizResultCalculatorService;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -76,10 +78,13 @@ class QuizController extends AbstractController
     }
 
 
-    #[Route(path: '/pre-start/{id}', name: 'quiz_start')]
-    public function startQuiz(Quiz $quiz, Request $request): Response
+    #[Route(path: '/start/{slug}', name: 'quiz_start')]
+    public function startQuiz(
+        #[MapEntity(mapping: [
+            'slug' => 'slug',
+        ])]
+        Quiz $quiz, Request $request): Response
     {
-
         $user = $this->security->getUser();
         if ($user instanceof User) {
             $quizParticipation = $this->quizParticipationRepository->findInProgressByUser($quiz, $user);
@@ -122,11 +127,16 @@ class QuizController extends AbstractController
             ]);
         }
 
-        return $this->render('quiz/pre_start.html.twig', [
+        return $this->render('quiz/start.html.twig', [
             'quiz' => $quiz,
         ]);
     }
 
+    #[Route(path: '/pre-start/{id}', name: 'quiz_pre_start_redirect')]
+    public function redirectPreStart(Quiz $quiz): RedirectResponse
+    {
+        return $this->redirectToRoute('quiz_start', ['slug' => $quiz->getSlug()]);
+    }
 
     #[Route(path: '/result/{id}', name: 'quiz_result')]
     public function quizResult(QuizParticipation $quizParticipation): Response

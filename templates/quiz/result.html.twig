@@ -20,7 +20,7 @@
                                         <div class="text-muted small">{{ 'quiz_taken_by'|trans({count: quiz.quizParticipations.count|compact_notation }) }}</div>
                                     </div>
                                     <div>
-                                        <a href="{{ path('quiz_start', { id: quiz.id }) }}"
+                                        <a href="{{ path('quiz_start', { slug: quiz.slug }) }}"
                                            class="btn rounded-pill btn-outline-primary">
                                             <i class="bi bi-arrow-right-short fs-4"></i>
                                         </a>
@@ -81,35 +81,36 @@
                     </div>
                 {% endif %}
 
+
                 <div class="vstack gap-3">
                     {% for question in quizParticipation.quiz.questions %}
                         <div class="card">
                             <div class="card-header lead d-flex justify-content-between align-items-start">
                                 <div>{{ question.content|raw }}</div>
-                                <div class="badge text-bg-dark rounded-pill">{{ quizParticipation|calculate_question_score(question) }}</div>
                             </div>
                             <div class="list-group list-group-flush">
-                                {% for answerOption in question.answerOptions %}
-                                    {# Check if the answerOption is in any of the user's answers for this question #}
-                                    {% set isActive = false %}
-                                    {% for answer in quizParticipation.answers %}
-                                        {% if question == answer.question and answerOption in answer.answers %}
-                                            {% set isActive = true %}
-                                        {% endif %}
+                                <div class="list-group-item d-flex flex-wrap gap-2">
+                                    {% for answerOption in question.answerOptions %}
+                                        {% set isActive = false %}
+                                        {% for answer in quizParticipation.answers %}
+                                            {% if question == answer.question and answerOption in answer.answers %}
+                                                {% set isActive = true %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="badge d-flex align-items-center p-2 pe-3
+                                        {{ isActive ? 'text-primary-emphasis bg-primary-subtle border-primary-subtle' : 'text-secondary-emphasis bg-secondary-subtle' }}
+                                         border rounded-pill">
+                            {{ answerOption.content }}
+                            <div class="vr mx-2"></div>
+                            <i class="bi {{ answerOption.isCorrect ? 'bi-check text-success' : 'bi-x text-danger' }} fs-4"></i>
+                        </span>
                                     {% endfor %}
-                                    <div class="list-group-item {{ isActive ? 'custom-active' : '' }} d-flex justify-content-between align-items-center">
-                                        <div class="lead">{{ answerOption.content }}</div>
-                                        {% if answerOption.isCorrect %}
-                                            <div class="bi bi-check text-success fs-3"></div>
-                                        {% else %}
-                                            <div class="bi bi-x text-danger fs-3"></div>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
+
             </div>
 
         </div>

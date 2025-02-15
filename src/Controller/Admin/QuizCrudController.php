@@ -27,6 +27,7 @@ class QuizCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnIndex(),
             TextField::new('title'),
+            TextField::new('slug'),
             TextareaField::new('description'),
             NumberField::new('timeLimitInMinutes'),
             ChoiceField::new('categoryEnum'),
