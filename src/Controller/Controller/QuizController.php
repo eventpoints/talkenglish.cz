@@ -132,12 +132,14 @@ class QuizController extends AbstractController
     public function quizResult(QuizParticipation $quizParticipation): Response
     {
         $quizParticipationStatistic = $this->quizParticipationRepository->getUserPerformanceStats(quizParticipation: $quizParticipation);
+        $relatedQuizzes = $this->quizRepository->findRelatedByQuiz(quiz: $quizParticipation->getQuiz());
 
         return $this->render(
             view: '/quiz/result.html.twig',
             parameters: [
                 'quizParticipationStatistic' => $quizParticipationStatistic,
                 'quizParticipation' => $quizParticipation,
+                'relatedQuizzes' => $relatedQuizzes
             ]
         );
     }

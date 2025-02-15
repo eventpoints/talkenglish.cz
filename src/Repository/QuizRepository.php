@@ -12,6 +12,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Quiz>
@@ -53,6 +54,26 @@ class QuizRepository extends ServiceEntityRepository
             return $qb->getQuery();
         }
 
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Quiz|null $getQuiz
+     * @return array<int, Quiz>
+     */
+    public function findRelatedByQuiz(?Quiz $quiz): array
+    {
+        $qb = $this->createQueryBuilder('quiz');
+
+        $qb->andWhere(
+            $qb->expr()->eq('quiz.categoryEnum', ':category')
+        )->setParameter('category', $quiz->getCategoryEnum());
+
+        $levels = LevelEnum::getSimilarLevels($quiz->getLevelEnum());
+        $qb->andWhere($qb->expr()->in('quiz.levelEnum', ':levels'))
+            ->setParameter('levels', $levels);
+
+        $qb->setMaxResults(3);
         return $qb->getQuery()->getResult();
     }
 }
