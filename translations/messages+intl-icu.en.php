@@ -7,6 +7,7 @@ return array(
     'find-lesson' => 'find a lesson',
     'find-quiz' => 'take a quiz',
     'logout' => 'logout',
+    'related-quizzes' => 'related quizzes',
     'email-placeholder' => 'theslowlazyfox@example.com',
     'thanks-for-joining' => 'Thanks for joining us!',
     'required-level-quiz-explainer' => 'All new students need to take a quiz to check their level. This helps us understand how to help you. When you are ready, start the quiz below.',

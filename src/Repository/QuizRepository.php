@@ -55,4 +55,24 @@ class QuizRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param Quiz|null $quiz
+     * @return array<int, Quiz>
+     */
+    public function findRelatedByQuiz(?Quiz $quiz): array
+    {
+        $qb = $this->createQueryBuilder('quiz');
+
+        $qb->andWhere(
+            $qb->expr()->eq('quiz.categoryEnum', ':category')
+        )->setParameter('category', $quiz->getCategoryEnum());
+
+        $levels = LevelEnum::getSimilarLevels($quiz->getLevelEnum());
+        $qb->andWhere($qb->expr()->in('quiz.levelEnum', ':levels'))
+            ->setParameter('levels', $levels);
+
+        $qb->setMaxResults(3);
+        return $qb->getQuery()->getResult();
+    }
 }
